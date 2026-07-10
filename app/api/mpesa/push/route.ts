@@ -9,7 +9,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Missing fields' }, { status: 400 })
     }
 
-    const callbackUrl = `${process.env.NEXT_PUBLIC_APP_URL}/api/mpesa/callback`
+    const callbackUrl = process.env.MPESA_CALLBACK_URL
+      ?? `${process.env.NEXT_PUBLIC_APP_URL}/api/mpesa/callback`
+
+    console.log('[65D push] callback URL:', callbackUrl)
     const normalized = phone.startsWith('254') ? phone : `254${phone.replace(/^0/, '')}`
 
     const result = await initiateSTKPush({
