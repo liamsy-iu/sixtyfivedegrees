@@ -57,6 +57,7 @@ export function CheckoutClient() {
   const [orderId,   setOrderId]   = useState('')
   const [orderRef,  setOrderRef]  = useState('')
   const [mpesaCode, setMpesaCode] = useState('')
+  const [finalTotal, setFinalTotal] = useState(0)
   const channelRef = useRef<any>(null)
   const pollRef    = useRef<NodeJS.Timeout | null>(null)
 
@@ -103,6 +104,7 @@ export function CheckoutClient() {
       setOrderRef(result.orderRef)
 
       if (payment === 'cod') {
+        setFinalTotal(grandTotal)
         clear()
         setStep('success')
         setLoading(false)
@@ -135,6 +137,7 @@ export function CheckoutClient() {
     if (data?.payment_status === 'completed') {
       stopPolling()
       setMpesaCode(data.mpesa_receipt ?? '')
+      setFinalTotal(grandTotal)
       clear()
       setStep('success')
     } else if (data?.payment_status === 'failed') {
@@ -348,7 +351,7 @@ export function CheckoutClient() {
             <div className={styles['success-details']}>
               <div className={styles['detail-row']}><span>Order ref</span><span className={styles['detail-val']}>{orderRef}</span></div>
               <div className={styles['detail-row']}><span>Delivery to</span><span className={styles['detail-val']}>{area}</span></div>
-              <div className={styles['detail-row']}><span>Total</span><span className={styles['detail-val']}>{formatKES(grandTotal)}</span></div>
+              <div className={styles['detail-row']}><span>Total</span><span className={styles['detail-val']}>{formatKES(finalTotal)}</span></div>
               {mpesaCode && <div className={styles['detail-row']}><span>M-Pesa code</span><span className={styles['detail-val']}>{mpesaCode}</span></div>}
             </div>
             <div className={styles['success-actions']}>
