@@ -6,18 +6,22 @@ const OK = NextResponse.json({ ResultCode: 0, ResultDesc: 'Success' })
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
+    console.log('[65D callback] received:', JSON.stringify(body))
+
     const callback = body?.Body?.stkCallback
     if (!callback) return OK
 
     const { CheckoutRequestID, ResultCode, ResultDesc, CallbackMetadata } = callback
-    console.log('[65D CALLBACK]', { CheckoutRequestID, ResultCode, ResultDesc })
+    console.log('[65D callback]', { CheckoutRequestID, ResultCode, ResultDesc })
 
     const isSuccess   = ResultCode === 0
-    const mpesaReceipt = CallbackMetadata?.Item?.find((i: any) => i.Name === 'MpesaReceiptNumber')?.Value ?? null
+    const mpesaReceipt = CallbackMetadata?.Item?.find(
+      (i: any) => i.Name === 'MpesaReceiptNumber'
+    )?.Value ?? null
 
     const supabase = createServiceClient()
 
-    const { data: tx } = await supabase
+    const { data: tx, error: txError } = await supabase
       .from('mpesa_transactions')
       .update({
         status:             isSuccess ? 'completed' : 'failed',
@@ -30,9 +34,11 @@ export async function POST(req: NextRequest) {
       .select('order_id, phone')
       .single()
 
+    console.log('[65D callback] tx update:', { tx, txError })
+
     if (!tx?.order_id) return OK
 
-    await supabase
+    const { error: orderError } = await supabase
       .from('orders')
       .update({
         payment_status: isSuccess ? 'completed' : 'failed',
@@ -42,9 +48,11 @@ export async function POST(req: NextRequest) {
       })
       .eq('id', tx.order_id)
 
+    console.log('[65D callback] order update error:', orderError)
+
     return OK
-  } catch (err) {
-    console.error('[65D callback error]', err)
+  } catch (err: any) {
+    console.error('[65D callback error]', err?.message ?? err)
     return OK
   }
 }
