@@ -1,0 +1,127 @@
+/* ── Fonts ──────────────────────────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* ── Reset ──────────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+
+/* ── Brand tokens ────────────────────────────────────────────────────────────── */
+:root {
+  /* Colours */
+  --color-parchment:    #F5F0E8;
+  --color-parchment-2:  #EDE7DA;
+  --color-parchment-3:  #E3DBCC;
+  --color-roast:        #1A1410;
+  --color-roast-2:      #2A2018;
+  --color-crema:        #C8922A;
+  --color-crema-light:  #F5E8CC;
+  --color-crema-dim:    rgba(200,146,42,0.12);
+  --color-highlands:    #2D5A3D;
+  --color-bark:         #8B6F4E;
+  --color-bark-light:   #C4A882;
+  --color-fog:          #F0EBE0;
+
+  /* Typography */
+  --font-serif:  'Cormorant Garamond', Georgia, serif;
+  --font-sans:   'Inter', system-ui, sans-serif;
+  --font-mono:   'JetBrains Mono', 'Courier New', monospace;
+
+  /* Font sizes */
+  --text-xs:    11px;
+  --text-sm:    13px;
+  --text-base:  15px;
+  --text-md:    17px;
+  --text-lg:    20px;
+  --text-xl:    24px;
+  --text-2xl:   32px;
+  --text-3xl:   42px;
+  --text-4xl:   56px;
+  --text-5xl:   72px;
+
+  /* Weights */
+  --weight-normal:  400;
+  --weight-medium:  500;
+  --weight-semi:    600;
+
+  /* Spacing */
+  --space-1:   4px;
+  --space-2:   8px;
+  --space-3:   12px;
+  --space-4:   16px;
+  --space-5:   20px;
+  --space-6:   24px;
+  --space-8:   32px;
+  --space-10:  40px;
+  --space-12:  48px;
+  --space-16:  64px;
+  --space-20:  80px;
+  --space-24:  96px;
+
+  /* Layout */
+  --max-w:      1200px;
+  --max-w-text: 640px;
+  --radius-sm:  2px;
+  --radius-md:  4px;
+  --radius-lg:  8px;
+
+  /* Transitions */
+  --ease-out:   cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-fast:   120ms;
+  --dur-base:   200ms;
+  --dur-slow:   300ms;
+}
+
+/* ── Base ────────────────────────────────────────────────────────────────────── */
+body {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  font-weight: var(--weight-normal);
+  line-height: 1.65;
+  color: var(--color-roast);
+  background-color: var(--color-parchment);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+  font-weight: var(--weight-medium);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--color-roast);
+}
+
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+button { cursor: pointer; font-family: var(--font-sans); }
+input, textarea, select { font-family: var(--font-sans); }
+
+/* ── Utilities ───────────────────────────────────────────────────────────────── */
+.container {
+  width: 100%;
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 var(--space-10);
+}
+
+@media (max-width: 768px) {
+  .container { padding: 0 var(--space-5); }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── Scrollbar ────────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--color-parchment); }
+::-webkit-scrollbar-thumb { background: var(--color-parchment-3); border-radius: 3px; }
+
+/* ── Selection ───────────────────────────────────────────────────────────────── */
+::selection { background: var(--color-crema-light); color: var(--color-roast); }
