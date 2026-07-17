@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { ShoppingBag, Menu, X } from 'lucide-react'
 import { useState } from 'react'
 import { useCartStore } from '@/lib/store/cart'
@@ -9,14 +10,20 @@ import styles from './Nav.module.css'
 export function Nav() {
   const [menuOpen, setMenuOpen] = useState(false)
   const itemCount = useCartStore((s) => s.itemCount())
-  const openCart = useCartStore((s) => s.openCart)
+  const openCart  = useCartStore((s) => s.openCart)
 
   return (
     <header className={styles.header}>
       <nav className={styles.nav}>
         <Link href="/" className={styles.logo}>
-          <span className={styles['logo-mark']}>65°</span>
-          <span className={styles['logo-text']}>Degrees Coffee Roastery</span>
+          <Image
+            src="/logo-white.png"
+            alt="65 Degrees Coffee Roastery"
+            width={120}
+            height={120}
+            className={styles['logo-img']}
+            priority
+          />
         </Link>
 
         <ul className={styles.links}>
@@ -49,7 +56,7 @@ export function Nav() {
 
       {menuOpen && (
         <div className={styles.mobile}>
-          <Link href="/shop" className={styles['mobile-link']} onClick={() => setMenuOpen(false)}>Shop</Link>
+          <Link href="/shop"  className={styles['mobile-link']} onClick={() => setMenuOpen(false)}>Shop</Link>
           <Link href="/trade" className={styles['mobile-link']} onClick={() => setMenuOpen(false)}>Trade</Link>
           <Link href="/about" className={styles['mobile-link']} onClick={() => setMenuOpen(false)}>About</Link>
         </div>

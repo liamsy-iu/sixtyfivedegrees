@@ -13,10 +13,14 @@
   gap: var(--space-16);
 }
 
-/* Brand */
-.logo { display: flex; align-items: baseline; gap: 6px; margin-bottom: var(--space-4); }
-.logo-mark { font-family: var(--font-mono); font-size: 14px; color: var(--color-crema); }
-.logo-text { font-family: var(--font-serif); font-size: 15px; color: var(--color-parchment); letter-spacing: 0.02em; }
+/* Logo */
+.logo-img {
+  height: 56px;
+  width: auto;
+  object-fit: contain;
+  margin-bottom: var(--space-4);
+  display: block;
+}
 
 .tagline {
   font-size: var(--text-sm);
@@ -26,6 +30,7 @@
 
 /* Columns */
 .cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-8); }
+
 .col-title {
   font-family: var(--font-mono);
   font-size: 10px;

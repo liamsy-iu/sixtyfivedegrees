@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import styles from './Footer.module.css'
 
 export function Footer() {
@@ -6,10 +7,15 @@ export function Footer() {
     <footer className={styles.footer}>
       <div className={styles.inner}>
         <div className={styles.brand}>
-          <div className={styles.logo}>
-            <span className={styles['logo-mark']}>65°</span>
-            <span className={styles['logo-text']}>Degrees Coffee Roastery</span>
-          </div>
+          <Link href="/">
+            <Image
+              src="/logo-white.png"
+              alt="65 Degrees Coffee Roastery"
+              width={100}
+              height={100}
+              className={styles['logo-img']}
+            />
+          </Link>
           <p className={styles.tagline}>
             Single origin Kenyan coffee,<br />roasted in Nairobi.
           </p>

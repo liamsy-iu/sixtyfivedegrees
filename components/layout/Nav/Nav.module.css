@@ -10,34 +10,24 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 60px;
+  height: 64px;
   max-width: var(--max-w);
   margin: 0 auto;
   padding: 0 var(--space-10);
 }
 
-/* Logo */
+/* Logo image */
 .logo {
   display: flex;
-  align-items: baseline;
-  gap: 6px;
+  align-items: center;
   text-decoration: none;
+  flex-shrink: 0;
 }
 
-.logo-mark {
-  font-family: var(--font-mono);
-  font-size: 15px;
-  font-weight: var(--weight-medium);
-  color: var(--color-crema);
-  letter-spacing: 0;
-}
-
-.logo-text {
-  font-family: var(--font-serif);
-  font-size: 16px;
-  font-weight: var(--weight-medium);
-  color: var(--color-parchment);
-  letter-spacing: 0.02em;
+.logo-img {
+  height: 44px;
+  width: auto;
+  object-fit: contain;
 }
 
 /* Links */
@@ -77,6 +67,7 @@
   background: transparent;
   border: none;
   color: var(--color-parchment);
+  cursor: pointer;
   transition: color var(--dur-fast) var(--ease-out);
 }
 
@@ -108,6 +99,7 @@
   background: transparent;
   border: none;
   color: var(--color-parchment);
+  cursor: pointer;
 }
 
 /* Mobile menu */
@@ -136,5 +128,5 @@
   .nav { padding: 0 var(--space-5); }
   .links { display: none; }
   .menu-btn { display: flex; }
-  .logo-text { display: none; }
+  .logo-img { height: 36px; }
 }
