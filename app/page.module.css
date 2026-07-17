@@ -60,10 +60,9 @@
   right: var(--space-10);
   top: 50%;
   transform: translateY(-50%);
-  width: 340px;
-  height: 340px;
-  opacity: 0.07;
+  opacity: 0.06;
   pointer-events: none;
+  user-select: none;
 }
 
 /* ── Buttons ─────────────────────────────────────────────────────────────────── */

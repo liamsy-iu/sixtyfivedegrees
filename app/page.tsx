@@ -72,7 +72,7 @@ export default async function HomePage() {
             </div>
           </div>
           <div className={styles['hero-deco']} aria-hidden="true">
-            <Image src="/logo-white.png" alt="" fill style={{ objectFit: 'contain', objectPosition: 'center' }} />
+            <Image src="/logo-white.png" alt="" width={400} height={400} />
           </div>
         </section>
 
