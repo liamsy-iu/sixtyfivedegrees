@@ -19,10 +19,7 @@
 .submit:hover:not(:disabled) { background: #B8821A; }
 .submit:disabled { opacity: 0.5; cursor: not-allowed; }
 
-.success {
-  display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-4);
-  padding: var(--space-8); background: #f0fdf4; border: 1px solid #86efac;
-}
+.success { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-4); padding: var(--space-8); background: #f0fdf4; border: 1px solid #86efac; }
 .success-icon { color: var(--color-highlands); }
 .success-title { font-family: var(--font-serif); font-size: var(--text-xl); color: var(--color-roast); }
 .success-sub { font-size: var(--text-sm); color: var(--color-bark); line-height: 1.7; }

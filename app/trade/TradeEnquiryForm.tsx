@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { CheckCircle2 } from 'lucide-react'
+import { saveTradeEnquiry } from '@/lib/actions/admin'
 import styles from './TradeEnquiryForm.module.css'
 
 export function TradeEnquiryForm() {
@@ -19,9 +20,15 @@ export function TradeEnquiryForm() {
   async function handleSubmit() {
     if (!form.name || !form.phone || !form.email) return
     setLoading(true)
-    // In production: save to Supabase or send email
-    // For now, log and show success
-    await new Promise(r => setTimeout(r, 800))
+    await saveTradeEnquiry({
+      name: form.name,
+      business: form.business,
+      email: form.email,
+      phone: form.phone,
+      grade: form.grade,
+      volume: form.volume,
+      message: form.message,
+    })
     setLoading(false)
     setSubmitted(true)
   }
