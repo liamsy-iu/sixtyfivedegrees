@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { Nav } from '@/components/layout/Nav/Nav'
 import { Footer } from '@/components/layout/Footer/Footer'
 import { createClient } from '@/lib/supabase/server'
@@ -70,7 +71,9 @@ export default async function HomePage() {
               </Link>
             </div>
           </div>
-          <div className={styles['hero-deco']} aria-hidden="true">65°</div>
+          <div className={styles['hero-deco']} aria-hidden="true">
+            <Image src="/logo-white.png" alt="" fill style={{ objectFit: 'contain', objectPosition: 'center' }} />
+          </div>
         </section>
 
         {/* ── Products preview ──────────────────────────────── */}
