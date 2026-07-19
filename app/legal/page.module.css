@@ -1,0 +1,103 @@
+.page { padding: var(--space-16) 0 var(--space-24); min-height: 100dvh; }
+
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 var(--space-10);
+}
+
+.header { margin-bottom: var(--space-12); }
+
+.eye {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-crema);
+  margin-bottom: var(--space-2);
+}
+
+.title {
+  font-family: var(--font-serif);
+  font-size: var(--text-4xl);
+  font-weight: var(--weight-medium);
+  color: var(--color-roast);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin-bottom: var(--space-3);
+}
+
+.updated {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  color: var(--color-bark);
+  letter-spacing: 0.06em;
+}
+
+.content { display: flex; flex-direction: column; gap: var(--space-12); }
+
+.section { display: flex; flex-direction: column; gap: var(--space-5); }
+
+.h2 {
+  font-family: var(--font-serif);
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-medium);
+  color: var(--color-roast);
+  letter-spacing: -0.01em;
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-parchment-3);
+}
+
+.h3 {
+  font-family: var(--font-serif);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-medium);
+  color: var(--color-roast);
+  margin-top: var(--space-2);
+  margin-bottom: calc(-1 * var(--space-2));
+}
+
+.lead {
+  font-size: var(--text-base);
+  color: #6B5840;
+  line-height: 1.8;
+  font-style: italic;
+}
+
+.section p {
+  font-size: var(--text-base);
+  color: #4A3828;
+  line-height: 1.8;
+}
+
+.list {
+  padding-left: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.list li {
+  font-size: var(--text-base);
+  color: #4A3828;
+  line-height: 1.7;
+}
+
+.content a {
+  color: var(--color-crema);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.content a:hover { color: #B8821A; }
+
+.divider {
+  height: 1px;
+  background: var(--color-parchment-3);
+  margin: var(--space-4) 0;
+}
+
+@media (max-width: 768px) {
+  .container { padding: 0 var(--space-5); }
+  .title { font-size: var(--text-3xl); }
+}

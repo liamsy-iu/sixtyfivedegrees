@@ -19,6 +19,9 @@ export function Footer() {
           <p className={styles.tagline}>
             Single origin Kenyan coffee,<br />roasted in Nairobi.
           </p>
+          <a href="mailto:hello@sixtyfivedegrees.com" className={styles.email}>
+            hello@sixtyfivedegrees.com
+          </a>
         </div>
 
         <div className={styles.cols}>
@@ -28,6 +31,7 @@ export function Footer() {
               <li><Link href="/shop">All products</Link></li>
               <li><Link href="/shop?roast=medium">Medium roast</Link></li>
               <li><Link href="/shop?roast=dark">Dark roast</Link></li>
+              <li><Link href="/account">Order lookup</Link></li>
             </ul>
           </div>
           <div className={styles.col}>
@@ -39,9 +43,11 @@ export function Footer() {
             </ul>
           </div>
           <div className={styles.col}>
-            <h4 className={styles['col-title']}>Company</h4>
+            <h4 className={styles['col-title']}>Info</h4>
             <ul className={styles['col-links']}>
               <li><Link href="/about">About us</Link></li>
+              <li><Link href="/delivery">Delivery info</Link></li>
+              <li><Link href="/legal">Privacy &amp; terms</Link></li>
               <li><a href="mailto:hello@sixtyfivedegrees.com">Contact</a></li>
             </ul>
           </div>
