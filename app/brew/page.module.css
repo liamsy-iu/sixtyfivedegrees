@@ -1,0 +1,112 @@
+/* Hero */
+.hero {
+  background: var(--color-roast);
+  padding: var(--space-20) 0 var(--space-16);
+  position: relative;
+  overflow: hidden;
+}
+.container { max-width: var(--max-w); margin: 0 auto; padding: 0 var(--space-10); }
+.eye { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--color-crema); margin-bottom: var(--space-2); }
+.title { font-family: var(--font-serif); font-size: clamp(48px, 7vw, 72px); font-weight: var(--weight-medium); color: var(--color-parchment); letter-spacing: -0.02em; line-height: 0.95; margin-bottom: var(--space-6); }
+.title em { color: var(--color-crema); font-style: normal; }
+.sub { font-size: var(--text-base); color: rgba(245,240,232,0.5); max-width: 480px; line-height: 1.7; }
+.hero-deco { position: absolute; right: var(--space-10); top: 50%; transform: translateY(-50%); font-family: var(--font-serif); font-size: 200px; font-weight: 600; color: rgba(200,146,42,0.05); pointer-events: none; line-height: 1; }
+
+/* SCA standard */
+.sca { background: var(--color-roast-2); border-bottom: 1px solid rgba(245,240,232,0.08); }
+.sca-inner { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: rgba(245,240,232,0.08); }
+.sca-stat { background: var(--color-roast-2); padding: var(--space-6) var(--space-8); display: flex; flex-direction: column; gap: var(--space-1); }
+.sca-num { font-family: var(--font-mono); font-size: var(--text-xl); font-weight: var(--weight-medium); color: var(--color-crema); }
+.sca-label { font-size: var(--text-xs); color: rgba(245,240,232,0.4); line-height: 1.5; }
+
+/* Method nav */
+.method-nav { background: var(--color-parchment); border-bottom: 1px solid var(--color-parchment-3); position: sticky; top: 64px; z-index: 10; padding: var(--space-3) 0; }
+.method-links { display: flex; gap: var(--space-6); overflow-x: auto; scrollbar-width: none; }
+.method-links::-webkit-scrollbar { display: none; }
+.method-link { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-bark); text-decoration: none; white-space: nowrap; transition: color var(--dur-fast); padding: var(--space-1) 0; }
+.method-link:hover { color: var(--color-crema); }
+
+/* Methods */
+.methods { padding: var(--space-12) 0 var(--space-20); }
+.method {
+  padding: var(--space-12) 0;
+  border-bottom: 1px solid var(--color-parchment-3);
+  scroll-margin-top: 120px;
+}
+.method:last-child { border-bottom: none; }
+
+/* Method header */
+.method-header { margin-bottom: var(--space-8); }
+.method-title-row { display: flex; align-items: baseline; gap: var(--space-4); margin-bottom: var(--space-2); }
+.method-num { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; color: var(--color-crema); }
+.method-name { font-family: var(--font-serif); font-size: var(--text-3xl); font-weight: var(--weight-medium); color: var(--color-roast); letter-spacing: -0.02em; }
+.sca-badge { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; background: var(--color-crema-dim); color: var(--color-crema); border: 1px solid rgba(200,146,42,0.3); padding: 3px 10px; }
+.method-devices { font-size: var(--text-sm); color: var(--color-bark); letter-spacing: 0.04em; }
+
+/* Method body */
+.method-body { display: grid; grid-template-columns: 280px 1fr; gap: var(--space-10); align-items: start; }
+
+/* Specs */
+.specs { display: flex; flex-direction: column; gap: 0; background: var(--color-fog); border: 1px solid var(--color-parchment-3); position: sticky; top: 130px; }
+.spec { display: flex; flex-direction: column; gap: 2px; padding: var(--space-4) var(--space-5); border-bottom: 1px solid var(--color-parchment-3); }
+.spec:last-child { border-bottom: none; }
+.spec-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-bark-light); }
+.spec-val { font-size: var(--text-sm); font-weight: var(--weight-medium); color: var(--color-roast); }
+
+/* Steps */
+.steps { display: flex; flex-direction: column; gap: var(--space-5); }
+.step { display: flex; gap: var(--space-5); }
+.step-left { flex-shrink: 0; }
+.step-num {
+  width: 28px; height: 28px;
+  background: var(--color-roast);
+  color: var(--color-parchment);
+  border-radius: 50%;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: var(--weight-medium);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.step-right { padding-top: 4px; }
+.step-title { font-family: var(--font-serif); font-size: var(--text-lg); font-weight: var(--weight-medium); color: var(--color-roast); margin-bottom: var(--space-2); }
+.step-desc { font-size: var(--text-sm); color: #6B5840; line-height: 1.7; }
+
+/* Method note */
+.method-note {
+  margin-top: var(--space-8);
+  padding: var(--space-5) var(--space-6);
+  border-left: 2px solid var(--color-crema);
+  background: var(--color-crema-dim);
+}
+.method-note p { font-size: var(--text-sm); color: #6B5840; line-height: 1.7; font-style: italic; }
+
+/* CTA */
+.cta { background: var(--color-roast); padding: var(--space-16) 0; text-align: center; }
+.cta-title { font-family: var(--font-serif); font-size: var(--text-3xl); font-weight: var(--weight-medium); color: var(--color-parchment); letter-spacing: -0.02em; margin-bottom: var(--space-3); }
+.cta-sub { font-size: var(--text-base); color: rgba(245,240,232,0.5); margin-bottom: var(--space-8); }
+.cta-btn {
+  display: inline-block;
+  padding: 14px 32px;
+  background: var(--color-crema);
+  color: var(--color-roast);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: background-color var(--dur-fast);
+}
+.cta-btn:hover { background: #B8821A; }
+
+@media (max-width: 900px) {
+  .container { padding: 0 var(--space-5); }
+  .hero-deco { display: none; }
+  .sca-inner { grid-template-columns: repeat(2, 1fr); }
+  .method-body { grid-template-columns: 1fr; }
+  .specs { position: static; }
+}
+
+@media (max-width: 480px) {
+  .sca-inner { grid-template-columns: 1fr; }
+}

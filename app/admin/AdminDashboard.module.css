@@ -61,3 +61,6 @@
   .card-body { grid-template-columns: 1fr; }
   .main { padding: var(--space-4); }
 }
+
+.toggle-btn { padding: 6px 14px; border-radius: var(--radius-md); font-size: var(--text-xs); font-weight: var(--weight-medium); cursor: pointer; transition: all var(--dur-fast); }
+.toggle-btn:disabled { opacity: 0.5; cursor: not-allowed; }

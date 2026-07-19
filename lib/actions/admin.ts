@@ -89,3 +89,21 @@ export async function saveTradeEnquiry(data: {
   const { error } = await supabase.from('trade_enquiries').insert(data)
   return { error: error?.message }
 }
+
+export async function getProducts() {
+  const supabase = createServiceClient()
+  const { data } = await supabase
+    .from('products')
+    .select('id, name, slug, grade, roast, is_available')
+    .order('grade').order('roast')
+  return data ?? []
+}
+
+export async function toggleProductAvailability(productId: string, isAvailable: boolean) {
+  const supabase = createServiceClient()
+  const { error } = await supabase
+    .from('products')
+    .update({ is_available: isAvailable })
+    .eq('id', productId)
+  return { error: error?.message }
+}
