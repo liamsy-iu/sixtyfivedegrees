@@ -30,6 +30,8 @@ export function Nav() {
           <li><Link href="/shop" className={styles.link}>Shop</Link></li>
           <li><Link href="/trade" className={styles.link}>Trade</Link></li>
           <li><Link href="/about" className={styles.link}>About</Link></li>
+          <li><Link href="/brew" className={styles.link}>Brew</Link></li>
+          <li><Link href="/subscribe" className={styles.link}>Subscribe</Link></li>
         </ul>
 
         <div className={styles.actions}>
