@@ -1,8 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef, useCallback } from 'react'
 import Link from 'next/link'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, useAnimate } from 'framer-motion'
 import { Check, ShoppingBag, ArrowLeft } from 'lucide-react'
 import { useCartStore } from '@/lib/store/cart'
 import { formatKES, formatSize, formatGrind } from '@/lib/utils/pricing'
@@ -14,7 +14,7 @@ interface Product {
   description: string; tasting_notes: string[]; retail_variants: Variant[]
 }
 
-const SIZES = [250, 500, 1000]
+const SIZES  = [250, 500, 1000]
 const GRINDS = ['whole_bean', 'ground']
 
 export function ProductDetailClient({ product }: { product: Product }) {
@@ -25,15 +25,19 @@ export function ProductDetailClient({ product }: { product: Product }) {
 
   const addItem   = useCartStore((s) => s.addItem)
   const openCart  = useCartStore((s) => s.openCart)
+  const btnRef    = useRef<HTMLButtonElement>(null)
+  const [flyScope, flyAnimate] = useAnimate()
 
   const isPremium = product.grade === 'premium'
+  const notes     = product.tasting_notes as string[]
 
   const selectedVariant = product.retail_variants.find(
     (v) => v.size_grams === selectedSize && v.grind === selectedGrind
   )
 
-  function handleAdd() {
-    if (!selectedVariant) return
+  const handleAdd = useCallback(async () => {
+    if (!selectedVariant || added) return
+
     addItem({
       variantId:   selectedVariant.id,
       productId:   product.id,
@@ -44,26 +48,66 @@ export function ProductDetailClient({ product }: { product: Product }) {
       grind:       selectedGrind,
       price:       selectedVariant.price,
     })
+
     setAdded(true)
+
+    // Flying animation — element goes from button toward top-right (cart area)
+    if (btnRef.current) {
+      const rect = btnRef.current.getBoundingClientRect()
+      const flyEl = document.createElement('div')
+      flyEl.style.cssText = `
+        position: fixed;
+        left: ${rect.left + rect.width / 2 - 12}px;
+        top: ${rect.top + rect.height / 2 - 12}px;
+        width: 24px; height: 24px;
+        background: var(--color-crema);
+        border-radius: 50%;
+        z-index: 9999;
+        pointer-events: none;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 12px;
+      `
+      flyEl.innerHTML = '☕'
+      document.body.appendChild(flyEl)
+
+      const cartX = window.innerWidth - 60
+      const cartY = 30
+
+      flyEl.animate([
+        { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+        { transform: `translate(${cartX - (rect.left + rect.width / 2 - 12)}px, ${cartY - (rect.top + rect.height / 2 - 12)}px) scale(0.3)`, opacity: 0 },
+      ], { duration: 600, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' }).onfinish = () => {
+        flyEl.remove()
+      }
+    }
+
     setTimeout(() => { setAdded(false); openCart() }, 1200)
-  }
+  }, [selectedVariant, added, addItem, product, selectedSize, selectedGrind, openCart])
 
   return (
-    <div className={styles.page}>
+    <div className={styles.page} ref={flyScope}>
       <div className={styles.container}>
         <Link href="/shop" className={styles.back}>
-          <ArrowLeft size={14} strokeWidth={1.5} />
-          Back to shop
+          <ArrowLeft size={14} strokeWidth={1.5} /> Back to shop
         </Link>
 
         <div className={styles.layout}>
-          {/* Visual */}
+          {/* Visual — typographic, no bag illustration */}
           <div className={styles.visual}>
             <div className={`${styles.visual_inner} ${styles[product.roast]}`}>
               <div className={styles.badge} data-grade={product.grade}>
                 {isPremium ? 'Premium' : 'Classic'}
               </div>
-              <BagLarge grade={product.grade} roast={product.roast} />
+              <div className={styles['type-visual']}>
+                <span className={styles['tv-mark']}>65°</span>
+                <span className={styles['tv-origin']}>Kenya</span>
+                <span className={styles['tv-grade']}>{isPremium ? 'Premium' : 'Classic'} · {product.roast} roast</span>
+                <div className={styles['tv-notes']}>
+                  {notes.map((n, i) => (
+                    <span key={i} className={styles['tv-note']}>{n}</span>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
 
@@ -74,7 +118,7 @@ export function ProductDetailClient({ product }: { product: Product }) {
             <p className={styles.desc}>{product.description}</p>
 
             <div className={styles.notes}>
-              {(product.tasting_notes as string[]).map((note) => (
+              {notes.map((note) => (
                 <span key={note} className={styles.note}>{note}</span>
               ))}
             </div>
@@ -129,7 +173,7 @@ export function ProductDetailClient({ product }: { product: Product }) {
               </div>
             </div>
 
-            {/* Total + CTA */}
+            {/* CTA */}
             <div className={styles.cta}>
               {selectedVariant && (
                 <div className={styles.total}>
@@ -138,6 +182,7 @@ export function ProductDetailClient({ product }: { product: Product }) {
                 </div>
               )}
               <motion.button
+                ref={btnRef}
                 className={`${styles['add-btn']} ${added ? styles['add-btn-done'] : ''}`}
                 onClick={handleAdd}
                 disabled={!selectedVariant || added}
@@ -157,34 +202,11 @@ export function ProductDetailClient({ product }: { product: Product }) {
               </motion.button>
             </div>
 
-            {/* Delivery note */}
             <p className={styles['delivery-note']}>
               Free delivery on orders over KES 3,000 · Nairobi only
             </p>
           </div>
         </div>
-      </div>
-    </div>
-  )
-}
-
-function BagLarge({ grade, roast }: { grade: string; roast: string }) {
-  const isPremium = grade === 'premium'
-  const accent = isPremium ? '#C8922A' : 'rgba(245,240,232,0.35)'
-  const fill   = isPremium ? 'rgba(200,146,42,0.1)' : 'rgba(245,240,232,0.05)'
-  return (
-    <div className={styles['bag-large']}>
-      <svg viewBox="0 0 140 200" fill="none" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
-        <rect x="8" y="28" width="124" height="160" rx="7" fill={fill} stroke={accent} strokeWidth="1"/>
-        <rect x="28" y="10" width="84" height="24" rx="4" fill={fill} stroke={accent} strokeWidth="0.6"/>
-        <line x1="24" y1="80" x2="116" y2="80" stroke={accent} strokeWidth="0.5" strokeOpacity="0.5"/>
-        <line x1="24" y1="140" x2="116" y2="140" stroke={accent} strokeWidth="0.5" strokeOpacity="0.5"/>
-      </svg>
-      <div className={styles['bag-content']}>
-        <div className={styles['bag-65']}>65°</div>
-        <div className={styles['bag-origin']} style={{ color: isPremium ? '#C8922A' : 'rgba(245,240,232,0.5)' }}>Kenya</div>
-        <div className={styles['bag-grade']}>{isPremium ? 'Premium' : 'Classic'}</div>
-        <div className={styles['bag-roast']}>{roast} roast</div>
       </div>
     </div>
   )

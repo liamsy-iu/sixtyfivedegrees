@@ -148,7 +148,7 @@ export function SubscribeForm() {
                 {f === 'weekly' ? 'Weekly' : f === 'biweekly' ? 'Every 2 weeks' : 'Monthly'}
               </span>
               <span className={styles['freq-sub']}>
-                {f === 'weekly' ? 'Every 7 days' : f === 'biweekly' ? 'Most popular' : 'Best for 1kg bags'}
+                {f === 'weekly' ? 'Every 7 days' : f === 'biweekly' ? '250g–500g bags' : 'Best for 1kg bags'}
               </span>
             </button>
           ))}

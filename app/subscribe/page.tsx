@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 const FREQUENCIES = [
   { value: 'weekly',   label: 'Weekly',       desc: 'Fresh every 7 days' },
-  { value: 'biweekly', label: 'Every 2 weeks', desc: 'Most popular' },
+  { value: 'biweekly', label: 'Every 2 weeks', desc: 'Ideal for 250g–500g bags' },
   { value: 'monthly',  label: 'Monthly',       desc: 'Larger bags recommended' },
 ]
 
