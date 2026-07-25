@@ -95,8 +95,8 @@ export function OrderStatusClient({ orderRef }: { orderRef: string }) {
         ) : (
           <div className={styles.progress}>
             {STATUS_STEPS.map((step, i) => {
-              const isComplete = i < currentStep
-              const isCurrent  = i === currentStep
+              const isComplete = i < currentStep || (order.status === 'delivered' && i === currentStep)
+              const isCurrent = i === currentStep && order.status !== 'delivered'
               const isFuture   = i > currentStep
               return (
                 <div key={step.key} className={`${styles.step} ${isComplete ? styles.complete : ''} ${isCurrent ? styles.current : ''} ${isFuture ? styles.future : ''}`}>
