@@ -3,6 +3,7 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { createServiceClient } from '@/lib/supabase/server'
+import { notifyNewEnquiry } from '@/lib/notify'
 
 const ADMIN_TOKEN = 'admin-session-v1'
 
@@ -20,7 +21,7 @@ export async function loginAction(_prev: { error: string | undefined }, formData
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
-    maxAge: 60 * 60 * 24 * 7, // 7 days
+    maxAge: 60 * 60 * 24 * 7,
   })
   redirect('/admin')
 }
@@ -87,6 +88,10 @@ export async function saveTradeEnquiry(data: {
 }) {
   const supabase = createServiceClient()
   const { error } = await supabase.from('trade_enquiries').insert(data)
+  if (!error) {
+    // Notify you by email
+    await notifyNewEnquiry(data).catch(err => console.error('[notify enquiry]', err))
+  }
   return { error: error?.message }
 }
 

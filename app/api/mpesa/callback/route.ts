@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase/server'
+import { notifyNewOrder } from '@/lib/notify'
 
 const OK = NextResponse.json({ ResultCode: 0, ResultDesc: 'Success' })
 
@@ -14,7 +15,7 @@ export async function POST(req: NextRequest) {
     const { CheckoutRequestID, ResultCode, ResultDesc, CallbackMetadata } = callback
     console.log('[65D callback]', { CheckoutRequestID, ResultCode, ResultDesc })
 
-    const isSuccess   = ResultCode === 0
+    const isSuccess    = ResultCode === 0
     const mpesaReceipt = CallbackMetadata?.Item?.find(
       (i: any) => i.Name === 'MpesaReceiptNumber'
     )?.Value ?? null
@@ -35,10 +36,9 @@ export async function POST(req: NextRequest) {
       .single()
 
     console.log('[65D callback] tx update:', { tx, txError })
-
     if (!tx?.order_id) return OK
 
-    const { error: orderError } = await supabase
+    await supabase
       .from('orders')
       .update({
         payment_status: isSuccess ? 'completed' : 'failed',
@@ -48,7 +48,31 @@ export async function POST(req: NextRequest) {
       })
       .eq('id', tx.order_id)
 
-    console.log('[65D callback] order update error:', orderError)
+    // Notify you by email after successful M-Pesa payment
+    if (isSuccess) {
+      const { data: order } = await supabase
+        .from('orders')
+        .select(`
+          order_ref, customer_name, customer_phone,
+          delivery_address, total,
+          order_items ( product_name, size, grind, quantity, subtotal )
+        `)
+        .eq('id', tx.order_id)
+        .single()
+
+      if (order) {
+        notifyNewOrder({
+          orderRef:        order.order_ref,
+          customerName:    order.customer_name,
+          customerPhone:   order.customer_phone,
+          items:           order.order_items as any[],
+          deliveryAddress: order.delivery_address as any,
+          total:           order.total,
+          paymentMethod:   'mpesa',
+          mpesaReceipt:    mpesaReceipt ?? undefined,
+        }).catch(err => console.error('[notify order]', err))
+      }
+    }
 
     return OK
   } catch (err: any) {
