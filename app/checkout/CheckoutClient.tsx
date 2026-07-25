@@ -355,7 +355,12 @@ export function CheckoutClient() {
               {mpesaCode && <div className={styles['detail-row']}><span>M-Pesa code</span><span className={styles['detail-val']}>{mpesaCode}</span></div>}
             </div>
             <div className={styles['success-actions']}>
-              <Link href="/shop" className={styles['success-btn']}>Continue shopping</Link>
+              <Link href={`/orders/${orderRef}`} className={styles['success-btn']}>
+                Track your order
+              </Link>
+              <Link href="/shop" className={styles['success-btn']} style={{ background: 'transparent', color: 'var(--color-roast)', border: '1px solid var(--color-parchment-3)' }}>
+                Continue shopping
+              </Link>
             </div>
           </div>
         )}
