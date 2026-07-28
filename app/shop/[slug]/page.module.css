@@ -91,3 +91,12 @@
   .visual_inner { height: 320px; }
   .tv-origin { font-size: 56px; }
 }
+
+/* Real product photo on detail page */
+.detail-img {
+  object-fit: contain;
+  object-position: center;
+  padding: var(--space-6);
+  transition: transform 0.4s var(--ease-out);
+}
+.visual:hover .detail-img { transform: scale(1.02); }

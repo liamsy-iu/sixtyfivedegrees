@@ -2,8 +2,10 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { ArrowRight } from 'lucide-react'
 import { formatKES } from '@/lib/utils/pricing'
+import { getProductImage } from '@/lib/utils/productImages'
 import styles from './page.module.css'
 
 interface Variant { id: string; size_grams: number; grind: string; price: number; is_available: boolean }
@@ -98,8 +100,9 @@ function RoastSection({ label, products }: { label: string; products: Product[] 
 
 function ProductCard({ product: p }: { product: Product }) {
   const lowestPrice = getLowestPrice(p.retail_variants)
-  const isPremium = p.grade === 'premium'
-  const notes = (p.tasting_notes as string[])
+  const isPremium   = p.grade === 'premium'
+  const notes       = p.tasting_notes as string[]
+  const image       = getProductImage(p.slug)
 
   return (
     <Link href={`/shop/${p.slug}`} className={styles.card}>
@@ -107,17 +110,24 @@ function ProductCard({ product: p }: { product: Product }) {
         <span className={styles.badge} data-grade={p.grade}>
           {isPremium ? 'Premium' : 'Classic'}
         </span>
-        {/* Typographic product visual — no bag illustration */}
-        <div className={styles['product-type-visual']}>
-          <span className={styles['ptv-mark']}>65°</span>
-          <span className={styles['ptv-origin']}>Kenya</span>
-          <span className={styles['ptv-grade']}>{isPremium ? 'Premium' : 'Classic'}</span>
-          <div className={styles['ptv-notes']}>
-            {notes.map((n, i) => (
-              <span key={i} className={styles['ptv-note']}>{n}</span>
-            ))}
+        {image ? (
+          <Image
+            src={image}
+            alt={p.name}
+            fill
+            sizes="(max-width: 768px) 100vw, 50vw"
+            className={styles['product-img']}
+          />
+        ) : (
+          <div className={styles['product-type-visual']}>
+            <span className={styles['ptv-mark']}>65°</span>
+            <span className={styles['ptv-origin']}>Kenya</span>
+            <span className={styles['ptv-grade']}>{isPremium ? 'Premium' : 'Classic'}</span>
+            <div className={styles['ptv-notes']}>
+              {notes.map((n, i) => <span key={i} className={styles['ptv-note']}>{n}</span>)}
+            </div>
           </div>
-        </div>
+        )}
       </div>
       <div className={styles.info}>
         <h2 className={styles.name}>{p.name}</h2>

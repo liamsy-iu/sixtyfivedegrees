@@ -2,10 +2,12 @@
 
 import { useState, useRef, useCallback } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { motion, AnimatePresence, useAnimate } from 'framer-motion'
 import { Check, ShoppingBag, ArrowLeft } from 'lucide-react'
 import { useCartStore } from '@/lib/store/cart'
 import { formatKES, formatSize, formatGrind } from '@/lib/utils/pricing'
+import { getProductImage } from '@/lib/utils/productImages'
 import styles from './page.module.css'
 
 interface Variant { id: string; size_grams: number; grind: string; price: number; is_available: boolean }
@@ -23,13 +25,14 @@ export function ProductDetailClient({ product }: { product: Product }) {
   const [quantity,      setQuantity]      = useState(1)
   const [added,         setAdded]         = useState(false)
 
-  const addItem   = useCartStore((s) => s.addItem)
-  const openCart  = useCartStore((s) => s.openCart)
-  const btnRef    = useRef<HTMLButtonElement>(null)
+  const addItem  = useCartStore((s) => s.addItem)
+  const openCart = useCartStore((s) => s.openCart)
+  const btnRef   = useRef<HTMLButtonElement>(null)
   const [flyScope, flyAnimate] = useAnimate()
 
   const isPremium = product.grade === 'premium'
   const notes     = product.tasting_notes as string[]
+  const image     = getProductImage(product.slug)
 
   const selectedVariant = product.retail_variants.find(
     (v) => v.size_grams === selectedSize && v.grind === selectedGrind
@@ -51,7 +54,7 @@ export function ProductDetailClient({ product }: { product: Product }) {
 
     setAdded(true)
 
-    // Flying animation — element goes from button toward top-right (cart area)
+    // Flying animation
     if (btnRef.current) {
       const rect = btnRef.current.getBoundingClientRect()
       const flyEl = document.createElement('div')
@@ -69,16 +72,12 @@ export function ProductDetailClient({ product }: { product: Product }) {
       `
       flyEl.innerHTML = '☕'
       document.body.appendChild(flyEl)
-
       const cartX = window.innerWidth - 60
       const cartY = 30
-
       flyEl.animate([
         { transform: 'translate(0, 0) scale(1)', opacity: 1 },
         { transform: `translate(${cartX - (rect.left + rect.width / 2 - 12)}px, ${cartY - (rect.top + rect.height / 2 - 12)}px) scale(0.3)`, opacity: 0 },
-      ], { duration: 600, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' }).onfinish = () => {
-        flyEl.remove()
-      }
+      ], { duration: 600, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' }).onfinish = () => flyEl.remove()
     }
 
     setTimeout(() => { setAdded(false); openCart() }, 1200)
@@ -92,22 +91,31 @@ export function ProductDetailClient({ product }: { product: Product }) {
         </Link>
 
         <div className={styles.layout}>
-          {/* Visual — typographic, no bag illustration */}
+          {/* Visual */}
           <div className={styles.visual}>
             <div className={`${styles.visual_inner} ${styles[product.roast]}`}>
               <div className={styles.badge} data-grade={product.grade}>
                 {isPremium ? 'Premium' : 'Classic'}
               </div>
-              <div className={styles['type-visual']}>
-                <span className={styles['tv-mark']}>65°</span>
-                <span className={styles['tv-origin']}>Kenya</span>
-                <span className={styles['tv-grade']}>{isPremium ? 'Premium' : 'Classic'} · {product.roast} roast</span>
-                <div className={styles['tv-notes']}>
-                  {notes.map((n, i) => (
-                    <span key={i} className={styles['tv-note']}>{n}</span>
-                  ))}
+              {image ? (
+                <Image
+                  src={image}
+                  alt={product.name}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className={styles['detail-img']}
+                  priority
+                />
+              ) : (
+                <div className={styles['type-visual']}>
+                  <span className={styles['tv-mark']}>65°</span>
+                  <span className={styles['tv-origin']}>Kenya</span>
+                  <span className={styles['tv-grade']}>{isPremium ? 'Premium' : 'Classic'} · {product.roast} roast</span>
+                  <div className={styles['tv-notes']}>
+                    {notes.map((n, i) => <span key={i} className={styles['tv-note']}>{n}</span>)}
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
 
