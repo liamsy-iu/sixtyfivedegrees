@@ -198,8 +198,8 @@
 /* Real product photo */
 .product-img {
   object-fit: contain;
-  object-position: center;
-  padding: var(--space-4);
+  object-position: center bottom;
+  padding: var(--space-2) var(--space-4) 0;
   transition: transform 0.3s var(--ease-out);
 }
-.card:hover .product-img { transform: scale(1.03); }
+.card:hover .product-img { transform: scale(1.05); }

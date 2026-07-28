@@ -1,8 +1,10 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { Nav } from '@/components/layout/Nav/Nav'
 import { Footer } from '@/components/layout/Footer/Footer'
 import { createClient } from '@/lib/supabase/server'
 import { formatKES } from '@/lib/utils/pricing'
+import { getProductImage } from '@/lib/utils/productImages'
 import { ArrowRight } from 'lucide-react'
 import styles from './page.module.css'
 
@@ -189,6 +191,7 @@ export default async function HomePage() {
 function ProductCard({ product }: { product: any }) {
   const isPremium = product.grade === 'premium'
   const notes     = product.tasting_notes as string[]
+  const image     = getProductImage(product.slug)
 
   return (
     <Link href={`/shop/${product.slug}`} className={styles['product-card']}>
@@ -196,14 +199,24 @@ function ProductCard({ product }: { product: any }) {
         <div className={styles['grade-badge']} data-grade={product.grade}>
           {isPremium ? 'Premium' : 'Classic'}
         </div>
-        <div className={styles['type-visual']}>
-          <span className={styles['tv-mark']}>65°</span>
-          <span className={styles['tv-origin']}>Kenya</span>
-          <span className={styles['tv-grade']}>{isPremium ? 'Premium' : 'Classic'}</span>
-          <div className={styles['tv-notes']}>
-            {notes.map((n, i) => <span key={i} className={styles['tv-note']}>{n}</span>)}
+        {image ? (
+          <Image
+            src={image}
+            alt={product.name}
+            fill
+            sizes="(max-width: 768px) 100vw, 50vw"
+            className={styles['product-img']}
+          />
+        ) : (
+          <div className={styles['type-visual']}>
+            <span className={styles['tv-mark']}>65°</span>
+            <span className={styles['tv-origin']}>Kenya</span>
+            <span className={styles['tv-grade']}>{isPremium ? 'Premium' : 'Classic'}</span>
+            <div className={styles['tv-notes']}>
+              {notes.map((n, i) => <span key={i} className={styles['tv-note']}>{n}</span>)}
+            </div>
           </div>
-        </div>
+        )}
       </div>
       <div className={styles['product-info']}>
         <h3 className={styles['product-name']}>{product.name}</h3>

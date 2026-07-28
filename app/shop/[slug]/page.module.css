@@ -95,8 +95,8 @@
 /* Real product photo on detail page */
 .detail-img {
   object-fit: contain;
-  object-position: center;
-  padding: var(--space-6);
+  object-position: center bottom;
+  padding: var(--space-4) var(--space-8) 0;
   transition: transform 0.4s var(--ease-out);
 }
-.visual:hover .detail-img { transform: scale(1.02); }
+.visual:hover .detail-img { transform: scale(1.03); }
