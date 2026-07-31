@@ -5,8 +5,9 @@ import type { Metadata } from 'next'
 import styles from './page.module.css'
 
 export const metadata: Metadata = {
-  title: 'Kiambu — Our Coffee Origin',
-  description: 'Our beans are sourced from Kiambu County, Central Kenya — grown at 1,400–1,800m on the Aberdare foothills. Washed process, red volcanic soil, exceptional cup quality.',
+  title: 'Kiambu County Coffee — Origin of Our Kenyan Single Origin Arabica',
+  description: 'Kiambu County produces some of Kenya\'s finest arabica. 1,700m altitude, red volcanic soil. The origin behind 65 Degrees Classic and Premium roasts.',
+  alternates: { canonical: 'https://www.sixtyfivedegrees.com/origins/kiambu' },
 }
 
 const FACTS = [

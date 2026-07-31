@@ -4,7 +4,11 @@ import { TradeEnquiryForm } from './TradeEnquiryForm'
 import type { Metadata } from 'next'
 import styles from './page.module.css'
 
-export const metadata: Metadata = { title: 'Trade — Wholesale Coffee' }
+export const metadata: Metadata = {
+  title: 'Wholesale Coffee Kenya — Specialty Coffee for Cafés and Businesses',
+  description: 'Wholesale specialty coffee for Nairobi cafés, restaurants and offices. Single origin Kenyan arabica from 5kg. Classic KES 1,500/kg, Premium KES 2,000/kg.',
+  alternates: { canonical: 'https://www.sixtyfivedegrees.com/trade' },
+}
 
 export default function TradePage() {
   return (

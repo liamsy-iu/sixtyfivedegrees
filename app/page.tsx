@@ -6,7 +6,20 @@ import { createClient } from '@/lib/supabase/server'
 import { formatKES } from '@/lib/utils/pricing'
 import { getProductImage } from '@/lib/utils/productImages'
 import { ArrowRight } from 'lucide-react'
+import type { Metadata } from 'next'
 import styles from './page.module.css'
+
+export const metadata: Metadata = {
+  title: '65 Degrees Coffee Roastery — Specialty Coffee Nairobi, Kenya',
+  description: 'Buy fresh roasted single origin Kenyan coffee online. Classic and Premium arabica from Kiambu County. Whole bean or ground. Free delivery across Nairobi above KES 3,000. Wholesale from 5kg for cafés.',
+  alternates: { canonical: 'https://www.sixtyfivedegrees.com' },
+  openGraph: {
+    title: '65 Degrees Coffee Roastery — Specialty Coffee Nairobi, Kenya',
+    description: 'Fresh roasted single origin Kenyan coffee delivered to your door in Nairobi. Classic from KES 750, Premium from KES 1,100.',
+    url: 'https://www.sixtyfivedegrees.com',
+    images: [{ url: '/og-image.png', width: 1200, height: 630 }],
+  },
+}
 
 export const revalidate = 3600
 

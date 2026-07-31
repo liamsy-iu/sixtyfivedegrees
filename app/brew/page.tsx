@@ -5,8 +5,9 @@ import type { Metadata } from 'next'
 import styles from './page.module.css'
 
 export const metadata: Metadata = {
-  title: 'Brew Guide',
-  description: 'SCA Golden Cup Standard brewing guides for pour over, French press, AeroPress, espresso, moka pot, and cold brew.',
+  title: 'How to Brew Kenyan Coffee — Brewing Guides for Specialty Coffee',
+  description: 'Complete brewing guides for Kenyan specialty coffee. Pour over, French press, AeroPress, espresso, moka pot and cold brew. SCA Golden Cup Standard ratios and step-by-step instructions.',
+  alternates: { canonical: 'https://www.sixtyfivedegrees.com/brew' },
 }
 
 const METHODS = [
