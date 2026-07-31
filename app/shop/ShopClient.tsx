@@ -134,9 +134,7 @@ function ProductCard({ product: p }: { product: Product }) {
 
         <div className={styles['card-notes']}>
           {notes.map((n, i) => (
-            <span key={i} className={styles['card-note']}>
-              {n}{i < notes.length - 1 && <span className={styles['note-sep']}> · </span>}
-            </span>
+            <span key={i} className={styles['card-note']}>{n}</span>
           ))}
         </div>
 
