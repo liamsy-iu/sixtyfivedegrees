@@ -42,6 +42,7 @@
 .product-visual { height: 220px; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
 .product-visual.medium { background-color: #1E1208; }
 .product-visual.dark   { background-color: #0E0A04; }
+.product-visual.has-photo { background-color: var(--color-fog) !important; }
 .product-img { object-fit: contain; object-position: center bottom; padding: var(--space-2) var(--space-4) 0; transition: transform 0.3s var(--ease-out); }
 .product-card:hover .product-img { transform: scale(1.05); }
 .grade-badge { position: absolute; top: 14px; right: 14px; font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.1em; padding: 4px 10px; }

@@ -107,6 +107,7 @@
 .visual { height: 220px; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
 .visual.medium { background: #1E1208; }
 .visual.dark   { background: #0E0A04; }
+.visual.has-photo { background: var(--color-fog) !important; }
 
 .badge {
   position: absolute;

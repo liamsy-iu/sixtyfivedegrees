@@ -19,6 +19,7 @@
 }
 .visual_inner.medium { background: #1E1208; }
 .visual_inner.dark   { background: #0E0A04; }
+.visual_inner.has-photo { background: var(--color-fog) !important; }
 
 .badge {
   position: absolute; top: 20px; right: 20px;

@@ -106,7 +106,7 @@ function ProductCard({ product: p }: { product: Product }) {
 
   return (
     <Link href={`/shop/${p.slug}`} className={styles.card}>
-      <div className={`${styles.visual} ${styles[p.roast]}`}>
+      <div className={`${styles.visual} ${styles[p.roast]} ${image ? styles['has-photo'] : ''}`}>
         <span className={styles.badge} data-grade={p.grade}>
           {isPremium ? 'Premium' : 'Classic'}
         </span>

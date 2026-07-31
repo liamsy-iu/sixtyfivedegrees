@@ -93,7 +93,7 @@ export function ProductDetailClient({ product }: { product: Product }) {
         <div className={styles.layout}>
           {/* Visual */}
           <div className={styles.visual}>
-            <div className={`${styles.visual_inner} ${styles[product.roast]}`}>
+            <div className={`${styles.visual_inner} ${styles[product.roast]} ${image ? styles['has-photo'] : ''}`}>
               <div className={styles.badge} data-grade={product.grade}>
                 {isPremium ? 'Premium' : 'Classic'}
               </div>
