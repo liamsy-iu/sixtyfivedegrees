@@ -85,12 +85,13 @@ function ProductCard({ product: p }: { product: Product }) {
   const notes       = p.tasting_notes as string[]
   const image       = getProductImage(p.slug)
   const isOOS       = !p.is_available
+  const roastLabel  = p.roast === 'medium' ? 'Medium roast' : 'Dark roast'
 
   if (!isPremium) {
     return (
       <Link href={`/shop/${p.slug}`} className={`${styles.card} ${styles['classic-card']} ${isOOS ? styles['card-oos'] : ''}`}>
         <div className={styles['classic-body']}>
-          <p className={styles['classic-grade']}>Classic · {p.roast === 'medium' ? 'Medium roast' : 'Dark roast'}</p>
+          <p className={styles['classic-grade']}>Classic · {roastLabel}</p>
           <h2 className={styles['classic-name']}>{p.name}</h2>
           <div className={styles['classic-notes']}>
             {notes.map((n, i) => <span key={i} className={styles['classic-note']}>{n}</span>)}
@@ -112,30 +113,34 @@ function ProductCard({ product: p }: { product: Product }) {
   }
 
   return (
-    <Link href={`/shop/${p.slug}`} className={`${styles.card} ${isOOS ? styles['card-oos'] : ''}`}>
+    <Link href={`/shop/${p.slug}`} className={`${styles.card} ${styles['premium-card']} ${isOOS ? styles['card-oos'] : ''}`}>
+      {/* Image — top on mobile, left on desktop */}
       <div className={styles['card-visual']}>
-        {image && (
-          <Image src={image} alt={p.name} fill sizes="(max-width: 768px) 100vw, 25vw" className={styles['card-img']} />
-        )}
+        {image && <Image src={image} alt={p.name} fill sizes="(max-width: 640px) 100vw, 25vw" className={styles['card-img']} />}
         {isOOS && <div className={styles['oos-ribbon']}>Out of stock</div>}
       </div>
+      {/* Bottom section — splits into 2 cells on mobile */}
       <div className={styles['card-info']}>
-        <p className={styles['card-grade']}>Premium · {p.roast === 'medium' ? 'Medium roast' : 'Dark roast'}</p>
-        <h2 className={styles['card-name']}>{p.name}</h2>
-        {isOOS ? (
-          <span className={styles['oos-label']}>Currently unavailable</span>
-        ) : (
-          <div className={styles['card-price-block']}>
-            <span className={styles['card-price']}>{lowestPrice ? formatKES(lowestPrice) : '—'}</span>
-            <span className={styles['card-per']}>/250g</span>
-          </div>
-        )}
-        <div className={styles['card-notes']}>
-          {notes.map((n, i) => <span key={i} className={styles['card-note']}>{n}</span>)}
+        <div className={styles['card-info-left']}>
+          <p className={styles['card-grade']}>Premium · {roastLabel}</p>
+          <h2 className={styles['card-name']}>{p.name}</h2>
+          {isOOS ? (
+            <span className={styles['oos-label']}>Unavailable</span>
+          ) : (
+            <div className={styles['card-price-block']}>
+              <span className={styles['card-price']}>{lowestPrice ? formatKES(lowestPrice) : '—'}</span>
+              <span className={styles['card-per']}>/250g</span>
+            </div>
+          )}
         </div>
-        <div className={styles['card-footer']}>
-          <span className={styles['card-cta']}>{isOOS ? 'View product' : 'Shop now'}</span>
-          <ArrowRight size={14} strokeWidth={1.5} className={styles['card-arrow']} />
+        <div className={styles['card-info-right']}>
+          <div className={styles['card-notes']}>
+            {notes.map((n, i) => <span key={i} className={styles['card-note']}>{n}</span>)}
+          </div>
+          <div className={styles['card-footer']}>
+            <span className={styles['card-cta']}>{isOOS ? 'View product' : 'Shop now'}</span>
+            <ArrowRight size={14} strokeWidth={1.5} className={styles['card-arrow']} />
+          </div>
         </div>
       </div>
     </Link>

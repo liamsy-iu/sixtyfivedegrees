@@ -229,30 +229,30 @@ function ProductCard({ product }: { product: any }) {
   return (
     <Link href={`/shop/${product.slug}`} className={`${styles['product-card']} ${styles['premium-card']} ${isOOS ? styles['product-card-oos'] : ''}`}>
       <div className={styles['product-visual']}>
-        {image && (
-          <Image src={image} alt={product.name} fill sizes="(max-width: 768px) 100vw, 25vw" className={styles['product-img']} />
-        )}
+        {image && <Image src={image} alt={product.name} fill sizes="(max-width: 640px) 100vw, 25vw" className={styles['product-img']} />}
         {isOOS && <div className={styles['oos-banner']}>Out of stock</div>}
       </div>
       <div className={styles['product-info']}>
-        <p className={styles['product-grade']}>Premium · {product.roast === 'medium' ? 'Medium roast' : 'Dark roast'}</p>
-        <h2 className={styles['product-name']}>{product.name}</h2>
-        {isOOS ? (
-          <span className={styles['oos-label']}>Currently unavailable</span>
-        ) : (
-          <div className={styles['product-price-row']}>
-            <span className={styles['product-price']}>{product.startingPrice ? formatKES(product.startingPrice) : '—'}</span>
-            <span className={styles['product-per']}>/250g</span>
-          </div>
-        )}
-        <div className={styles['product-notes']}>
-          {notes.map((n: string, i: number) => (
-            <span key={i} className={styles['product-note']}>{n}</span>
-          ))}
+        <div className={styles['product-info-left']}>
+          <p className={styles['product-grade']}>Premium · {product.roast === 'medium' ? 'Medium roast' : 'Dark roast'}</p>
+          <h2 className={styles['product-name']}>{product.name}</h2>
+          {isOOS ? (
+            <span className={styles['oos-label']}>Unavailable</span>
+          ) : (
+            <div className={styles['product-price-row']}>
+              <span className={styles['product-price']}>{product.startingPrice ? formatKES(product.startingPrice) : '—'}</span>
+              <span className={styles['product-per']}>/250g</span>
+            </div>
+          )}
         </div>
-        <div className={styles['product-footer']}>
-          <span className={styles['product-cta']}>{isOOS ? 'View product' : 'Shop now'}</span>
-          <ArrowRight size={14} strokeWidth={1.5} className={styles['product-arrow']} />
+        <div className={styles['product-info-right']}>
+          <div className={styles['product-notes']}>
+            {notes.map((n: string, i: number) => <span key={i} className={styles['product-note']}>{n}</span>)}
+          </div>
+          <div className={styles['product-footer']}>
+            <span className={styles['product-cta']}>{isOOS ? 'View product' : 'Shop now'}</span>
+            <ArrowRight size={14} strokeWidth={1.5} className={styles['product-arrow']} />
+          </div>
         </div>
       </div>
     </Link>
