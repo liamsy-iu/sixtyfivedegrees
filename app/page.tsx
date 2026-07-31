@@ -227,7 +227,7 @@ function ProductCard({ product }: { product: any }) {
 
   // Premium: image + info card
   return (
-    <Link href={`/shop/${product.slug}`} className={`${styles['product-card']} ${isOOS ? styles['product-card-oos'] : ''}`}>
+    <Link href={`/shop/${product.slug}`} className={`${styles['product-card']} ${styles['premium-card']} ${isOOS ? styles['product-card-oos'] : ''}`}>
       <div className={styles['product-visual']}>
         {image && (
           <Image src={image} alt={product.name} fill sizes="(max-width: 768px) 100vw, 25vw" className={styles['product-img']} />
