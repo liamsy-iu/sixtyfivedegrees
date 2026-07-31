@@ -93,7 +93,7 @@ export default function TradePage() {
                 </p>
                 <div className={styles['enquiry-contact']}>
                   <p className={styles['contact-label']}>Or reach us directly</p>
-                  <a href="mailto:trade@sixtyfivedegrees.com" className={styles['contact-link']}>trade@sixtyfivedegrees.com</a>
+                  <a href="mailto:hello@sixtyfivedegrees.com" className={styles['contact-link']}>hello@sixtyfivedegrees.com</a>
                 </div>
               </div>
               <TradeEnquiryForm />
