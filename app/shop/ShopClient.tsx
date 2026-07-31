@@ -19,6 +19,13 @@ function getLowestPrice(variants: Variant[]): number | null {
   return prices.length ? Math.min(...prices) : null
 }
 
+const CARD_COLORS: Record<string, string> = {
+  'kenya-premium-dark':   '#5C2D0E',
+  'kenya-premium-medium': '#1E4035',
+  'kenya-classic-dark':   '#1A2744',
+  'kenya-classic-medium': '#7A3120',
+}
+
 export function ShopClient({ products }: { products: Product[] }) {
   const [roastFilter, setRoastFilter] = useState<string>('all')
   const [gradeFilter, setGradeFilter] = useState<string>('all')
@@ -33,11 +40,10 @@ export function ShopClient({ products }: { products: Product[] }) {
     <div className={styles.page}>
       <div className={styles.header}>
         <div className={styles.container}>
-          <p className={styles.eye}>Single origin · Kiambu, Kenya · 250g to 1kg</p>
+          <p className={styles.eye}>Single origin · Kiambu, Kenya</p>
           <h1 className={styles.title}>The beans</h1>
         </div>
       </div>
-
       <div className={styles['filter-bar']}>
         <div className={styles.container}>
           <div className={styles.filters}>
@@ -60,7 +66,6 @@ export function ShopClient({ products }: { products: Product[] }) {
           </div>
         </div>
       </div>
-
       <div className={styles.products}>
         <div className={styles.container}>
           {filtered.length === 0 ? (
@@ -81,67 +86,46 @@ export function ShopClient({ products }: { products: Product[] }) {
 
 function ProductCard({ product: p }: { product: Product }) {
   const lowestPrice = getLowestPrice(p.retail_variants)
-  const isPremium   = p.grade === 'premium'
   const notes       = p.tasting_notes as string[]
   const image       = getProductImage(p.slug)
   const isOOS       = !p.is_available
+  const isPremium   = p.grade === 'premium'
   const roastLabel  = p.roast === 'medium' ? 'Medium roast' : 'Dark roast'
-
-  if (!isPremium) {
-    return (
-      <Link href={`/shop/${p.slug}`} className={`${styles.card} ${styles['classic-card']} ${isOOS ? styles['card-oos'] : ''}`}>
-        <div className={styles['classic-body']}>
-          <p className={styles['classic-grade']}>Classic · {roastLabel}</p>
-          <h2 className={styles['classic-name']}>{p.name}</h2>
-          <div className={styles['classic-notes']}>
-            {notes.map((n, i) => <span key={i} className={styles['classic-note']}>{n}</span>)}
-          </div>
-          <div className={styles['classic-footer']}>
-            {isOOS ? (
-              <span className={styles['oos-label']}>Currently unavailable</span>
-            ) : (
-              <div className={styles['classic-price-block']}>
-                <span className={styles['classic-price']}>{lowestPrice ? formatKES(lowestPrice) : '—'}</span>
-                <span className={styles['classic-per']}>/250g</span>
-              </div>
-            )}
-            <ArrowRight size={14} strokeWidth={1.5} className={styles['card-arrow']} />
-          </div>
-        </div>
-      </Link>
-    )
-  }
+  const cardColor   = CARD_COLORS[p.slug] ?? '#2D3A2E'
 
   return (
-    <Link href={`/shop/${p.slug}`} className={`${styles.card} ${styles['premium-card']} ${isOOS ? styles['card-oos'] : ''}`}>
-      {/* Image — top on mobile, left on desktop */}
+    <Link href={`/shop/${p.slug}`} className={`${styles.card} ${isOOS ? styles['card-oos'] : ''}`}
+      style={{ '--card-bg': cardColor } as React.CSSProperties}>
       <div className={styles['card-visual']}>
-        {image && <Image src={image} alt={p.name} fill sizes="(max-width: 640px) 100vw, 25vw" className={styles['card-img']} />}
-        {isOOS && <div className={styles['oos-ribbon']}>Out of stock</div>}
+        {image ? (
+          <Image src={image} alt={p.name} fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className={styles['card-img']} />
+        ) : (
+          <div className={styles['card-typo']}>
+            <span className={styles['typo-origin']}>Kenya</span>
+            <span className={styles['typo-grade']}>{isPremium ? 'Premium' : 'Classic'}</span>
+          </div>
+        )}
+        {isOOS && <div className={styles['oos-band']}>Out of stock</div>}
       </div>
-      {/* Bottom section — splits into 2 cells on mobile */}
       <div className={styles['card-info']}>
-        <div className={styles['card-info-left']}>
-          <p className={styles['card-grade']}>Premium · {roastLabel}</p>
-          <h2 className={styles['card-name']}>{p.name}</h2>
-          {isOOS ? (
-            <span className={styles['oos-label']}>Unavailable</span>
-          ) : (
-            <div className={styles['card-price-block']}>
-              <span className={styles['card-price']}>{lowestPrice ? formatKES(lowestPrice) : '—'}</span>
-              <span className={styles['card-per']}>/250g</span>
-            </div>
-          )}
+        <div className={styles['card-meta']}>
+          <span className={styles['card-tag']}>{isPremium ? 'Premium' : 'Classic'}</span>
+          <span className={styles['card-dot']}>·</span>
+          <span className={styles['card-tag']}>{roastLabel}</span>
         </div>
-        <div className={styles['card-info-right']}>
-          <div className={styles['card-notes']}>
-            {notes.map((n, i) => <span key={i} className={styles['card-note']}>{n}</span>)}
-          </div>
-          <div className={styles['card-footer']}>
-            <span className={styles['card-cta']}>{isOOS ? 'View product' : 'Shop now'}</span>
-            <ArrowRight size={14} strokeWidth={1.5} className={styles['card-arrow']} />
-          </div>
-        </div>
+        <h2 className={styles['card-name']}>{p.name}</h2>
+        <p className={styles['card-notes']}>{notes.join(' · ')}</p>
+        <p className={styles['card-origin']}>Kiambu, Kenya · Washed</p>
+      </div>
+      <div className={styles['card-footer']}>
+        <span className={styles['card-price']}>
+          {isOOS ? 'Unavailable' : lowestPrice ? `${formatKES(lowestPrice)} /250g` : '—'}
+        </span>
+        <span className={styles['card-btn']}>
+          {isOOS ? 'View' : 'Shop now'} <ArrowRight size={12} strokeWidth={2} />
+        </span>
       </div>
     </Link>
   )

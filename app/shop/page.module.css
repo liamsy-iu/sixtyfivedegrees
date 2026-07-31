@@ -1,119 +1,107 @@
-.page { min-height: 100dvh; background: #fff; }
+.page { min-height: 100dvh; background: #F5F0E8; }
 .container { max-width: var(--max-w); margin: 0 auto; padding: 0 var(--space-10); }
 
-/* Header */
-.header { padding: var(--space-16) 0 var(--space-10); border-bottom: 1px solid var(--color-parchment-3); }
-.eye { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--color-crema); margin-bottom: var(--space-3); }
-.title { font-family: var(--font-serif); font-size: clamp(36px, 5vw, 60px); font-weight: var(--weight-medium); color: var(--color-roast); letter-spacing: -0.02em; line-height: 1; }
+/* ── Header ── */
+.header { padding: var(--space-16) 0 var(--space-10); border-bottom: 1px solid var(--color-parchment-3); background: #fff; }
+.eye { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--color-crema); margin-bottom: var(--space-3); }
+.title { font-family: var(--font-serif); font-size: clamp(44px, 6vw, 80px); font-weight: var(--weight-medium); color: var(--color-roast); letter-spacing: -0.03em; line-height: 1; }
 
-/* Filters */
-.filter-bar { border-bottom: 1px solid var(--color-parchment-3); padding: var(--space-4) 0; position: sticky; top: 60px; z-index: 10; background: #fff; }
+/* ── Filters ── */
+.filter-bar { background: #fff; border-bottom: 1px solid var(--color-parchment-3); padding: var(--space-4) 0; position: sticky; top: 60px; z-index: 10; }
 .filters { display: flex; align-items: center; gap: var(--space-8); flex-wrap: wrap; }
 .filter-group { display: flex; align-items: center; gap: var(--space-2); }
 .filter-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-bark); margin-right: var(--space-1); }
 .filter-btn { padding: 6px 16px; border: 1px solid var(--color-parchment-3); background: transparent; font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--color-bark); cursor: pointer; transition: all var(--dur-fast); }
 .filter-btn:hover { border-color: var(--color-roast); color: var(--color-roast); }
-.filter-btn.active { background: var(--color-roast); color: var(--color-parchment); border-color: var(--color-roast); }
+.filter-btn.active { background: var(--color-roast); color: #fff; border-color: var(--color-roast); }
 
-/* Products */
+/* ── Products ── */
 .products { padding: var(--space-8) 0 var(--space-20); }
 
-/* Grid with gap — breathing room between cards */
-.grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-4);
-}
+/* Square Mile inspired grid — 2 cols with gap */
+.grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-3); }
 
-/* ── Base card ── */
+/* ── Card — full-color block, Square Mile style ── */
 .card {
   text-decoration: none;
-  background: #fff;
-  border: 1px solid var(--color-parchment-3);
-  transition: box-shadow var(--dur-fast), transform var(--dur-fast);
+  background: var(--card-bg, #2D3A2E);
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--dur-fast), box-shadow var(--dur-fast);
   overflow: hidden;
 }
-.card:hover { box-shadow: 0 4px 20px rgba(26,20,16,0.07); transform: translateY(-1px); }
-.card-oos { opacity: 0.65; }
-.card-oos:hover { box-shadow: none; transform: none; }
+.card:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,0.25); }
+.card-oos { opacity: 0.6; }
+.card-oos:hover { transform: none; box-shadow: none; }
 
-/* ── Classic card — text only ── */
-.card.classic-card { border-left: 3px solid var(--color-crema); }
-.classic-body { display: flex; flex-direction: column; padding: var(--space-6) var(--space-7); min-height: 200px; }
-.classic-grade { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--color-crema); margin-bottom: var(--space-3); }
-.classic-name { font-family: var(--font-serif); font-size: clamp(18px, 1.6vw, 24px); font-weight: var(--weight-medium); color: var(--color-roast); letter-spacing: -0.01em; line-height: 1.1; margin-bottom: var(--space-4); padding-bottom: var(--space-4); border-bottom: 1px solid var(--color-parchment-3); }
-.classic-notes { display: flex; flex-direction: column; gap: 4px; flex: 1; }
-.classic-note { font-family: var(--font-serif); font-size: 13px; font-style: italic; color: var(--color-bark); line-height: 1.5; }
-.classic-note::before { content: '— '; color: var(--color-parchment-3); font-style: normal; }
-.classic-footer { display: flex; align-items: center; justify-content: space-between; padding-top: var(--space-4); border-top: 1px solid var(--color-parchment-3); margin-top: var(--space-4); }
-.classic-price-block { display: flex; align-items: baseline; gap: 2px; }
-.classic-price { font-family: var(--font-mono); font-size: var(--text-sm); font-weight: var(--weight-medium); color: var(--color-roast); }
-.classic-per { font-family: var(--font-mono); font-size: 10px; color: var(--color-bark); }
-
-/* ── Premium card — image + info ── */
-.card.premium-card {
-  display: grid;
-  grid-template-columns: 42% 58%;
-  height: 260px;
+/* Visual area — bag photo or typography, ~55% of card */
+.card-visual {
+  position: relative;
+  height: 280px;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+.card-img { object-fit: contain; object-position: center; padding: var(--space-6); transition: transform 0.4s var(--ease-out); }
+.card:hover .card-img { transform: scale(1.06); }
 
-/* Image column */
-.card-visual { position: relative; background: #F7F5F0; border-right: 1px solid var(--color-parchment-3); overflow: hidden; }
-.card-img { object-fit: contain; object-position: center; padding: var(--space-3); transition: transform 0.35s var(--ease-out); }
-.card:hover .card-img { transform: scale(1.05); }
-.oos-ribbon { position: absolute; bottom: 0; left: 0; right: 0; background: var(--color-crema); color: var(--color-roast); font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; text-align: center; padding: 7px 0; font-weight: var(--weight-medium); z-index: 1; }
+/* Typography visual for classic products */
+.card-typo { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-2); padding: var(--space-8); }
+.typo-origin { font-family: var(--font-serif); font-size: clamp(56px, 7vw, 88px); font-weight: var(--weight-medium); color: rgba(255,255,255,0.9); letter-spacing: -0.03em; line-height: 1; }
+.typo-grade { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.45); }
 
-/* Info section — two internal columns on desktop */
-.card-info { display: grid; grid-template-columns: 1fr 1fr; overflow: hidden; }
-.card-info-left { display: flex; flex-direction: column; padding: var(--space-5) var(--space-5) var(--space-5) var(--space-6); border-right: 1px solid var(--color-parchment-3); }
-.card-info-right { display: flex; flex-direction: column; padding: var(--space-5) var(--space-6) var(--space-5) var(--space-5); }
+/* OOS band */
+.oos-band { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.65); color: #fff; font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; text-align: center; padding: 10px 0; backdrop-filter: blur(4px); }
 
-.card-grade { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--color-crema); margin-bottom: var(--space-2); }
-.card-name { font-family: var(--font-serif); font-size: var(--text-lg); font-weight: var(--weight-medium); color: var(--color-roast); letter-spacing: -0.01em; line-height: 1.1; margin-bottom: var(--space-3); flex: 1; }
-.card-price-block { display: flex; align-items: baseline; gap: 2px; padding-top: var(--space-3); border-top: 1px solid var(--color-parchment-3); margin-top: auto; }
-.card-price { font-family: var(--font-mono); font-size: var(--text-sm); font-weight: var(--weight-medium); color: var(--color-roast); }
-.card-per { font-family: var(--font-mono); font-size: 10px; color: var(--color-bark); }
+/* Info section */
+.card-info { padding: var(--space-5) var(--space-6) var(--space-4); border-top: 1px solid rgba(255,255,255,0.12); flex: 1; }
+.card-meta { display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-3); }
+.card-tag { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.5); }
+.card-dot { color: rgba(255,255,255,0.25); font-size: 10px; }
+.card-name { font-family: var(--font-serif); font-size: clamp(20px, 2vw, 26px); font-weight: var(--weight-medium); color: #fff; letter-spacing: -0.01em; line-height: 1.1; margin-bottom: var(--space-3); }
+.card-notes { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: var(--space-2); line-height: 1.5; }
+.card-origin { font-size: 12px; color: rgba(255,255,255,0.4); font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.06em; }
 
-.card-notes { display: flex; flex-direction: column; gap: 3px; flex: 1; }
-.card-note { font-family: var(--font-serif); font-size: 12px; font-style: italic; color: var(--color-bark); line-height: 1.4; }
-.card-note::before { content: '— '; color: var(--color-parchment-3); font-style: normal; }
-.card-footer { display: flex; align-items: center; justify-content: space-between; padding-top: var(--space-3); border-top: 1px solid var(--color-parchment-3); margin-top: auto; }
-.card-cta { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-roast); }
-.card-arrow { color: var(--color-bark); transition: transform var(--dur-fast), color var(--dur-fast); flex-shrink: 0; }
-.card:hover .card-arrow { transform: translateX(4px); color: var(--color-crema); }
-
-.oos-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-bark-light); }
+/* Footer — price + button */
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4) var(--space-6);
+  border-top: 1px solid rgba(255,255,255,0.12);
+}
+.card-price { font-family: var(--font-mono); font-size: var(--text-sm); font-weight: var(--weight-medium); color: rgba(255,255,255,0.8); }
+.card-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.25);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 9px 18px;
+  transition: background var(--dur-fast);
+  white-space: nowrap;
+}
+.card:hover .card-btn { background: rgba(255,255,255,0.22); }
 
 /* Empty */
 .empty { text-align: center; padding: var(--space-20) 0; }
 .empty p { font-family: var(--font-serif); font-size: var(--text-xl); color: var(--color-bark); margin-bottom: var(--space-4); }
 .clear-btn { font-family: var(--font-mono); font-size: 10px; color: var(--color-crema); background: none; border: none; text-decoration: underline; cursor: pointer; }
 
-/* ── Tablet ── */
-@media (max-width: 900px) {
+/* ── Responsive ── */
+@media (max-width: 768px) {
   .container { padding: 0 var(--space-5); }
-  .grid { grid-template-columns: 1fr; gap: var(--space-3); }
-  .card.premium-card { height: 220px; }
+  .grid { grid-template-columns: 1fr; }
+  .card-visual { height: 240px; }
 }
 
-/* ── Mobile ── */
-@media (max-width: 600px) {
-  .grid { gap: var(--space-3); }
-
-  /* Premium: image top, two detail cells below */
-  .card.premium-card {
-    grid-template-columns: 1fr;
-    grid-template-rows: 200px auto;
-    height: auto;
-  }
-
-  .card-visual { border-right: none; border-bottom: 1px solid var(--color-parchment-3); height: 200px; }
-
-  /* Info stays as 2-column grid on mobile */
-  .card-info { grid-template-columns: 1fr 1fr; border-top: none; }
-  .card-info-left { border-right: 1px solid var(--color-parchment-3); }
-
-  .card-name { font-size: var(--text-base); }
-  .classic-name { font-size: 18px; }
+@media (max-width: 480px) {
+  .card-visual { height: 200px; }
+  .typo-origin { font-size: 52px; }
 }
