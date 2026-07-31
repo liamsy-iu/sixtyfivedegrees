@@ -36,8 +36,11 @@
 .options { display: flex; gap: var(--space-2); flex-wrap: wrap; }
 .option { display: flex; flex-direction: column; align-items: center; padding: var(--space-3) var(--space-5); border: 1px solid var(--color-parchment-3); background: transparent; cursor: pointer; transition: all var(--dur-fast); min-width: 80px; }
 .option:hover { border-color: var(--color-roast); }
+.option:focus { outline: 2px solid var(--color-crema); outline-offset: 2px; }
+.option:focus:not(:focus-visible) { outline: none; }
 .option.selected { background: var(--color-roast); border-color: var(--color-roast); }
 .option.selected .option-size, .option.selected .option-price { color: #fff; }
+.option.selected:focus { outline-color: rgba(255,255,255,0.6); }
 .option.disabled { opacity: 0.35; cursor: not-allowed; }
 .option-size { font-family: var(--font-mono); font-size: 11px; font-weight: var(--weight-medium); color: var(--color-roast); }
 .option-price { font-family: var(--font-mono); font-size: 10px; color: var(--color-bark); margin-top: 2px; }
@@ -45,6 +48,8 @@
 .qty { display: flex; align-items: center; gap: var(--space-4); border: 1px solid var(--color-parchment-3); width: fit-content; }
 .qty-btn { width: 44px; height: 44px; background: transparent; border: none; font-size: 20px; color: var(--color-roast); cursor: pointer; transition: background var(--dur-fast); }
 .qty-btn:hover { background: var(--color-fog); }
+.qty-btn:focus { outline: 2px solid var(--color-crema); outline-offset: 2px; }
+.qty-btn:focus:not(:focus-visible) { outline: none; }
 .qty-val { font-family: var(--font-mono); font-size: var(--text-lg); font-weight: var(--weight-medium); color: var(--color-roast); min-width: 32px; text-align: center; }
 
 .total { display: flex; align-items: baseline; justify-content: space-between; padding: var(--space-4) 0; border-top: 1px solid var(--color-parchment-3); border-bottom: 1px solid var(--color-parchment-3); }
