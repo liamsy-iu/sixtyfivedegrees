@@ -15,7 +15,7 @@ async function getProducts() {
   const { data } = await supabase
     .from('products')
     .select('id, name, slug, grade, roast, description, tasting_notes, is_available')
-    .order('grade', { ascending: true })
+    .order('grade', { ascending: false })
     .order('roast', { ascending: true })
   return data ?? []
 }
@@ -33,11 +33,10 @@ async function getLowestRetailPrice(productId: string): Promise<number | null> {
   return data?.price ?? null
 }
 
-// Replace these with real customer quotes when you have them
 const TESTIMONIALS = [
   { quote: "The freshest coffee I've had in Nairobi. You can taste the difference.", name: "Sarah M.", location: "Westlands" },
   { quote: "Switched our café to the Classic grade. Our customers noticed immediately.", name: "James K.", location: "Karen" },
-  { quote: "Fast delivery, great beans. Finally a roastery that actually picks up the phone.", name: "Amina H.", location: "Kilimani" },
+  { quote: "Fast delivery, great beans. Finally a roastery that picks up the phone.", name: "Amina H.", location: "Kilimani" },
 ]
 
 export default async function HomePage() {
@@ -45,28 +44,42 @@ export default async function HomePage() {
   const productsWithPrices = await Promise.all(
     products.map(async (p) => ({ ...p, startingPrice: await getLowestRetailPrice(p.id) }))
   )
-  const medium = productsWithPrices.filter((p) => p.roast === 'medium')
-  const dark   = productsWithPrices.filter((p) => p.roast === 'dark')
 
   return (
     <>
       <Nav />
       <main>
+
         {/* ── Hero ── */}
         <section className={styles.hero}>
           <div className={styles['hero-inner']}>
-            <p className={styles['hero-eye']}>Single origin · Kenyan specialty</p>
-            <h1 className={styles['hero-title']}>
-              Kenya&apos;s finest<br />
-              <em>beans.</em>
-            </h1>
-            <p className={styles['hero-sub']}>
-              65° is the temperature at which milk reaches its natural sweetness.
-              We roast the coffee worthy of it.
-            </p>
-            <div className={styles['hero-actions']}>
-              <Link href="/shop" className={styles['btn-primary']}>Shop retail</Link>
-              <Link href="/trade" className={styles['btn-secondary']}>Trade enquiry</Link>
+            <div className={styles['hero-left']}>
+              <p className={styles['hero-eye']}>Single origin · Kiambu, Kenya</p>
+              <h1 className={styles['hero-title']}>
+                Kenya&apos;s finest<br /><em>beans.</em>
+              </h1>
+              <p className={styles['hero-sub']}>
+                65° is the temperature at which milk reaches its natural sweetness.
+                We roast the coffee worthy of it.
+              </p>
+              <div className={styles['hero-actions']}>
+                <Link href="/shop" className={styles['btn-primary']}>Shop the beans</Link>
+                <Link href="/trade" className={styles['btn-secondary']}>Wholesale enquiry</Link>
+              </div>
+            </div>
+            <div className={styles['hero-right']}>
+              <div className={styles['hero-stat']}>
+                <p className={styles['hero-stat-num']}>1,700m</p>
+                <p className={styles['hero-stat-label']}>Altitude — Aberdare foothills</p>
+              </div>
+              <div className={styles['hero-stat']}>
+                <p className={styles['hero-stat-num']}>30km</p>
+                <p className={styles['hero-stat-label']}>From farm to our Nairobi roastery</p>
+              </div>
+              <div className={styles['hero-stat']}>
+                <p className={styles['hero-stat-num']}>65°C</p>
+                <p className={styles['hero-stat-label']}>Optimal milk temperature</p>
+              </div>
             </div>
           </div>
         </section>
@@ -74,16 +87,17 @@ export default async function HomePage() {
         {/* ── Why us ── */}
         <section className={styles.why}>
           <div className={styles.container}>
+            <p className={styles['why-eye']}>Why 65 Degrees</p>
             <div className={styles['why-grid']}>
               <div className={styles['why-item']}>
                 <span className={styles['why-num']}>01</span>
                 <h3 className={styles['why-title']}>Single origin Kenya</h3>
-                <p className={styles['why-desc']}>We source from Kenya's finest specialty suppliers. Full traceability, exceptional quality.</p>
+                <p className={styles['why-desc']}>Sourced from Kiambu County — one of Kenya's finest growing regions, 30 minutes from our roastery.</p>
               </div>
               <div className={styles['why-item']}>
                 <span className={styles['why-num']}>02</span>
                 <h3 className={styles['why-title']}>Roasted in Nairobi</h3>
-                <p className={styles['why-desc']}>Small batch roasting. Your coffee ships within days of roasting — not weeks or months.</p>
+                <p className={styles['why-desc']}>Small batch roasting. Your coffee ships within days of roasting, not weeks or months.</p>
               </div>
               <div className={styles['why-item']}>
                 <span className={styles['why-num']}>03</span>
@@ -98,29 +112,14 @@ export default async function HomePage() {
         <section className={styles.products}>
           <div className={styles.container}>
             <div className={styles['sec-header']}>
-              <p className={styles['sec-eye']}>The beans</p>
-              <h2 className={styles['sec-title']}>Kenyan single origin</h2>
-              <div className={styles.rule} />
+              <p className={styles['sec-eye']}>The beans · 250g to 1kg</p>
+              <p className={styles['sec-title']}>Kenyan single origin</p>
             </div>
-
-            {medium.length > 0 && (
-              <div className={styles['roast-group']}>
-                <div className={styles['roast-label']}><span>Medium roast</span><div className={styles['roast-line']} /></div>
-                <div className={styles['product-grid']}>
-                  {medium.map((product) => <ProductCard key={product.id} product={product} />)}
-                </div>
-              </div>
-            )}
-
-            {dark.length > 0 && (
-              <div className={styles['roast-group']}>
-                <div className={styles['roast-label']}><span>Dark roast</span><div className={styles['roast-line']} /></div>
-                <div className={styles['product-grid']}>
-                  {dark.map((product) => <ProductCard key={product.id} product={product} />)}
-                </div>
-              </div>
-            )}
-
+            <div className={styles['product-grid']}>
+              {productsWithPrices.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
             <div className={styles['all-link']}>
               <Link href="/shop" className={styles['btn-primary']}>View all products</Link>
             </div>
@@ -130,7 +129,9 @@ export default async function HomePage() {
         {/* ── Testimonials ── */}
         <section className={styles.testimonials}>
           <div className={styles.container}>
-            <p className={styles['sec-eye']} style={{ color: 'var(--color-crema)' }}>What people say</p>
+            <div className={styles['sec-header']}>
+              <p className={styles['sec-eye']}>What people say</p>
+            </div>
             <div className={styles['testimonial-grid']}>
               {TESTIMONIALS.map((t, i) => (
                 <div key={i} className={styles.testimonial}>
@@ -142,45 +143,48 @@ export default async function HomePage() {
           </div>
         </section>
 
-        {/* ── Brand story ── */}
+        {/* ── Story ── */}
         <section className={styles.story}>
-          <div className={styles['story-inner']}>
-            <p className={styles['story-quote']}>
-              At <em>65°</em>, steamed milk reaches its natural sweetness —
-              no burnt edges, no flat foam. We source and roast the coffee
-              that deserves to meet it at exactly that temperature.
-            </p>
-            <p className={styles['story-attr']}>65 Degrees Coffee Roastery · Nairobi, Kenya</p>
+          <div className={styles.container}>
+            <div className={styles['story-inner']}>
+              <p className={styles['story-quote']}>
+                At <em>65°</em>, steamed milk reaches its natural sweetness —
+                no burnt edges, no flat foam. We source and roast the coffee
+                that deserves to meet it at exactly that temperature.
+              </p>
+              <p className={styles['story-attr']}>65 Degrees Coffee Roastery · Nairobi, Kenya</p>
+            </div>
           </div>
         </section>
 
-        {/* ── Wholesale teaser ── */}
+        {/* ── Trade ── */}
         <section className={styles.trade}>
           <div className={styles.container}>
             <div className={styles['trade-inner']}>
-              <div className={styles['trade-text']}>
-                <p className={styles['sec-eye']} style={{ color: 'var(--color-crema)' }}>For cafés and businesses</p>
-                <h2 className={styles['trade-title']}>Supply your café<br />with Kenyan specialty</h2>
-                <p className={styles['trade-sub']}>Wholesale from 5kg. Free delivery within Nairobi. Worldwide shipping available.</p>
-                <Link href="/trade" className={styles['btn-crema']}>View trade pricing</Link>
+              <div>
+                <p className={styles['sec-eye']}>For cafés &amp; businesses</p>
+                <h2 className={styles['trade-title']}>Supply your café with Kenyan specialty</h2>
+                <p className={styles['trade-sub']}>Wholesale from 5kg. Consistent quality, reliable delivery, direct pricing.</p>
+                <Link href="/trade" className={styles['btn-primary']}>View trade pricing</Link>
               </div>
               <div className={styles['trade-tiers']}>
                 <div className={styles['tier-card']}>
                   <p className={styles['tier-grade']}>Classic grade</p>
                   <div className={styles['tier-row']}><span>5 – 30 kg</span><span>KES 1,500/kg</span></div>
                   <div className={styles['tier-row']}><span>31 – 100 kg</span><span>KES 1,400/kg</span></div>
-                  <div className={styles['tier-row']}><span>100 kg +</span><span className={styles['tier-custom']}>Custom pricing</span></div>
+                  <div className={styles['tier-row']}><span>100 kg+</span><span className={styles['tier-custom']}>Custom</span></div>
                 </div>
                 <div className={styles['tier-card']}>
                   <p className={styles['tier-grade']}>Premium grade</p>
                   <div className={styles['tier-row']}><span>5 – 30 kg</span><span>KES 2,000/kg</span></div>
                   <div className={styles['tier-row']}><span>31 – 100 kg</span><span>KES 1,900/kg</span></div>
-                  <div className={styles['tier-row']}><span>100 kg +</span><span className={styles['tier-custom']}>Custom pricing</span></div>
+                  <div className={styles['tier-row']}><span>100 kg+</span><span className={styles['tier-custom']}>Custom</span></div>
                 </div>
               </div>
             </div>
           </div>
         </section>
+
       </main>
       <Footer />
     </>
@@ -193,50 +197,62 @@ function ProductCard({ product }: { product: any }) {
   const image     = getProductImage(product.slug)
   const isOOS     = !product.is_available
 
-  return (
-    <Link href={`/shop/${product.slug}`} className={`${styles['product-card']} ${isOOS ? styles['product-card-oos'] : ''}`}>
-      <div className={`${styles['product-visual']} ${styles[product.roast]} ${image ? styles['has-photo'] : ''}`}>
-        <div className={styles['grade-badge']} data-grade={product.grade}>
-          {isPremium ? 'Premium' : 'Classic'}
-        </div>
-        {isOOS && <div className={styles['oos-banner']}>Out of stock</div>}
-        {image ? (
-          <Image
-            src={image}
-            alt={product.name}
-            fill
-            sizes="(max-width: 768px) 100vw, 50vw"
-            className={styles['product-img']}
-          />
-        ) : (
-          <div className={styles['type-visual']}>
-            <span className={styles['tv-mark']}>65°</span>
-            <span className={styles['tv-origin']}>Kenya</span>
-            <span className={styles['tv-grade']}>{isPremium ? 'Premium' : 'Classic'}</span>
-            <div className={styles['tv-notes']}>
-              {notes.map((n, i) => <span key={i} className={styles['tv-note']}>{n}</span>)}
-            </div>
+  if (!isPremium) {
+    // Classic: text-only card
+    return (
+      <Link href={`/shop/${product.slug}`} className={`${styles['product-card']} ${styles['classic-card']} ${isOOS ? styles['product-card-oos'] : ''}`}>
+        <div className={styles['classic-body']}>
+          <p className={styles['classic-grade']}>Classic · {product.roast === 'medium' ? 'Medium roast' : 'Dark roast'}</p>
+          <h2 className={styles['classic-name']}>{product.name}</h2>
+          <div className={styles['classic-notes']}>
+            {notes.map((n: string, i: number) => (
+              <span key={i} className={styles['classic-note']}>{n}</span>
+            ))}
           </div>
-        )}
-      </div>
-      <div className={styles['product-info']}>
-        <h3 className={styles['product-name']}>{product.name}</h3>
-        <p className={styles['product-meta']}>{product.roast === 'medium' ? 'Medium' : 'Dark'} · Whole bean or ground</p>
-        <p className={styles['product-notes']}>{notes.join(' · ')}</p>
-        <div className={styles['product-footer']}>
-          <div>
+          <div className={styles['classic-footer']}>
             {isOOS ? (
               <span className={styles['oos-label']}>Currently unavailable</span>
             ) : (
-              <>
-                <div className={styles['product-price']}>
-                  {product.startingPrice ? formatKES(product.startingPrice) : '—'}
-                </div>
-                <div className={styles['product-price-label']}> / 250g</div>
-              </>
+              <div className={styles['classic-price-block']}>
+                <span className={styles['classic-price']}>{product.startingPrice ? formatKES(product.startingPrice) : '—'}</span>
+                <span className={styles['classic-per']}>/250g</span>
+              </div>
             )}
+            <ArrowRight size={14} strokeWidth={1.5} className={styles['product-arrow']} />
           </div>
-          <span className={styles['product-arrow']}><ArrowRight size={16} strokeWidth={1.5} /></span>
+        </div>
+      </Link>
+    )
+  }
+
+  // Premium: image + info card
+  return (
+    <Link href={`/shop/${product.slug}`} className={`${styles['product-card']} ${isOOS ? styles['product-card-oos'] : ''}`}>
+      <div className={styles['product-visual']}>
+        {image && (
+          <Image src={image} alt={product.name} fill sizes="(max-width: 768px) 100vw, 25vw" className={styles['product-img']} />
+        )}
+        {isOOS && <div className={styles['oos-banner']}>Out of stock</div>}
+      </div>
+      <div className={styles['product-info']}>
+        <p className={styles['product-grade']}>Premium · {product.roast === 'medium' ? 'Medium roast' : 'Dark roast'}</p>
+        <h2 className={styles['product-name']}>{product.name}</h2>
+        {isOOS ? (
+          <span className={styles['oos-label']}>Currently unavailable</span>
+        ) : (
+          <div className={styles['product-price-row']}>
+            <span className={styles['product-price']}>{product.startingPrice ? formatKES(product.startingPrice) : '—'}</span>
+            <span className={styles['product-per']}>/250g</span>
+          </div>
+        )}
+        <div className={styles['product-notes']}>
+          {notes.map((n: string, i: number) => (
+            <span key={i} className={styles['product-note']}>{n}</span>
+          ))}
+        </div>
+        <div className={styles['product-footer']}>
+          <span className={styles['product-cta']}>{isOOS ? 'View product' : 'Shop now'}</span>
+          <ArrowRight size={14} strokeWidth={1.5} className={styles['product-arrow']} />
         </div>
       </div>
     </Link>

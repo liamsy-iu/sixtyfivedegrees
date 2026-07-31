@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { ArrowRight } from 'lucide-react'
 import { formatKES } from '@/lib/utils/pricing'
 import { getProductImage } from '@/lib/utils/productImages'
 import styles from './page.module.css'
@@ -30,24 +31,20 @@ export function ShopClient({ products }: { products: Product[] }) {
 
   return (
     <div className={styles.page}>
-      {/* Header */}
       <div className={styles.header}>
         <div className={styles.container}>
-          <p className={styles.eye}>Single origin · Kenya · Nairobi roasted</p>
+          <p className={styles.eye}>Single origin · Kiambu, Kenya · 250g to 1kg</p>
           <h1 className={styles.title}>The beans</h1>
         </div>
       </div>
 
-      {/* Filter bar */}
       <div className={styles['filter-bar']}>
         <div className={styles.container}>
           <div className={styles.filters}>
             <div className={styles['filter-group']}>
               <span className={styles['filter-label']}>Roast</span>
               {['all', 'medium', 'dark'].map(r => (
-                <button key={r}
-                  className={`${styles['filter-btn']} ${roastFilter === r ? styles.active : ''}`}
-                  onClick={() => setRoastFilter(r)}>
+                <button key={r} className={`${styles['filter-btn']} ${roastFilter === r ? styles.active : ''}`} onClick={() => setRoastFilter(r)}>
                   {r === 'all' ? 'All' : r.charAt(0).toUpperCase() + r.slice(1)}
                 </button>
               ))}
@@ -55,9 +52,7 @@ export function ShopClient({ products }: { products: Product[] }) {
             <div className={styles['filter-group']}>
               <span className={styles['filter-label']}>Grade</span>
               {['all', 'classic', 'premium'].map(g => (
-                <button key={g}
-                  className={`${styles['filter-btn']} ${gradeFilter === g ? styles.active : ''}`}
-                  onClick={() => setGradeFilter(g)}>
+                <button key={g} className={`${styles['filter-btn']} ${gradeFilter === g ? styles.active : ''}`} onClick={() => setGradeFilter(g)}>
                   {g === 'all' ? 'All' : g.charAt(0).toUpperCase() + g.slice(1)}
                 </button>
               ))}
@@ -66,15 +61,12 @@ export function ShopClient({ products }: { products: Product[] }) {
         </div>
       </div>
 
-      {/* Products */}
       <div className={styles.products}>
         <div className={styles.container}>
           {filtered.length === 0 ? (
             <div className={styles.empty}>
               <p>No products match your filters.</p>
-              <button onClick={() => { setRoastFilter('all'); setGradeFilter('all') }} className={styles['clear-btn']}>
-                Clear filters
-              </button>
+              <button onClick={() => { setRoastFilter('all'); setGradeFilter('all') }} className={styles['clear-btn']}>Clear filters</button>
             </div>
           ) : (
             <div className={styles.grid}>
@@ -94,57 +86,56 @@ function ProductCard({ product: p }: { product: Product }) {
   const image       = getProductImage(p.slug)
   const isOOS       = !p.is_available
 
+  if (!isPremium) {
+    return (
+      <Link href={`/shop/${p.slug}`} className={`${styles.card} ${styles['classic-card']} ${isOOS ? styles['card-oos'] : ''}`}>
+        <div className={styles['classic-body']}>
+          <p className={styles['classic-grade']}>Classic · {p.roast === 'medium' ? 'Medium roast' : 'Dark roast'}</p>
+          <h2 className={styles['classic-name']}>{p.name}</h2>
+          <div className={styles['classic-notes']}>
+            {notes.map((n, i) => <span key={i} className={styles['classic-note']}>{n}</span>)}
+          </div>
+          <div className={styles['classic-footer']}>
+            {isOOS ? (
+              <span className={styles['oos-label']}>Currently unavailable</span>
+            ) : (
+              <div className={styles['classic-price-block']}>
+                <span className={styles['classic-price']}>{lowestPrice ? formatKES(lowestPrice) : '—'}</span>
+                <span className={styles['classic-per']}>/250g</span>
+              </div>
+            )}
+            <ArrowRight size={14} strokeWidth={1.5} className={styles['card-arrow']} />
+          </div>
+        </div>
+      </Link>
+    )
+  }
+
   return (
     <Link href={`/shop/${p.slug}`} className={`${styles.card} ${isOOS ? styles['card-oos'] : ''}`}>
-      {/* Full-bleed image */}
       <div className={styles['card-visual']}>
-        {image ? (
-          <Image
-            src={image}
-            alt={p.name}
-            fill
-            sizes="(max-width: 768px) 100vw, 50vw"
-            className={styles['card-img']}
-          />
-        ) : (
-          <div className={styles['card-typo']}>
-            <span className={styles['typo-mark']}>65°</span>
-            <span className={styles['typo-name']}>Kenya</span>
-            <span className={styles['typo-grade']}>{isPremium ? 'Premium' : 'Classic'}</span>
-          </div>
+        {image && (
+          <Image src={image} alt={p.name} fill sizes="(max-width: 768px) 100vw, 25vw" className={styles['card-img']} />
         )}
         {isOOS && <div className={styles['oos-ribbon']}>Out of stock</div>}
       </div>
-
-      {/* Info panel */}
       <div className={styles['card-info']}>
-        <div className={styles['card-top']}>
-          <div>
-            <p className={styles['card-grade']}>{isPremium ? 'Premium' : 'Classic'} · {p.roast === 'medium' ? 'Medium roast' : 'Dark roast'}</p>
-            <h2 className={styles['card-name']}>{p.name}</h2>
+        <p className={styles['card-grade']}>Premium · {p.roast === 'medium' ? 'Medium roast' : 'Dark roast'}</p>
+        <h2 className={styles['card-name']}>{p.name}</h2>
+        {isOOS ? (
+          <span className={styles['oos-label']}>Currently unavailable</span>
+        ) : (
+          <div className={styles['card-price-block']}>
+            <span className={styles['card-price']}>{lowestPrice ? formatKES(lowestPrice) : '—'}</span>
+            <span className={styles['card-per']}>/250g</span>
           </div>
-          {!isOOS && lowestPrice && (
-            <div className={styles['card-price-block']}>
-              <span className={styles['card-price']}>{formatKES(lowestPrice)}</span>
-              <span className={styles['card-per']}>/250g</span>
-            </div>
-          )}
-          {isOOS && <span className={styles['oos-label']}>Unavailable</span>}
-        </div>
-
+        )}
         <div className={styles['card-notes']}>
-          {notes.map((n, i) => (
-            <span key={i} className={styles['card-note']}>{n}</span>
-          ))}
+          {notes.map((n, i) => <span key={i} className={styles['card-note']}>{n}</span>)}
         </div>
-
         <div className={styles['card-footer']}>
-          <span className={styles['card-cta']}>
-            {isOOS ? 'View product' : 'Shop now'}
-          </span>
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className={styles['card-arrow']}>
-            <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
+          <span className={styles['card-cta']}>{isOOS ? 'View product' : 'Shop now'}</span>
+          <ArrowRight size={14} strokeWidth={1.5} className={styles['card-arrow']} />
         </div>
       </div>
     </Link>
