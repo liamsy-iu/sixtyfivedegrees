@@ -14,8 +14,7 @@ async function getProducts() {
   const supabase = await createClient()
   const { data } = await supabase
     .from('products')
-    .select('id, name, slug, grade, roast, description, tasting_notes')
-    .eq('is_available', true)
+    .select('id, name, slug, grade, roast, description, tasting_notes, is_available')
     .order('grade', { ascending: true })
     .order('roast', { ascending: true })
   return data ?? []
@@ -192,13 +191,15 @@ function ProductCard({ product }: { product: any }) {
   const isPremium = product.grade === 'premium'
   const notes     = product.tasting_notes as string[]
   const image     = getProductImage(product.slug)
+  const isOOS     = !product.is_available
 
   return (
-    <Link href={`/shop/${product.slug}`} className={styles['product-card']}>
+    <Link href={`/shop/${product.slug}`} className={`${styles['product-card']} ${isOOS ? styles['product-card-oos'] : ''}`}>
       <div className={`${styles['product-visual']} ${styles[product.roast]} ${image ? styles['has-photo'] : ''}`}>
         <div className={styles['grade-badge']} data-grade={product.grade}>
           {isPremium ? 'Premium' : 'Classic'}
         </div>
+        {isOOS && <div className={styles['oos-banner']}>Out of stock</div>}
         {image ? (
           <Image
             src={image}
@@ -224,10 +225,16 @@ function ProductCard({ product }: { product: any }) {
         <p className={styles['product-notes']}>{notes.join(' · ')}</p>
         <div className={styles['product-footer']}>
           <div>
-            <div className={styles['product-price']}>
-              {product.startingPrice ? formatKES(product.startingPrice) : '—'}
-            </div>
-            <div className={styles['product-price-label']}> / 250g</div>
+            {isOOS ? (
+              <span className={styles['oos-label']}>Currently unavailable</span>
+            ) : (
+              <>
+                <div className={styles['product-price']}>
+                  {product.startingPrice ? formatKES(product.startingPrice) : '—'}
+                </div>
+                <div className={styles['product-price-label']}> / 250g</div>
+              </>
+            )}
           </div>
           <span className={styles['product-arrow']}><ArrowRight size={16} strokeWidth={1.5} /></span>
         </div>

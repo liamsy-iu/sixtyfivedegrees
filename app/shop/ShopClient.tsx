@@ -11,7 +11,7 @@ import styles from './page.module.css'
 interface Variant { id: string; size_grams: number; grind: string; price: number; is_available: boolean }
 interface Product {
   id: string; name: string; slug: string; grade: string; roast: string
-  description: string; tasting_notes: string[]; retail_variants: Variant[]
+  description: string; tasting_notes: string[]; is_available: boolean; retail_variants: Variant[]
 }
 
 function getLowestPrice(variants: Variant[]): number | null {
@@ -103,13 +103,17 @@ function ProductCard({ product: p }: { product: Product }) {
   const isPremium   = p.grade === 'premium'
   const notes       = p.tasting_notes as string[]
   const image       = getProductImage(p.slug)
+  const isOOS       = !p.is_available
 
   return (
-    <Link href={`/shop/${p.slug}`} className={styles.card}>
+    <Link href={`/shop/${p.slug}`} className={`${styles.card} ${isOOS ? styles['card-oos'] : ''}`}>
       <div className={`${styles.visual} ${styles[p.roast]} ${image ? styles['has-photo'] : ''}`}>
         <span className={styles.badge} data-grade={p.grade}>
           {isPremium ? 'Premium' : 'Classic'}
         </span>
+        {isOOS && (
+          <div className={styles['oos-banner']}>Out of stock</div>
+        )}
         {image ? (
           <Image
             src={image}
@@ -135,8 +139,14 @@ function ProductCard({ product: p }: { product: Product }) {
         <p className={styles.notes}>{notes.join(' · ')}</p>
         <div className={styles.footer}>
           <div>
-            <span className={styles.price}>{lowestPrice ? `From ${formatKES(lowestPrice)}` : '—'}</span>
-            <span className={styles['price-label']}> / 250g</span>
+            {isOOS ? (
+              <span className={styles['oos-label']}>Currently unavailable</span>
+            ) : (
+              <>
+                <span className={styles.price}>{lowestPrice ? `From ${formatKES(lowestPrice)}` : '—'}</span>
+                <span className={styles['price-label']}> / 250g</span>
+              </>
+            )}
           </div>
           <ArrowRight size={16} strokeWidth={1.5} className={styles.arrow} />
         </div>

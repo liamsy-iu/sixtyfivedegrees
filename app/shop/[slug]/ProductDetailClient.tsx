@@ -13,7 +13,7 @@ import styles from './page.module.css'
 interface Variant { id: string; size_grams: number; grind: string; price: number; is_available: boolean }
 interface Product {
   id: string; name: string; slug: string; grade: string; roast: string
-  description: string; tasting_notes: string[]; retail_variants: Variant[]
+  description: string; tasting_notes: string[]; is_available: boolean; retail_variants: Variant[]
 }
 
 const SIZES  = [250, 500, 1000]
@@ -33,6 +33,7 @@ export function ProductDetailClient({ product }: { product: Product }) {
   const isPremium = product.grade === 'premium'
   const notes     = product.tasting_notes as string[]
   const image     = getProductImage(product.slug)
+  const isOOS     = !product.is_available
 
   const selectedVariant = product.retail_variants.find(
     (v) => v.size_grams === selectedSize && v.grind === selectedGrind
@@ -183,31 +184,43 @@ export function ProductDetailClient({ product }: { product: Product }) {
 
             {/* CTA */}
             <div className={styles.cta}>
-              {selectedVariant && (
-                <div className={styles.total}>
-                  <span className={styles['total-label']}>Total</span>
-                  <span className={styles['total-price']}>{formatKES(selectedVariant.price * quantity)}</span>
+              {isOOS ? (
+                <div className={styles['oos-notice']}>
+                  <p className={styles['oos-notice-title']}>Currently out of stock</p>
+                  <p className={styles['oos-notice-desc']}>
+                    This product is temporarily unavailable. Check back soon or{' '}
+                    <a href="mailto:hello@sixtyfivedegrees.com">contact us</a> to be notified when it returns.
+                  </p>
                 </div>
-              )}
-              <motion.button
-                ref={btnRef}
-                className={`${styles['add-btn']} ${added ? styles['add-btn-done'] : ''}`}
-                onClick={handleAdd}
-                disabled={!selectedVariant || added}
-                whileTap={{ scale: 0.97 }}
-              >
-                <AnimatePresence mode="wait">
-                  {added ? (
-                    <motion.span key="done" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} className={styles['add-btn-inner']}>
-                      <Check size={16} strokeWidth={2} /> Added to cart
-                    </motion.span>
-                  ) : (
-                    <motion.span key="add" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} className={styles['add-btn-inner']}>
-                      <ShoppingBag size={16} strokeWidth={1.5} /> Add to cart
-                    </motion.span>
+              ) : (
+                <>
+                  {selectedVariant && (
+                    <div className={styles.total}>
+                      <span className={styles['total-label']}>Total</span>
+                      <span className={styles['total-price']}>{formatKES(selectedVariant.price * quantity)}</span>
+                    </div>
                   )}
-                </AnimatePresence>
-              </motion.button>
+                  <motion.button
+                    ref={btnRef}
+                    className={`${styles['add-btn']} ${added ? styles['add-btn-done'] : ''}`}
+                    onClick={handleAdd}
+                    disabled={!selectedVariant || added}
+                    whileTap={{ scale: 0.97 }}
+                  >
+                    <AnimatePresence mode="wait">
+                      {added ? (
+                        <motion.span key="done" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} className={styles['add-btn-inner']}>
+                          <Check size={16} strokeWidth={2} /> Added to cart
+                        </motion.span>
+                      ) : (
+                        <motion.span key="add" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} className={styles['add-btn-inner']}>
+                          <ShoppingBag size={16} strokeWidth={1.5} /> Add to cart
+                        </motion.span>
+                      )}
+                    </AnimatePresence>
+                  </motion.button>
+                </>
+              )}
             </div>
 
             <p className={styles['delivery-note']}>

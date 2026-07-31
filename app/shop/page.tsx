@@ -13,10 +13,9 @@ export default async function ShopPage() {
   const { data: products } = await supabase
     .from('products')
     .select(`
-      id, name, slug, grade, roast, description, tasting_notes,
+      id, name, slug, grade, roast, description, tasting_notes, is_available,
       retail_variants ( id, size_grams, grind, price, is_available )
     `)
-    .eq('is_available', true)
     .order('grade', { ascending: true })
     .order('roast', { ascending: true })
 
