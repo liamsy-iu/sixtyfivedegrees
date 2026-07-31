@@ -16,7 +16,7 @@ export default async function ShopPage() {
       id, name, slug, grade, roast, description, tasting_notes, is_available,
       retail_variants ( id, size_grams, grind, price, is_available )
     `)
-    .order('grade', { ascending: true })
+    .order('grade', { ascending: false })
     .order('roast', { ascending: true })
 
   return (
