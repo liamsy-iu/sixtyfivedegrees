@@ -196,13 +196,13 @@ function ProductCard({ product }: { product: any }) {
   const notes     = product.tasting_notes as string[]
   const image     = getProductImage(product.slug)
   const isOOS     = !product.is_available
+  const roastLabel = product.roast === 'medium' ? 'Medium roast' : 'Dark roast'
 
   if (!isPremium) {
-    // Classic: text-only card
     return (
       <Link href={`/shop/${product.slug}`} className={`${styles['product-card']} ${styles['classic-card']} ${isOOS ? styles['product-card-oos'] : ''}`}>
         <div className={styles['classic-body']}>
-          <p className={styles['classic-grade']}>Classic · {product.roast === 'medium' ? 'Medium roast' : 'Dark roast'}</p>
+          <p className={styles['classic-grade']}>Classic · {roastLabel}</p>
           <h2 className={styles['classic-name']}>{product.name}</h2>
           <div className={styles['classic-notes']}>
             {notes.map((n: string, i: number) => (
@@ -225,7 +225,6 @@ function ProductCard({ product }: { product: any }) {
     )
   }
 
-  // Premium: image + info card
   return (
     <Link href={`/shop/${product.slug}`} className={`${styles['product-card']} ${styles['premium-card']} ${isOOS ? styles['product-card-oos'] : ''}`}>
       <div className={styles['product-visual']}>
@@ -233,26 +232,24 @@ function ProductCard({ product }: { product: any }) {
         {isOOS && <div className={styles['oos-banner']}>Out of stock</div>}
       </div>
       <div className={styles['product-info']}>
-        <div className={styles['product-info-left']}>
-          <p className={styles['product-grade']}>Premium · {product.roast === 'medium' ? 'Medium roast' : 'Dark roast'}</p>
-          <h2 className={styles['product-name']}>{product.name}</h2>
-          {isOOS ? (
-            <span className={styles['oos-label']}>Unavailable</span>
-          ) : (
-            <div className={styles['product-price-row']}>
-              <span className={styles['product-price']}>{product.startingPrice ? formatKES(product.startingPrice) : '—'}</span>
-              <span className={styles['product-per']}>/250g</span>
-            </div>
-          )}
+        <p className={styles['product-grade']}>Premium · {roastLabel}</p>
+        <h2 className={styles['product-name']}>{product.name}</h2>
+        {isOOS ? (
+          <span className={styles['oos-label']}>Currently unavailable</span>
+        ) : (
+          <div className={styles['product-price-row']}>
+            <span className={styles['product-price']}>{product.startingPrice ? formatKES(product.startingPrice) : '—'}</span>
+            <span className={styles['product-per']}>/250g</span>
+          </div>
+        )}
+        <div className={styles['product-notes']}>
+          {notes.map((n: string, i: number) => (
+            <span key={i} className={styles['product-note']}>{n}</span>
+          ))}
         </div>
-        <div className={styles['product-info-right']}>
-          <div className={styles['product-notes']}>
-            {notes.map((n: string, i: number) => <span key={i} className={styles['product-note']}>{n}</span>)}
-          </div>
-          <div className={styles['product-footer']}>
-            <span className={styles['product-cta']}>{isOOS ? 'View product' : 'Shop now'}</span>
-            <ArrowRight size={14} strokeWidth={1.5} className={styles['product-arrow']} />
-          </div>
+        <div className={styles['product-footer']}>
+          <span className={styles['product-cta']}>{isOOS ? 'View product' : 'Shop now'}</span>
+          <ArrowRight size={14} strokeWidth={1.5} className={styles['product-arrow']} />
         </div>
       </div>
     </Link>
