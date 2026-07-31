@@ -46,7 +46,7 @@
 .product-card-oos { opacity: 0.6; }
 .product-card-oos:hover { transform: none; }
 
-.product-visual { position: relative; height: 240px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+.product-visual { position: relative; height: 300px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
 .product-img { object-fit: contain; object-position: center; padding: var(--space-5); transition: transform 0.4s var(--ease-out); }
 .product-card:hover .product-img { transform: scale(1.06); }
 

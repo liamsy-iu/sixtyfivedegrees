@@ -37,7 +37,7 @@
 /* Visual area — bag photo or typography, ~55% of card */
 .card-visual {
   position: relative;
-  height: 280px;
+  height: 360px;
   overflow: hidden;
   display: flex;
   align-items: center;
