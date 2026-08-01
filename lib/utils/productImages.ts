@@ -5,6 +5,8 @@
 export const PRODUCT_IMAGES: Record<string, string> = {
   'kenya-premium-dark':   '/products/kenya-premium-dark.png',
   'kenya-premium-medium': '/products/kenya-premium-medium.png',
+  'kenya-classic-dark':   '/products/kenya-classic-dark.png',
+  'kenya-classic-medium': '/products/kenya-classic-medium.png',
 }
 
 export function getProductImage(slug: string): string | null {
