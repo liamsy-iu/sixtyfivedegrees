@@ -2,7 +2,7 @@
 .container { max-width: var(--max-w); margin: 0 auto; padding: 0 var(--space-10); }
 
 /* ── Header ── */
-.header { padding: var(--space-14) 0 var(--space-8); border-bottom: 1px solid var(--color-parchment-3); background: #fff; }
+.header { padding: var(--space-16) 0 var(--space-8); border-bottom: 1px solid var(--color-parchment-3); background: #fff; }
 .eye { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--color-crema); margin-bottom: var(--space-3); }
 .title { font-family: var(--font-serif); font-size: clamp(40px, 5.5vw, 72px); font-weight: var(--weight-medium); color: var(--color-roast); letter-spacing: -0.03em; line-height: 1; }
 
@@ -56,7 +56,7 @@
 /* ── Tablet ── */
 @media (max-width: 900px) {
   .container { padding: 0 var(--space-6); }
-  .header { padding: var(--space-10) 0 var(--space-7); }
+  .header { padding: var(--space-10) 0 var(--space-6); }
   .filters { gap: var(--space-5); }
   .card-visual { height: 280px; }
 }

@@ -55,6 +55,15 @@ const TESTIMONIALS = [
   { quote: "Fast delivery, great beans. Finally a roastery that picks up the phone.", name: "Amina H.", location: "Kilimani" },
 ]
 
+const JOURNEY = [
+  { num: '01', title: 'Harvest', desc: 'Hand-picked ripe cherries, Kiambu', icon: 'harvest' },
+  { num: '02', title: 'Wash', desc: 'Pulped and fermented clean', icon: 'wash' },
+  { num: '03', title: 'Dry', desc: 'Sun-dried on raised beds', icon: 'dry' },
+  { num: '04', title: 'Roast', desc: 'Small batch, Nairobi', icon: 'roast' },
+  { num: '05', title: 'Grind', desc: 'Fresh, to order', icon: 'grind' },
+  { num: '06', title: 'Brew', desc: 'Steamed to 65°', icon: 'brew' },
+] as const
+
 export default async function HomePage() {
   const products = await getProducts()
   const productsWithPrices = await Promise.all(
@@ -68,8 +77,8 @@ export default async function HomePage() {
         <section className={styles.hero}>
           <div className={styles['hero-inner']}>
             <div className={styles['hero-left']}>
-              <p className={styles['hero-eye']}>Single origin · Kiambu, Kenya</p>
-              <h1 className={styles['hero-title']}>Kenya&apos;s finest<br /><em>beans.</em></h1>
+              <p className={styles['hero-eye']}>Single origin</p>
+              <h1 className={styles['hero-title']}>Kenya&apos;s finest<br /><em>coffee.</em></h1>
               <p className={styles['hero-sub']}>65° is the temperature at which milk reaches its natural sweetness. We roast the coffee worthy of it.</p>
               <div className={styles['hero-actions']}>
                 <Link href="/shop" className={styles['btn-primary']}>Shop the beans</Link>
@@ -77,9 +86,36 @@ export default async function HomePage() {
               </div>
             </div>
             <div className={styles['hero-right']}>
-              <div className={styles['hero-stat']}><p className={styles['hero-stat-num']}>1,700m</p><p className={styles['hero-stat-label']}>Altitude — Aberdare foothills</p></div>
-              <div className={styles['hero-stat']}><p className={styles['hero-stat-num']}>30km</p><p className={styles['hero-stat-label']}>From farm to our Nairobi roastery</p></div>
-              <div className={styles['hero-stat']}><p className={styles['hero-stat-num']}>65°C</p><p className={styles['hero-stat-label']}>Optimal milk temperature</p></div>
+              <div className={styles['hero-molecule']}>
+                <svg viewBox="-20 -25 300 260" className={styles['molecule-svg']} role="img" aria-label="Skeletal chemical structure of caffeine">
+                  <g fill="none" stroke="currentColor" strokeWidth="1.6" className={styles['molecule-lines']}>
+                    <polygon points="70,75 70,40 100,25 130,40 130,75 100,90" />
+                    <polygon points="130,40 160,32 178,57 160,82 130,75" />
+                    <line x1="127" y1="42" x2="127" y2="73" />
+                    <line x1="163" y1="36" x2="174" y2="55" />
+                    <line x1="68" y1="38" x2="46" y2="23" />
+                    <line x1="73" y1="42" x2="51" y2="27" />
+                    <line x1="98" y1="92" x2="98" y2="113" />
+                    <line x1="103" y1="92" x2="103" y2="113" />
+                    <line x1="68" y1="77" x2="46" y2="90" />
+                    <line x1="100" y1="25" x2="100" y2="3" />
+                    <line x1="162" y1="84" x2="184" y2="98" />
+                  </g>
+                  <g className={styles['molecule-text']} fontFamily="var(--font-mono)" fontSize="11">
+                    <text x="52" y="70" textAnchor="middle">N1</text>
+                    <text x="78" y="16" textAnchor="middle">N3</text>
+                    <text x="172" y="14" textAnchor="middle">N9</text>
+                    <text x="146" y="86" textAnchor="middle">N7</text>
+                    <text x="38" y="18" textAnchor="middle">O</text>
+                    <text x="100" y="124" textAnchor="middle">O</text>
+                    <text x="34" y="98" textAnchor="middle">CH3</text>
+                    <text x="100" y="-8" textAnchor="middle">CH3</text>
+                    <text x="198" y="104" textAnchor="middle">CH3</text>
+                  </g>
+                </svg>
+                <p className={styles['molecule-label']}>Caffeine</p>
+                <p className={styles['molecule-formula']}>1,3,7-Trimethylxanthine · C8H10N4O2</p>
+              </div>
             </div>
           </div>
         </section>
@@ -91,6 +127,28 @@ export default async function HomePage() {
               <div className={styles['why-item']}><span className={styles['why-num']}>01</span><h3 className={styles['why-title']}>Single origin Kenya</h3><p className={styles['why-desc']}>Sourced from Kiambu County — one of Kenya's finest growing regions, 30 minutes from our roastery.</p></div>
               <div className={styles['why-item']}><span className={styles['why-num']}>02</span><h3 className={styles['why-title']}>Roasted in Nairobi</h3><p className={styles['why-desc']}>Small batch roasting. Your coffee ships within days of roasting, not weeks or months.</p></div>
               <div className={styles['why-item']}><span className={styles['why-num']}>03</span><h3 className={styles['why-title']}>To your door</h3><p className={styles['why-desc']}>Free delivery across Nairobi on orders above KES 3,000. Same day available in most areas.</p></div>
+            </div>
+          </div>
+        </section>
+
+        <section className={styles.journey}>
+          <div className={styles.container}>
+            <div className={styles['sec-header']}>
+              <p className={styles['sec-eye']}>The journey</p>
+              <p className={styles['sec-title']}>Bean to cup</p>
+            </div>
+            <div className={styles['journey-track']}>
+              {JOURNEY.map((step) => (
+                <div key={step.num} className={styles['journey-step']}>
+                  <div className={styles['journey-icon-wrap']}>
+                    <JourneyIcon type={step.icon} />
+                  </div>
+                  <span className={styles['journey-dot']} aria-hidden="true" />
+                  <p className={styles['journey-num']}>{step.num}</p>
+                  <p className={styles['journey-title']}>{step.title}</p>
+                  <p className={styles['journey-desc']}>{step.desc}</p>
+                </div>
+              ))}
             </div>
           </div>
         </section>
@@ -156,6 +214,68 @@ export default async function HomePage() {
       <Footer />
     </>
   )
+}
+
+function JourneyIcon({ type }: { type: string }) {
+  const props = { viewBox: '0 0 40 40', className: styles['journey-icon'], fill: 'none', stroke: 'currentColor', strokeWidth: 1.6 } as const
+  switch (type) {
+    case 'harvest':
+      return (
+        <svg {...props}>
+          <line x1="6" y1="34" x2="30" y2="8" />
+          <circle cx="14" cy="27" r="4.5" />
+          <circle cx="24" cy="16" r="4.5" />
+        </svg>
+      )
+    case 'wash':
+      return (
+        <svg {...props}>
+          <path d="M20 5 C26 15 31 21 20 34 C9 21 14 15 20 5 Z" />
+        </svg>
+      )
+    case 'dry':
+      return (
+        <svg {...props}>
+          <circle cx="20" cy="20" r="7" />
+          <line x1="20" y1="4" x2="20" y2="9" />
+          <line x1="20" y1="31" x2="20" y2="36" />
+          <line x1="4" y1="20" x2="9" y2="20" />
+          <line x1="31" y1="20" x2="36" y2="20" />
+          <line x1="8" y1="8" x2="11.5" y2="11.5" />
+          <line x1="28.5" y1="28.5" x2="32" y2="32" />
+          <line x1="32" y1="8" x2="28.5" y2="11.5" />
+          <line x1="11.5" y1="28.5" x2="8" y2="32" />
+        </svg>
+      )
+    case 'roast':
+      return (
+        <svg {...props}>
+          <path d="M20 6 C14 13 12 18 15 23 C14 20 17 19 17 22 C17 27 22 28 22 24 C26 21 25 13 20 6 Z" />
+        </svg>
+      )
+    case 'grind':
+      return (
+        <svg {...props}>
+          <path d="M10 8 L30 8 L20 19 Z" />
+          <line x1="20" y1="19" x2="20" y2="27" />
+          <rect x="13" y="27" width="14" height="6" />
+          <circle cx="14" cy="37" r="1.3" fill="currentColor" stroke="none" />
+          <circle cx="20" cy="37" r="1.3" fill="currentColor" stroke="none" />
+          <circle cx="26" cy="37" r="1.3" fill="currentColor" stroke="none" />
+        </svg>
+      )
+    case 'brew':
+      return (
+        <svg {...props}>
+          <path d="M14 15 C12 11 15 9 13 5" />
+          <path d="M22 15 C20 11 23 9 21 5" />
+          <path d="M10 18 L30 18 L27 33 L13 33 Z" />
+          <path d="M30 20 C36 20 36 29 30 29" />
+        </svg>
+      )
+    default:
+      return null
+  }
 }
 
 function ProductCard({ product }: { product: any }) {
