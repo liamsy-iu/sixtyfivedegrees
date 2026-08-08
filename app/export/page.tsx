@@ -14,13 +14,13 @@ export const metadata: Metadata = {
 const STANDARDS = [
   { value: '< 0.70 aw', label: 'Water activity', desc: 'SCA ceiling for specialty grade — the strongest predictor of spoilage risk in transit.' },
   { value: '0 + ≤5', label: 'Defects per 350g', desc: 'Zero primary defects, no more than five secondary defects, per the SCA two-category system.' },
-  { value: '80+', label: 'Cupping score', desc: 'Every offered lot is sample roasted and cupped to the SCA protocol before it\u2019s listed.' },
+  { value: '80+', label: 'Cupping score', desc: 'Every offered lot is sample roasted and cupped to the SCA protocol before it’s listed.' },
   { value: '350g', label: 'Grading sample', desc: 'The SCA standard sample size for green grading, screened and sorted under calibrated light.' },
 ]
 
 const GRADES = [
-  { name: 'AA', screen: 'Screen 17\u201318', desc: 'The largest standard bean size. Not a cup-quality guarantee on its own \u2014 every lot is still cupped and scored regardless of size grade.' },
-  { name: 'AB', screen: 'Screen 15\u201316', desc: 'A mix of two adjacent screen sizes, and the most widely planted grade in Kenya. Frequently outscores AA from the same lot in the cup.' },
+  { name: 'AA', screen: 'Screen 17–18', desc: 'The largest standard bean size. Not a cup-quality guarantee on its own — every lot is still cupped and scored regardless of size grade.' },
+  { name: 'AB', screen: 'Screen 15–16', desc: 'A mix of two adjacent screen sizes, and the most widely planted grade in Kenya. Frequently outscores AA from the same lot in the cup.' },
   { name: 'PB', screen: 'Peaberry', desc: 'A single rounded bean formed when only one seed develops in the cherry, graded separately from the standard flat-bean sizes.' },
 ]
 
@@ -35,8 +35,9 @@ export default function ExportPage() {
             <p className={styles.eye}>For roasters &amp; importers</p>
             <h1 className={styles.title}>Green coffee,<br /><em>graded to standard.</em></h1>
             <p className={styles.sub}>
-              We're opening our first harvest to international buyers. Every lot is milled, graded,
-              and cupped against SCA green coffee standards before it's offered for export \u2014
+              We work directly with coffee farmers in Kiambu County, and we're opening that
+              sourcing to international buyers for the first time. Every lot is milled, graded,
+              and cupped against SCA green coffee standards before it's offered for export —
               nothing shipped that hasn't been verified first.
             </p>
           </div>

@@ -7,25 +7,25 @@ const STEPS = [
   {
     num: '01',
     title: 'Mill & Grade',
-    desc: 'Parchment is hulled, then sorted by screen size and density — the same convention behind Kenya\u2019s AA, AB, and PB grades.',
+    desc: 'Parchment is hulled, then sorted by screen size and density — the same convention behind Kenya’s AA, AB, and PB grades.',
     icon: 'grade',
   },
   {
     num: '02',
     title: 'Defect Grading',
-    desc: 'Each 350g sample is checked against the SCA\u2019s two-category system: zero primary defects (full black, full sour, foreign matter), no more than five secondary defects, to qualify as specialty.',
+    desc: 'Each 350g sample is checked against the SCA’s two-category system: zero primary defects (full black, full sour, foreign matter), no more than five secondary defects, to qualify as specialty.',
     icon: 'magnify',
   },
   {
     num: '03',
     title: 'Moisture & Water Activity',
-    desc: 'Every lot is tested for both moisture content and water activity, held below the SCA\u2019s 0.70aw ceiling \u2014 the more reliable predictor of spoilage risk in transit.',
+    desc: 'Every lot is tested for both moisture content and water activity, held below the SCA’s 0.70aw ceiling — the more reliable predictor of spoilage risk in transit.',
     icon: 'gauge',
   },
   {
     num: '04',
     title: 'Cupping & Scoring',
-    desc: 'Sample roasted and cupped to the SCA protocol \u2014 8.25g to 150ml, water at 92.2\u201394.4\u00b0C, evaluated 8 to 24 hours after roasting. Only lots scoring 80 or above are offered as specialty.',
+    desc: 'Sample roasted and cupped to the SCA protocol — 8.25g to 150ml, water at 92.2–94.4°C, evaluated 8 to 24 hours after roasting. Only lots scoring 80 or above are offered as specialty.',
     icon: 'score',
   },
   {
@@ -37,7 +37,7 @@ const STEPS = [
   {
     num: '06',
     title: 'Packaging & Documentation',
-    desc: 'Hermetic, GrainPro-lined bags protect moisture and water activity in transit. Every lot travels with full traceability \u2014 farm, elevation, variety, process \u2014 plus certificate of origin and phytosanitary paperwork.',
+    desc: 'Hermetic, GrainPro-lined bags protect moisture and water activity in transit. Every lot travels with full traceability — farm, elevation, variety, process — plus certificate of origin and phytosanitary paperwork.',
     icon: 'package',
   },
   {
