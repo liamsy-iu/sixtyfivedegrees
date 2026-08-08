@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { Nav } from '@/components/layout/Nav/Nav'
 import { Footer } from '@/components/layout/Footer/Footer'
 import { JourneyTimeline } from '@/components/home/JourneyTimeline/JourneyTimeline'
+import { ProductGridReveal } from '@/components/home/ProductGridReveal/ProductGridReveal'
 import { createClient } from '@/lib/supabase/server'
 import { formatKES } from '@/lib/utils/pricing'
 import { getProductImage } from '@/lib/utils/productImages'
@@ -139,9 +140,9 @@ export default async function HomePage() {
               <p className={styles['sec-eye']}>The beans · 250g to 1kg</p>
               <p className={styles['sec-title']}>Kenyan single origin</p>
             </div>
-            <div className={styles['product-grid']}>
+            <ProductGridReveal className={styles['product-grid']}>
               {productsWithPrices.map((product) => <ProductCard key={product.id} product={product} />)}
-            </div>
+            </ProductGridReveal>
             <div className={styles['all-link']}>
               <Link href="/shop" className={styles['btn-primary']}>View all products</Link>
             </div>
