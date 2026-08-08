@@ -17,11 +17,59 @@
 .hero-actions { display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap; }
 .hero-right { display: flex; flex-direction: column; border: 1px solid var(--color-parchment-3); }
 .hero-molecule { display: flex; flex-direction: column; align-items: center; padding: var(--space-6) var(--space-4); }
-.molecule-svg { width: 100%; max-width: 260px; height: auto; overflow: visible; }
+.molecule-svg {
+  width: 100%;
+  max-width: 260px;
+  height: auto;
+  overflow: visible;
+  animation: molecule-glow 3.5s ease-in-out 2200ms infinite;
+}
 .molecule-lines { color: var(--color-roast); }
+.molecule-lines > * {
+  animation: draw-bond 650ms var(--ease-out) forwards;
+}
+.molecule-lines > *:nth-child(1)  { animation-delay: 0ms; }
+.molecule-lines > *:nth-child(2)  { animation-delay: 90ms; }
+.molecule-lines > *:nth-child(3)  { animation-delay: 260ms; }
+.molecule-lines > *:nth-child(4)  { animation-delay: 340ms; }
+.molecule-lines > *:nth-child(5)  { animation-delay: 420ms; }
+.molecule-lines > *:nth-child(6)  { animation-delay: 460ms; }
+.molecule-lines > *:nth-child(7)  { animation-delay: 540ms; }
+.molecule-lines > *:nth-child(8)  { animation-delay: 580ms; }
+.molecule-lines > *:nth-child(9)  { animation-delay: 620ms; }
+.molecule-lines > *:nth-child(10) { animation-delay: 700ms; }
+.molecule-lines > *:nth-child(11) { animation-delay: 760ms; }
+
 .molecule-text { fill: var(--color-roast); }
+.molecule-text text {
+  opacity: 0;
+  animation: fade-label 450ms var(--ease-out) forwards;
+}
+.molecule-text text:nth-child(1) { animation-delay: 1300ms; }
+.molecule-text text:nth-child(2) { animation-delay: 1360ms; }
+.molecule-text text:nth-child(3) { animation-delay: 1420ms; }
+.molecule-text text:nth-child(4) { animation-delay: 1480ms; }
+.molecule-text text:nth-child(5) { animation-delay: 1540ms; }
+.molecule-text text:nth-child(6) { animation-delay: 1600ms; }
+.molecule-text text:nth-child(7) { animation-delay: 1660ms; }
+.molecule-text text:nth-child(8) { animation-delay: 1720ms; }
+.molecule-text text:nth-child(9) { animation-delay: 1780ms; }
+
 .molecule-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--color-roast); margin-top: var(--space-4); margin-bottom: 2px; }
 .molecule-formula { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.04em; color: var(--color-bark); }
+
+@keyframes draw-bond { to { stroke-dashoffset: 0; } }
+@keyframes fade-label { to { opacity: 1; } }
+@keyframes molecule-glow {
+  0%, 100% { filter: drop-shadow(0 0 0px rgba(200, 146, 42, 0)); }
+  50%      { filter: drop-shadow(0 0 7px rgba(200, 146, 42, 0.4)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .molecule-svg { animation: none; }
+  .molecule-lines > * { animation: none; stroke-dashoffset: 0; }
+  .molecule-text text { animation: none; opacity: 1; }
+}
 
 /* ── Why us ── */
 .why { padding: var(--space-12) 0; border-bottom: 1px solid var(--color-parchment-3); }

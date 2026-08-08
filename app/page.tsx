@@ -81,17 +81,17 @@ export default async function HomePage() {
               <div className={styles['hero-molecule']}>
                 <svg viewBox="-20 -25 300 260" className={styles['molecule-svg']} role="img" aria-label="Skeletal chemical structure of caffeine">
                   <g fill="none" stroke="currentColor" strokeWidth="1.6" className={styles['molecule-lines']}>
-                    <polygon points="70,75 70,40 100,25 130,40 130,75 100,90" />
-                    <polygon points="130,40 160,32 178,57 160,82 130,75" />
-                    <line x1="127" y1="42" x2="127" y2="73" />
-                    <line x1="163" y1="36" x2="174" y2="55" />
-                    <line x1="68" y1="38" x2="46" y2="23" />
-                    <line x1="73" y1="42" x2="51" y2="27" />
-                    <line x1="98" y1="92" x2="98" y2="113" />
-                    <line x1="103" y1="92" x2="103" y2="113" />
-                    <line x1="68" y1="77" x2="46" y2="90" />
-                    <line x1="100" y1="25" x2="100" y2="3" />
-                    <line x1="162" y1="84" x2="184" y2="98" />
+                    <polygon points="70,75 70,40 100,25 130,40 130,75 100,90" strokeDasharray={204.16} strokeDashoffset={204.16} />
+                    <polygon points="130,40 160,32 178,57 160,82 130,75" strokeDasharray={158.47} strokeDashoffset={158.47} />
+                    <line x1="127" y1="42" x2="127" y2="73" strokeDasharray={31} strokeDashoffset={31} />
+                    <line x1="163" y1="36" x2="174" y2="55" strokeDasharray={21.95} strokeDashoffset={21.95} />
+                    <line x1="68" y1="38" x2="46" y2="23" strokeDasharray={26.63} strokeDashoffset={26.63} />
+                    <line x1="73" y1="42" x2="51" y2="27" strokeDasharray={26.63} strokeDashoffset={26.63} />
+                    <line x1="98" y1="92" x2="98" y2="113" strokeDasharray={21} strokeDashoffset={21} />
+                    <line x1="103" y1="92" x2="103" y2="113" strokeDasharray={21} strokeDashoffset={21} />
+                    <line x1="68" y1="77" x2="46" y2="90" strokeDasharray={25.55} strokeDashoffset={25.55} />
+                    <line x1="100" y1="25" x2="100" y2="3" strokeDasharray={22} strokeDashoffset={22} />
+                    <line x1="162" y1="84" x2="184" y2="98" strokeDasharray={26.08} strokeDashoffset={26.08} />
                   </g>
                   <g className={styles['molecule-text']} fontFamily="var(--font-mono)" fontSize="11">
                     <text x="52" y="70" textAnchor="middle">N1</text>
