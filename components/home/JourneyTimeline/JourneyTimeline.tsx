@@ -46,7 +46,11 @@ function JourneyIcon({ type }: { type: string }) {
     case 'roast':
       return (
         <svg {...props}>
-          <path d="M20 6 C14 13 12 18 15 23 C14 20 17 19 17 22 C17 27 22 28 22 24 C26 21 25 13 20 6 Z" />
+          <ellipse cx="20" cy="25" rx="9" ry="12" />
+          <path d="M20 14 C16 18 24 22 20 25 C16 28 24 32 20 36" />
+          <path d="M13 10 C11 7 15 6 13 2" />
+          <path d="M20 10 C18 7 22 6 20 2" />
+          <path d="M27 10 C25 7 29 6 27 2" />
         </svg>
       )
     case 'grind':
@@ -110,7 +114,7 @@ export function JourneyTimeline() {
   return (
     <div ref={trackRef} className={trackClass}>
       {JOURNEY.map((step, i) => (
-        <div key={step.num} className={styles.step} style={{ transitionDelay: `${i * 100}ms` }}>
+        <div key={step.num} className={styles.step} style={{ transitionDelay: `${i * 150}ms` }}>
           <div className={styles['icon-wrap']}>
             <JourneyIcon type={step.icon} />
           </div>
