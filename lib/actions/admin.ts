@@ -3,7 +3,7 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { createServiceClient } from '@/lib/supabase/server'
-import { notifyNewEnquiry } from '@/lib/notify'
+import { notifyNewEnquiry, notifyExportEnquiry } from '@/lib/notify'
 
 const ADMIN_TOKEN = 'admin-session-v1'
 
@@ -91,6 +91,19 @@ export async function saveTradeEnquiry(data: {
   if (!error) {
     // Notify you by email
     await notifyNewEnquiry(data).catch(err => console.error('[notify enquiry]', err))
+  }
+  return { error: error?.message }
+}
+
+export async function saveExportEnquiry(data: {
+  name: string; company: string; country: string; email: string; phone: string
+  product: string; volume: string; message: string
+}) {
+  const supabase = createServiceClient()
+  const { error } = await supabase.from('export_enquiries').insert(data)
+  if (!error) {
+    // Notify you by email
+    await notifyExportEnquiry(data).catch(err => console.error('[notify export enquiry]', err))
   }
   return { error: error?.message }
 }

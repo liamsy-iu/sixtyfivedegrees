@@ -24,6 +24,7 @@ export function Nav() {
           <li><Link href="/origins/kiambu" className={styles.link}>Origin</Link></li>
           <li><Link href="/brew" className={styles.link}>Brew</Link></li>
           <li><Link href="/trade" className={styles.link}>Trade</Link></li>
+          <li><Link href="/export" className={styles.link}>Export</Link></li>
           <li><Link href="/about" className={styles.link}>About</Link></li>
         </ul>
 
@@ -44,6 +45,7 @@ export function Nav() {
           <Link href="/origins/kiambu" className={styles['mobile-link']} onClick={() => setMenuOpen(false)}>Origin</Link>
           <Link href="/brew"            className={styles['mobile-link']} onClick={() => setMenuOpen(false)}>Brew</Link>
           <Link href="/trade"           className={styles['mobile-link']} onClick={() => setMenuOpen(false)}>Trade</Link>
+          <Link href="/export"          className={styles['mobile-link']} onClick={() => setMenuOpen(false)}>Export</Link>
           <Link href="/about"           className={styles['mobile-link']} onClick={() => setMenuOpen(false)}>About</Link>
         </div>
       )}

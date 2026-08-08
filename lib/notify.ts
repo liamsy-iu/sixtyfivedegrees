@@ -165,3 +165,52 @@ export async function notifyNewEnquiry(params: {
     htmlContent: html,
   })
 }
+
+/* ── New green coffee export enquiry notification (to you) ────────── */
+
+export async function notifyExportEnquiry(params: {
+  name: string
+  company: string
+  country: string
+  email: string
+  phone?: string
+  product?: string
+  volume?: string
+  message?: string
+}) {
+  const from = process.env.BREVO_FROM ?? 'hello@sixtyfivedegrees.com'
+
+  const html = `
+    <div style="font-family:Georgia,serif;max-width:560px;margin:0 auto;">
+      <div style="background:#1A1410;padding:24px 32px;">
+        <p style="margin:0;font-family:monospace;font-size:11px;letter-spacing:0.2em;color:#C8922A;text-transform:uppercase;">
+          🌍 New green coffee export enquiry — 65 Degrees Coffee
+        </p>
+      </div>
+      <div style="background:#ffffff;padding:32px;border:1px solid #e8e0d0;">
+        <table style="width:100%;border-collapse:collapse;">
+          <tr><td style="padding:6px 0;font-size:13px;color:#8B6F4E;width:120px;">Name</td><td style="padding:6px 0;font-size:14px;">${params.name}</td></tr>
+          <tr><td style="padding:6px 0;font-size:13px;color:#8B6F4E;">Company</td><td style="padding:6px 0;font-size:14px;">${params.company}</td></tr>
+          <tr><td style="padding:6px 0;font-size:13px;color:#8B6F4E;">Country</td><td style="padding:6px 0;font-size:14px;">${params.country}</td></tr>
+          <tr><td style="padding:6px 0;font-size:13px;color:#8B6F4E;">Email</td><td style="padding:6px 0;font-size:14px;"><a href="mailto:${params.email}" style="color:#C8922A;">${params.email}</a></td></tr>
+          ${params.phone ? `<tr><td style="padding:6px 0;font-size:13px;color:#8B6F4E;">Phone</td><td style="padding:6px 0;font-size:14px;"><a href="tel:${params.phone}" style="color:#C8922A;">${params.phone}</a></td></tr>` : ''}
+          ${params.product ? `<tr><td style="padding:6px 0;font-size:13px;color:#8B6F4E;">Product interest</td><td style="padding:6px 0;font-size:14px;">${params.product}</td></tr>` : ''}
+          ${params.volume ? `<tr><td style="padding:6px 0;font-size:13px;color:#8B6F4E;">Volume</td><td style="padding:6px 0;font-size:14px;">${params.volume}</td></tr>` : ''}
+          ${params.message ? `<tr><td style="padding:6px 0;font-size:13px;color:#8B6F4E;vertical-align:top;">Message</td><td style="padding:6px 0;font-size:14px;line-height:1.6;">${params.message}</td></tr>` : ''}
+        </table>
+
+        <div style="margin-top:24px;padding:12px 16px;background:#f0fdf4;border-left:3px solid #2D5A3D;">
+          <a href="https://www.sixtyfivedegrees.com/admin" style="font-size:13px;color:#2D5A3D;text-decoration:none;font-weight:bold;">
+            → View in admin panel
+          </a>
+        </div>
+      </div>
+    </div>
+  `
+
+  await sendEmail({
+    to: [{ email: from, name: '65 Degrees Coffee' }],
+    subject: `New export enquiry from ${params.company} (${params.country})`,
+    htmlContent: html,
+  })
+}
