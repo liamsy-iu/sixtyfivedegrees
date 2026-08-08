@@ -182,6 +182,7 @@ export function JourneyTimeline() {
             </div>
           </div>
           <div className={styles.content}>
+            <span className={styles['big-num']} aria-hidden="true">{step.num}</span>
             <p className={styles.num}>{step.num}</p>
             <p className={styles.title}>{step.title}</p>
             <p className={styles.desc}>{step.desc}</p>
