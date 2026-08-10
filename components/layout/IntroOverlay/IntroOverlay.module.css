@@ -6,12 +6,13 @@
   align-items: center;
   justify-content: center;
   background: var(--color-roast);
-  opacity: 1;
-  transition: opacity 260ms var(--ease-out);
+  animation: overlay-sequence 620ms var(--ease-out) forwards;
 }
-.overlay.exiting {
-  opacity: 0;
-  pointer-events: none;
+
+@keyframes overlay-sequence {
+  0%   { opacity: 1; }
+  55%  { opacity: 1; }
+  100% { opacity: 0; pointer-events: none; }
 }
 
 .mark {
@@ -22,4 +23,8 @@
 
 @keyframes mark-in {
   to { opacity: 1; transform: scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay { display: none; }
 }

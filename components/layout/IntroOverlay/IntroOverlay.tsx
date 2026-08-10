@@ -1,40 +1,23 @@
-'use client'
-
-import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import styles from './IntroOverlay.module.css'
 
 /**
- * A brief, one-time brand moment shown on first arrival — sits on top of
- * the real page (which is already loading normally underneath), never
- * gates it. Capped at ~580ms total. Shown once per browser session
- * (sessionStorage, not on every client-side navigation — this component
- * only mounts once anyway, since it lives in the root layout, which
- * persists across route changes in the App Router). Skipped entirely
- * for reduced-motion users and on any load after the first in this tab.
+ * A brief, one-time brand moment on arrival. Deliberately NOT a client
+ * component — no useEffect, no state. It's plain server-rendered HTML
+ * with a pure-CSS animation, so it's part of the very first paint the
+ * browser produces, before any JS has downloaded or hydrated. That's
+ * the whole point: this is the one thing on the page that doesn't wait
+ * on JavaScript.
+ *
+ * It naturally only appears on a real page load (typing the URL,
+ * clicking a search result, a hard refresh) and not on in-app
+ * navigation between pages — Next.js's App Router keeps this layout
+ * mounted across client-side navigations, so this markup isn't
+ * re-inserted or re-animated when someone clicks around the site.
  */
 export function IntroOverlay() {
-  const [visible, setVisible] = useState(false)
-  const [exiting, setExiting] = useState(false)
-
-  useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    if (sessionStorage.getItem('introShown')) return
-    sessionStorage.setItem('introShown', '1')
-
-    setVisible(true)
-    const exitTimer = setTimeout(() => setExiting(true), 320)
-    const removeTimer = setTimeout(() => setVisible(false), 580)
-    return () => {
-      clearTimeout(exitTimer)
-      clearTimeout(removeTimer)
-    }
-  }, [])
-
-  if (!visible) return null
-
   return (
-    <div className={`${styles.overlay} ${exiting ? styles.exiting : ''}`} aria-hidden="true">
+    <div className={styles.overlay} aria-hidden="true">
       <Image
         src="/logo-white.png"
         alt=""
