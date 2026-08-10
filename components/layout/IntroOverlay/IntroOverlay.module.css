@@ -6,19 +6,19 @@
   align-items: center;
   justify-content: center;
   background: var(--color-roast);
-  animation: overlay-sequence 620ms var(--ease-out) forwards;
+  animation: overlay-sequence 1600ms var(--ease-out) forwards;
 }
 
 @keyframes overlay-sequence {
   0%   { opacity: 1; }
-  55%  { opacity: 1; }
+  78%  { opacity: 1; }
   100% { opacity: 0; pointer-events: none; }
 }
 
 .mark {
   opacity: 0;
   transform: scale(0.92);
-  animation: mark-in 280ms var(--ease-out) forwards;
+  animation: mark-in 500ms var(--ease-out) forwards;
 }
 
 @keyframes mark-in {
