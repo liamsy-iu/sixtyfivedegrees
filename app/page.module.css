@@ -122,6 +122,15 @@
 .product-origin { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.06em; color: rgba(255,255,255,0.35); }
 .product-footer { display: flex; align-items: center; justify-content: space-between; padding: var(--space-3) var(--space-5); border-top: 1px solid rgba(255,255,255,0.12); }
 .product-price { font-family: var(--font-mono); font-size: var(--text-sm); font-weight: var(--weight-medium); color: rgba(255,255,255,0.8); }
+
+.product-skeleton { display: flex; flex-direction: column; background: var(--color-parchment-2); overflow: hidden; }
+.skeleton-img { height: 280px; background: var(--color-parchment-3); animation: skeleton-pulse 1.6s ease-in-out infinite; }
+.skeleton-line { height: 14px; margin: var(--space-5) var(--space-5) 0; background: var(--color-parchment-3); border-radius: 2px; animation: skeleton-pulse 1.6s ease-in-out infinite; }
+.skeleton-line-short { width: 40%; height: 11px; margin-top: var(--space-3); margin-bottom: var(--space-4); }
+@keyframes skeleton-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-img, .skeleton-line { animation: none; opacity: 0.7; }
+}
 .product-btn { display: inline-flex; align-items: center; gap: var(--space-2); background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); color: #fff; font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; padding: 8px 14px; transition: background var(--dur-fast); white-space: nowrap; }
 .product-card:hover .product-btn { background: rgba(255,255,255,0.22); }
 

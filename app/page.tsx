@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Nav } from '@/components/layout/Nav/Nav'
@@ -51,18 +52,43 @@ async function getLowestRetailPrice(productId: string): Promise<number | null> {
   return data?.price ?? null
 }
 
+// Isolated behind its own Suspense boundary so the Supabase round-trip for
+// products/pricing never blocks the initial HTML response — everything
+// above and around this (nav, hero, intro overlay, why/journey sections)
+// streams to the browser immediately regardless of how long this takes.
+async function HomeProducts() {
+  const products = await getProducts()
+  const productsWithPrices = await Promise.all(
+    products.map(async (p) => ({ ...p, startingPrice: await getLowestRetailPrice(p.id) }))
+  )
+  return (
+    <ProductGridReveal className={styles['product-grid']}>
+      {productsWithPrices.map((product) => <ProductCard key={product.id} product={product} />)}
+    </ProductGridReveal>
+  )
+}
+
+function ProductGridSkeleton() {
+  return (
+    <div className={styles['product-grid']}>
+      {[0, 1, 2, 3].map((i) => (
+        <div key={i} className={styles['product-skeleton']}>
+          <div className={styles['skeleton-img']} />
+          <div className={styles['skeleton-line']} />
+          <div className={`${styles['skeleton-line']} ${styles['skeleton-line-short']}`} />
+        </div>
+      ))}
+    </div>
+  )
+}
+
 const TESTIMONIALS = [
   { quote: "The freshest coffee I've had in Nairobi. You can taste the difference.", name: "Sarah M.", location: "Westlands" },
   { quote: "Switched our café to the Classic grade. Our customers noticed immediately.", name: "James K.", location: "Karen" },
   { quote: "Fast delivery, great beans. Finally a roastery that picks up the phone.", name: "Amina H.", location: "Kilimani" },
 ]
 
-export default async function HomePage() {
-  const products = await getProducts()
-  const productsWithPrices = await Promise.all(
-    products.map(async (p) => ({ ...p, startingPrice: await getLowestRetailPrice(p.id) }))
-  )
-
+export default function HomePage() {
   return (
     <>
       <Nav />
@@ -140,9 +166,9 @@ export default async function HomePage() {
               <p className={styles['sec-eye']}>The beans · 250g to 1kg</p>
               <p className={styles['sec-title']}>Kenyan single origin</p>
             </div>
-            <ProductGridReveal className={styles['product-grid']}>
-              {productsWithPrices.map((product) => <ProductCard key={product.id} product={product} />)}
-            </ProductGridReveal>
+            <Suspense fallback={<ProductGridSkeleton />}>
+              <HomeProducts />
+            </Suspense>
             <div className={styles['all-link']}>
               <Link href="/shop" className={styles['btn-primary']}>View all products</Link>
             </div>
