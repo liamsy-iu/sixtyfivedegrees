@@ -1,0 +1,25 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-roast);
+  opacity: 1;
+  transition: opacity 260ms var(--ease-out);
+}
+.overlay.exiting {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.mark {
+  opacity: 0;
+  transform: scale(0.92);
+  animation: mark-in 280ms var(--ease-out) forwards;
+}
+
+@keyframes mark-in {
+  to { opacity: 1; transform: scale(1); }
+}

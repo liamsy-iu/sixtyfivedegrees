@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import { CartDrawer } from '@/components/shop/CartDrawer/CartDrawer'
+import { IntroOverlay } from '@/components/layout/IntroOverlay/IntroOverlay'
 import '../styles/globals.css'
 
 export const metadata: Metadata = {
@@ -54,6 +55,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         {children}
         <CartDrawer />
+        <IntroOverlay />
       </body>
     </html>
   )
