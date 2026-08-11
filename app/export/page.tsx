@@ -22,7 +22,7 @@ const GRADES = [
   { name: 'AA', screen: 'Screen 17–18', desc: 'The largest standard bean size. Not a cup-quality guarantee on its own — every lot is still cupped and scored regardless of size grade.' },
   { name: 'AB', screen: 'Screen 15–16', desc: 'A mix of two adjacent screen sizes, and the most widely planted grade in Kenya. Frequently outscores AA from the same lot in the cup.' },
   { name: 'PB', screen: 'Peaberry', desc: 'A single rounded bean formed when only one seed develops in the cherry, graded separately from the standard flat-bean sizes.' },
-  { name: 'Other grades', screen: 'C, TT, naturals, and more', desc: 'Screen size isn\u2019t what determines whether we\u2019ll offer a lot. Any grade that clears the SCA cupping threshold is fair game \u2014 AA and AB just happen to be common.' },
+  { name: 'Other grades', screen: 'C, TT, naturals, and more', desc: 'Screen size isn’t what determines whether we’ll offer a lot. Any grade that clears the SCA cupping threshold is fair game — AA and AB just happen to be common.' },
 ]
 
 export default function ExportPage() {

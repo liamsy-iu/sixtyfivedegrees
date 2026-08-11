@@ -7,13 +7,13 @@ const STEPS = [
   {
     num: '01',
     title: 'Send an enquiry',
-    desc: 'Tell us your volume, grade preference, and delivery schedule. We\u2019ll get back to you within 24 hours.',
+    desc: 'Tell us your volume, grade preference, and delivery schedule. We’ll get back to you within 24 hours.',
     icon: 'envelope',
   },
   {
     num: '02',
     title: 'Taste the beans',
-    desc: 'We\u2019ll send a sample kit before your first full order so you can taste both grades and pick the right fit for your menu.',
+    desc: 'We’ll send a sample kit before your first full order so you can taste both grades and pick the right fit for your menu.',
     icon: 'score',
   },
   {

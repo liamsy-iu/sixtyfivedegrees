@@ -38,7 +38,7 @@ export default function KiambuPage() {
             <p className={styles.eye}>Origin · Central Kenya</p>
             <h1 className={styles.title}>Kiambu</h1>
             <p className={styles.sub}>
-              We buy traceable, single origin, SCA-graded coffee from across Kenya \u2014
+              We buy traceable, single origin, SCA-graded coffee from across Kenya —
               wherever we find it. Right now, that includes the slopes of the Aberdare
               range in Kiambu County, thirty kilometres from our roastery. Here's what
               makes this particular origin exceptional.
@@ -144,8 +144,8 @@ export default function KiambuPage() {
               <p className={styles['connection-body']}>
                 At 65°C — the temperature at which milk reaches its natural sweetness — a
                 Kiambu-sourced espresso reveals a depth that cheaper beans simply don&apos;t have.
-                It&apos;s exactly the standard we look for in every region we buy from \u2014
-                traceable, single origin, SCA-graded \u2014 and Kiambu is where we&apos;re
+                It&apos;s exactly the standard we look for in every region we buy from —
+                traceable, single origin, SCA-graded — and Kiambu is where we&apos;re
                 currently finding it.
               </p>
             </div>
