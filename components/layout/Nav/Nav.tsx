@@ -21,7 +21,7 @@ export function Nav() {
 
         <ul className={styles.links}>
           <li><Link href="/shop" className={styles.link}>Shop</Link></li>
-          <li><Link href="/origins/kiambu" className={styles.link}>Origin</Link></li>
+          <li><Link href="/origins" className={styles.link}>Origin</Link></li>
           <li><Link href="/brew" className={styles.link}>Brew</Link></li>
           <li><Link href="/trade" className={styles.link}>Trade</Link></li>
           <li><Link href="/export" className={styles.link}>Export</Link></li>
@@ -42,7 +42,7 @@ export function Nav() {
       {menuOpen && (
         <div className={styles.mobile}>
           <Link href="/shop"            className={styles['mobile-link']} onClick={() => setMenuOpen(false)}>Shop</Link>
-          <Link href="/origins/kiambu" className={styles['mobile-link']} onClick={() => setMenuOpen(false)}>Origin</Link>
+          <Link href="/origins" className={styles['mobile-link']} onClick={() => setMenuOpen(false)}>Origin</Link>
           <Link href="/brew"            className={styles['mobile-link']} onClick={() => setMenuOpen(false)}>Brew</Link>
           <Link href="/trade"           className={styles['mobile-link']} onClick={() => setMenuOpen(false)}>Trade</Link>
           <Link href="/export"          className={styles['mobile-link']} onClick={() => setMenuOpen(false)}>Export</Link>

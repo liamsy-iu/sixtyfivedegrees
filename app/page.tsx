@@ -124,7 +124,7 @@ export default function HomePage() {
                     <text className={styles['atom-n']} x="52" y="70" textAnchor="middle">N1</text>
                     <text className={styles['atom-n']} x="78" y="16" textAnchor="middle">N3</text>
                     <text className={styles['atom-n']} x="172" y="14" textAnchor="middle">N9</text>
-                    <text className={styles['atom-n']} x="146" y="86" textAnchor="middle">N7</text>
+                    <text className={styles['atom-n']} x="150" y="101" textAnchor="middle">N7</text>
                     <text className={styles['atom-o']} x="38" y="18" textAnchor="middle">O</text>
                     <text className={styles['atom-o']} x="100" y="124" textAnchor="middle">O</text>
                     <text className={styles['atom-ch3']} x="34" y="98" textAnchor="middle">CH3</text>

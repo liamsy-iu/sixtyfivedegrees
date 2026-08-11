@@ -146,7 +146,9 @@ export default function KiambuPage() {
                 Kiambu-sourced espresso reveals a depth that cheaper beans simply don&apos;t have.
                 It&apos;s exactly the standard we look for in every region we buy from —
                 traceable, single origin, SCA-graded — and Kiambu is where we&apos;re
-                currently finding it.
+                currently finding it. See{' '}
+                <Link href="/origins" className={styles['inline-link']}>the other Central Kenya regions</Link>{' '}
+                we look to as well.
               </p>
             </div>
           </div>
