@@ -22,7 +22,7 @@ export default async function ShopPage() {
   const supabase = await createClient()
   const { data: products } = await supabase
     .from('products')
-    .select(`id, name, slug, grade, roast, description, tasting_notes, is_available,
+    .select(`id, name, slug, grade, roast, description, tasting_notes, origin_region, origin_process, is_available,
       retail_variants ( id, size_grams, grind, price, is_available )`)
     .order('grade', { ascending: false })
     .order('roast', { ascending: true })

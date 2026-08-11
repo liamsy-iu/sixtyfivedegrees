@@ -37,7 +37,7 @@ async function getProducts() {
   const supabase = await createClient()
   const { data } = await supabase
     .from('products')
-    .select('id, name, slug, grade, roast, description, tasting_notes, is_available')
+    .select('id, name, slug, grade, roast, description, tasting_notes, origin_region, origin_process, is_available')
     .order('grade', { ascending: false })
     .order('roast', { ascending: true })
   return data ?? []
@@ -269,7 +269,7 @@ function ProductCard({ product }: { product: any }) {
         </div>
         <h2 className={styles['product-name']}>{product.name}</h2>
         <p className={styles['product-notes']}>{notes.join(' · ')}</p>
-        <p className={styles['product-origin']}>Kiambu, Kenya · Washed</p>
+        <p className={styles['product-origin']}>{product.origin_region ?? 'Kenya'}{product.origin_process ? ` · ${product.origin_process}` : ''}</p>
       </div>
       <div className={styles['product-footer']}>
         <span className={styles['product-price']}>

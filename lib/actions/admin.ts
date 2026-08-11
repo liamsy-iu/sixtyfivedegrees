@@ -112,7 +112,7 @@ export async function getProducts() {
   const supabase = createServiceClient()
   const { data } = await supabase
     .from('products')
-    .select('id, name, slug, grade, roast, is_available')
+    .select('id, name, slug, grade, roast, origin_region, origin_process, is_available')
     .order('grade').order('roast')
   return data ?? []
 }
@@ -122,6 +122,15 @@ export async function toggleProductAvailability(productId: string, isAvailable: 
   const { error } = await supabase
     .from('products')
     .update({ is_available: isAvailable })
+    .eq('id', productId)
+  return { error: error?.message }
+}
+
+export async function updateProductOrigin(productId: string, originRegion: string, originProcess: string) {
+  const supabase = createServiceClient()
+  const { error } = await supabase
+    .from('products')
+    .update({ origin_region: originRegion, origin_process: originProcess })
     .eq('id', productId)
   return { error: error?.message }
 }

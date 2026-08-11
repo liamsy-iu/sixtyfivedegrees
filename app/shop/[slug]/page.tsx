@@ -54,7 +54,7 @@ export default async function ProductPage({ params }: Props) {
   const { data: product } = await supabase
     .from('products')
     .select(`
-      id, name, slug, grade, roast, description, tasting_notes, is_available,
+      id, name, slug, grade, roast, description, tasting_notes, origin_region, origin_process, is_available,
       retail_variants ( id, size_grams, grind, price, is_available )
     `)
     .eq('slug', slug)

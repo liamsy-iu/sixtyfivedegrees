@@ -14,6 +14,7 @@ interface Variant { id: string; size_grams: number; grind: string; price: number
 interface Product {
   id: string; name: string; slug: string; grade: string; roast: string
   description: string; tasting_notes: string[]; is_available: boolean; retail_variants: Variant[]
+  origin_region?: string | null; origin_process?: string | null
 }
 
 const SIZES  = [250, 500, 1000]
@@ -97,7 +98,7 @@ export function ProductDetailClient({ product }: { product: Product }) {
               <p className={styles['hero-meta']}>{isPremium ? 'Premium' : 'Classic'} · {roastLabel}</p>
               <h1 className={styles['hero-title']}>{product.name}</h1>
               <p className={styles['hero-notes']}>{notes.join(' · ')}</p>
-              <p className={styles['hero-origin']}>Kiambu, Kenya · Washed · 100% Arabica</p>
+              <p className={styles['hero-origin']}>{product.origin_region ?? 'Kenya'}{product.origin_process ? ` · ${product.origin_process}` : ''} · 100% Arabica</p>
             </div>
           </div>
         </div>

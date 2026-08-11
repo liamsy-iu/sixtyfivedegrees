@@ -12,6 +12,7 @@ interface Variant { id: string; size_grams: number; grind: string; price: number
 interface Product {
   id: string; name: string; slug: string; grade: string; roast: string
   description: string; tasting_notes: string[]; is_available: boolean; retail_variants: Variant[]
+  origin_region?: string | null; origin_process?: string | null
 }
 
 function getLowestPrice(variants: Variant[]): number | null {
@@ -117,7 +118,7 @@ function ProductCard({ product: p }: { product: Product }) {
         </div>
         <h2 className={styles['card-name']}>{p.name}</h2>
         <p className={styles['card-notes']}>{notes.join(' · ')}</p>
-        <p className={styles['card-origin']}>Kiambu, Kenya · Washed</p>
+        <p className={styles['card-origin']}>{p.origin_region ?? 'Kenya'}{p.origin_process ? ` · ${p.origin_process}` : ''}</p>
       </div>
       <div className={styles['card-footer']}>
         <span className={styles['card-price']}>

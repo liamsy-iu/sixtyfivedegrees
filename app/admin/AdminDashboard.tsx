@@ -3,7 +3,7 @@
 import useSWR from 'swr'
 import { useState, useTransition } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { logoutAction, updateOrderStatus, updateEnquiryStatus, toggleProductAvailability } from '@/lib/actions/admin'
+import { logoutAction, updateOrderStatus, updateEnquiryStatus, toggleProductAvailability, updateProductOrigin } from '@/lib/actions/admin'
 import { updateSubscriptionStatus } from '@/lib/actions/subscriptions'
 import { formatKES, formatSize } from '@/lib/utils/pricing'
 import { ChevronDown, ChevronUp, LogOut, Package, MessageSquare, RefreshCw, Repeat, Coffee, Loader2 } from 'lucide-react'
@@ -391,6 +391,10 @@ function EnquiryCard({ enquiry, onUpdate }: { enquiry: any; onUpdate: () => void
 function ProductRow({ product, onUpdate }: { product: any; onUpdate: () => void }) {
   const [loading, setLoading] = useState(false)
   const [available, setAvailable] = useState(product.is_available)
+  const [region, setRegion] = useState(product.origin_region ?? '')
+  const [originProcess, setOriginProcess] = useState(product.origin_process ?? '')
+  const [savingOrigin, setSavingOrigin] = useState(false)
+  const [saved, setSaved] = useState(false)
 
   async function handleToggle() {
     setLoading(true)
@@ -399,6 +403,17 @@ function ProductRow({ product, onUpdate }: { product: any; onUpdate: () => void 
     setLoading(false)
     onUpdate()
   }
+
+  async function handleSaveOrigin() {
+    setSavingOrigin(true)
+    await updateProductOrigin(product.id, region, originProcess)
+    setSavingOrigin(false)
+    setSaved(true)
+    setTimeout(() => setSaved(false), 2000)
+    onUpdate()
+  }
+
+  const originChanged = region !== (product.origin_region ?? '') || originProcess !== (product.origin_process ?? '')
 
   return (
     <div className={styles.card}>
@@ -421,6 +436,36 @@ function ProductRow({ product, onUpdate }: { product: any; onUpdate: () => void 
           >
             {loading ? '…' : available ? 'Mark out of stock' : 'Mark available'}
           </button>
+        </div>
+      </div>
+      <div className={styles['card-body']}>
+        <div className={styles.section}>
+          <p className={styles['section-label']}>Current origin — updates everywhere this product is shown on the site</p>
+          <div style={{ display: 'flex', gap: 8, marginTop: 6, flexWrap: 'wrap', alignItems: 'center' }}>
+            <input
+              value={region}
+              onChange={e => setRegion(e.target.value)}
+              placeholder="Region, e.g. Kiambu, Kenya"
+              style={{ padding: '6px 10px', border: '1px solid #e5e0d5', borderRadius: 4, fontSize: 13, flex: '1 1 180px' }}
+            />
+            <input
+              value={originProcess}
+              onChange={e => setOriginProcess(e.target.value)}
+              placeholder="Process, e.g. Washed"
+              style={{ padding: '6px 10px', border: '1px solid #e5e0d5', borderRadius: 4, fontSize: 13, flex: '1 1 140px' }}
+            />
+            <button
+              onClick={handleSaveOrigin}
+              disabled={savingOrigin || !originChanged}
+              style={{
+                padding: '6px 14px', borderRadius: 4, fontSize: 13, cursor: originChanged ? 'pointer' : 'default',
+                background: originChanged ? '#1A1410' : '#f0ede4', color: originChanged ? '#fff' : '#999',
+                border: '1px solid transparent',
+              }}
+            >
+              {savingOrigin ? 'Saving…' : saved ? 'Saved ✓' : 'Save'}
+            </button>
+          </div>
         </div>
       </div>
     </div>
