@@ -28,9 +28,12 @@
   max-width: 300px;
   height: auto;
   overflow: visible;
-  animation: molecule-glow 3.5s ease-in-out 2200ms infinite;
+  animation: molecule-glow 2.8s cubic-bezier(0.45, 0, 0.55, 1) 2200ms infinite;
 }
-.molecule-lines { color: var(--color-crema-light); }
+.molecule-lines {
+  color: var(--color-crema-light);
+  animation: molecule-line-surge 2.8s cubic-bezier(0.45, 0, 0.55, 1) 2200ms infinite;
+}
 .molecule-lines > * {
   animation: draw-bond 650ms var(--ease-out) forwards;
 }
@@ -69,13 +72,29 @@
 
 @keyframes draw-bond { to { stroke-dashoffset: 0; } }
 @keyframes fade-label { to { opacity: 1; } }
+
 @keyframes molecule-glow {
-  0%, 100% { filter: drop-shadow(0 0 0px rgba(200, 146, 42, 0)); }
-  50%      { filter: drop-shadow(0 0 10px rgba(200, 146, 42, 0.55)); }
+  0%, 100% {
+    filter:
+      drop-shadow(0 0 2px rgba(200, 146, 42, 0.35))
+      drop-shadow(0 0 6px rgba(200, 146, 42, 0.22));
+  }
+  50% {
+    filter:
+      drop-shadow(0 0 3px rgba(255, 224, 150, 0.95))
+      drop-shadow(0 0 14px rgba(200, 146, 42, 0.75))
+      drop-shadow(0 0 30px rgba(200, 146, 42, 0.4));
+  }
+}
+
+@keyframes molecule-line-surge {
+  0%, 100% { color: var(--color-crema-light); }
+  50%      { color: #FFF3D6; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .molecule-svg { animation: none; }
+  .molecule-lines { animation: none; }
   .molecule-lines > * { animation: none; stroke-dashoffset: 0; }
   .molecule-text text { animation: none; opacity: 1; }
 }

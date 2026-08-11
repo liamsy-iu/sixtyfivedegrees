@@ -111,7 +111,7 @@ export default function HomePage() {
                     <polygon points="70,75 70,40 100,25 130,40 130,75 100,90" strokeDasharray={204.16} strokeDashoffset={204.16} />
                     <polygon points="130,40 160,32 178,57 160,82 130,75" strokeDasharray={158.47} strokeDashoffset={158.47} />
                     <line x1="127" y1="42" x2="127" y2="73" strokeDasharray={31} strokeDashoffset={31} />
-                    <line x1="163" y1="36" x2="174" y2="55" strokeDasharray={21.95} strokeDashoffset={21.95} />
+                    <line x1="159.8" y1="37.7" x2="172.5" y2="55.4" strokeDasharray={21.81} strokeDashoffset={21.81} />
                     <line x1="68" y1="38" x2="46" y2="23" strokeDasharray={26.63} strokeDashoffset={26.63} />
                     <line x1="73" y1="42" x2="51" y2="27" strokeDasharray={26.63} strokeDashoffset={26.63} />
                     <line x1="98" y1="92" x2="98" y2="113" strokeDasharray={21} strokeDashoffset={21} />
