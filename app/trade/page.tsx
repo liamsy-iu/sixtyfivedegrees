@@ -1,6 +1,7 @@
 import { Nav } from '@/components/layout/Nav/Nav'
 import { Footer } from '@/components/layout/Footer/Footer'
 import { TradeEnquiryForm } from './TradeEnquiryForm'
+import { TradeProcess } from './TradeProcess'
 import type { Metadata } from 'next'
 import styles from './page.module.css'
 
@@ -28,28 +29,36 @@ export default function TradePage() {
           <div className={styles.deco}>65°</div>
         </section>
 
+        {/* At a glance */}
+        <section className={styles.glance}>
+          <div className={styles.container}>
+            <div className={styles['glance-grid']}>
+              <div className={styles.stat}>
+                <p className={styles['stat-value']}>5kg</p>
+                <p className={styles['stat-label']}>Minimum order</p>
+              </div>
+              <div className={styles.stat}>
+                <p className={styles['stat-value']}>24 hrs</p>
+                <p className={styles['stat-label']}>Enquiry response time</p>
+              </div>
+              <div className={styles.stat}>
+                <p className={styles['stat-value']}>2</p>
+                <p className={styles['stat-label']}>Grades available</p>
+              </div>
+              <div className={styles.stat}>
+                <p className={styles['stat-value']}>Free</p>
+                <p className={styles['stat-label']}>Delivery in Nairobi</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* How it works */}
         <section className={styles.how}>
           <div className={styles.container}>
             <p className={styles['sec-eye']}>How it works</p>
             <h2 className={styles['sec-title']}>Simple supply chain</h2>
-            <div className={styles.steps}>
-              <div className={styles.step}>
-                <span className={styles['step-num']}>01</span>
-                <h3 className={styles['step-title']}>Send an enquiry</h3>
-                <p className={styles['step-desc']}>Tell us your volume, grade preference, and delivery schedule. We'll get back to you within 24 hours.</p>
-              </div>
-              <div className={styles.step}>
-                <span className={styles['step-num']}>02</span>
-                <h3 className={styles['step-title']}>Taste the beans</h3>
-                <p className={styles['step-desc']}>We'll send a sample kit before your first full order so you can taste both grades and pick the right fit for your menu.</p>
-              </div>
-              <div className={styles.step}>
-                <span className={styles['step-num']}>03</span>
-                <h3 className={styles['step-title']}>Regular supply</h3>
-                <p className={styles['step-desc']}>Order as needed. Pay via M-Pesa or bank transfer. Free delivery in Nairobi. Worldwide shipping on request.</p>
-              </div>
-            </div>
+            <TradeProcess />
           </div>
         </section>
 
@@ -61,6 +70,10 @@ export default function TradePage() {
             <p className={styles['pricing-note']}>Minimum order 5kg. All prices per kilogram of roasted coffee.</p>
             <div className={styles['pricing-grid']}>
               <div className={styles['pricing-card']}>
+                <svg viewBox="0 0 40 40" className={styles['grade-icon']} fill="none" stroke="currentColor" strokeWidth="1.6">
+                  <ellipse cx="20" cy="20" rx="9" ry="13" />
+                  <path d="M20 8 C15 13 15 27 20 32" />
+                </svg>
                 <p className={styles['pricing-grade']}>Classic grade</p>
                 <p className={styles['pricing-desc']}>Excellent everyday drinking coffee. Perfect for house blends and filter programmes.</p>
                 <div className={styles.tiers}>
@@ -70,6 +83,10 @@ export default function TradePage() {
                 </div>
               </div>
               <div className={styles['pricing-card']}>
+                <svg viewBox="0 0 40 40" className={styles['grade-icon']} fill="none" stroke="currentColor" strokeWidth="1.6">
+                  <ellipse cx="20" cy="20" rx="9" ry="13" />
+                  <path d="M20 8 C15 13 15 27 20 32" />
+                </svg>
                 <p className={styles['pricing-grade']}>Premium grade</p>
                 <p className={styles['pricing-desc']}>Top-grade Kenyan beans. Complex, vibrant, and exceptional as single origin on your espresso bar.</p>
                 <div className={styles.tiers}>
