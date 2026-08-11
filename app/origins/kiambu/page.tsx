@@ -5,8 +5,8 @@ import type { Metadata } from 'next'
 import styles from './page.module.css'
 
 export const metadata: Metadata = {
-  title: 'Kiambu County Coffee — Origin of Our Kenyan Single Origin Arabica',
-  description: 'Kiambu County produces some of Kenya\'s finest arabica. 1,700m altitude, red volcanic soil. The origin behind 65 Degrees Classic and Premium roasts.',
+  title: 'Kiambu County Coffee — A 65 Degrees Sourcing Origin in Kenya',
+  description: 'Kiambu County produces some of Kenya\'s finest arabica — 1,700m altitude, red volcanic soil, SCA-graded. One of the origins behind 65 Degrees single origin roasts.',
   alternates: { canonical: 'https://www.sixtyfivedegrees.com/origins/kiambu' },
 }
 
@@ -38,8 +38,10 @@ export default function KiambuPage() {
             <p className={styles.eye}>Origin · Central Kenya</p>
             <h1 className={styles.title}>Kiambu</h1>
             <p className={styles.sub}>
-              Thirty kilometres from our roastery in Nairobi, the slopes of the Aberdare range
-              produce some of Kenya's finest coffee. This is where our beans come from.
+              We buy traceable, single origin, SCA-graded coffee from across Kenya \u2014
+              wherever we find it. Right now, that includes the slopes of the Aberdare
+              range in Kiambu County, thirty kilometres from our roastery. Here's what
+              makes this particular origin exceptional.
             </p>
           </div>
           <div className={styles['hero-deco']} aria-hidden="true">1,700m</div>
@@ -90,7 +92,7 @@ export default function KiambuPage() {
                   <p className={styles['aside-title']}>30km from cup to roastery</p>
                   <p className={styles['aside-desc']}>
                     Kiambu is one of the closest major coffee-growing regions to Nairobi. 
-                    Our green beans travel less than an hour from county to roastery —
+                    Beans from this region travel less than an hour from county to roastery —
                     shorter than most coffee travels in a single city.
                   </p>
                 </div>
@@ -142,7 +144,9 @@ export default function KiambuPage() {
               <p className={styles['connection-body']}>
                 At 65°C — the temperature at which milk reaches its natural sweetness — a
                 Kiambu-sourced espresso reveals a depth that cheaper beans simply don&apos;t have.
-                That&apos;s why we source exclusively from this region.
+                It&apos;s exactly the standard we look for in every region we buy from \u2014
+                traceable, single origin, SCA-graded \u2014 and Kiambu is where we&apos;re
+                currently finding it.
               </p>
             </div>
           </div>

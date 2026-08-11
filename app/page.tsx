@@ -209,10 +209,23 @@ export default function HomePage() {
                 <h2 className={styles['trade-title']}>Supply your café with Kenyan specialty</h2>
                 <p className={styles['trade-sub']}>Wholesale from 5kg. Consistent quality, reliable delivery, direct pricing.</p>
                 <Link href="/trade" className={styles['btn-primary']}>View trade pricing</Link>
+                <p className={styles['trade-export-note']}>
+                  Buying green coffee internationally instead? <Link href="/export" className={styles['export-link']}>See our export program →</Link>
+                </p>
               </div>
               <div className={styles['trade-tiers']}>
-                <div className={styles['tier-card']}><p className={styles['tier-grade']}>Classic grade</p><div className={styles['tier-row']}><span>5 – 30 kg</span><span>KES 1,500/kg</span></div><div className={styles['tier-row']}><span>31 – 100 kg</span><span>KES 1,400/kg</span></div><div className={styles['tier-row']}><span>100 kg+</span><span className={styles['tier-custom']}>Custom</span></div></div>
-                <div className={styles['tier-card']}><p className={styles['tier-grade']}>Premium grade</p><div className={styles['tier-row']}><span>5 – 30 kg</span><span>KES 2,000/kg</span></div><div className={styles['tier-row']}><span>31 – 100 kg</span><span>KES 1,900/kg</span></div><div className={styles['tier-row']}><span>100 kg+</span><span className={styles['tier-custom']}>Custom</span></div></div>
+                <div className={styles['tier-card']}>
+                  <svg viewBox="0 0 40 40" className={styles['tier-icon']} fill="none" stroke="currentColor" strokeWidth="1.6">
+                    <ellipse cx="20" cy="20" rx="9" ry="13" />
+                    <path d="M20 8 C15 13 15 27 20 32" />
+                  </svg>
+                  <p className={styles['tier-grade']}>Classic grade</p><div className={styles['tier-row']}><span>5 – 30 kg</span><span>KES 1,500/kg</span></div><div className={styles['tier-row']}><span>31 – 100 kg</span><span>KES 1,400/kg</span></div><div className={styles['tier-row']}><span>100 kg+</span><span className={styles['tier-custom']}>Custom</span></div></div>
+                <div className={styles['tier-card']}>
+                  <svg viewBox="0 0 40 40" className={styles['tier-icon']} fill="none" stroke="currentColor" strokeWidth="1.6">
+                    <ellipse cx="20" cy="20" rx="9" ry="13" />
+                    <path d="M20 8 C15 13 15 27 20 32" />
+                  </svg>
+                  <p className={styles['tier-grade']}>Premium grade</p><div className={styles['tier-row']}><span>5 – 30 kg</span><span>KES 2,000/kg</span></div><div className={styles['tier-row']}><span>31 – 100 kg</span><span>KES 1,900/kg</span></div><div className={styles['tier-row']}><span>100 kg+</span><span className={styles['tier-custom']}>Custom</span></div></div>
               </div>
             </div>
           </div>
