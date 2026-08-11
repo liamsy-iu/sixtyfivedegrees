@@ -40,7 +40,7 @@ export function ShopClient({ products }: { products: Product[] }) {
     <div className={styles.page}>
       <div className={styles.header}>
         <div className={styles.container}>
-          <p className={styles.eye}>Single origin · Kiambu, Kenya</p>
+          <p className={styles.eye}>Single origin · Kenya</p>
           <h1 className={styles.title}>The beans</h1>
         </div>
       </div>

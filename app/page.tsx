@@ -14,7 +14,7 @@ import styles from './page.module.css'
 
 export const metadata: Metadata = {
   title: '65 Degrees Coffee Roastery — Specialty Coffee Nairobi, Kenya',
-  description: 'Buy fresh roasted single origin Kenyan coffee online. Classic and Premium arabica from Kiambu County. Whole bean or ground. Free delivery across Nairobi above KES 3,000. Wholesale from 5kg for cafés.',
+  description: 'Buy fresh roasted single origin Kenyan coffee online. Traceable, SCA-graded arabica sourced across Kenya. Whole bean or ground. Free delivery across Nairobi above KES 3,000. Wholesale from 5kg for cafés.',
   alternates: { canonical: 'https://www.sixtyfivedegrees.com' },
   openGraph: {
     title: '65 Degrees Coffee Roastery — Specialty Coffee Nairobi, Kenya',
@@ -143,7 +143,7 @@ export default function HomePage() {
           <div className={styles.container}>
             <p className={styles['why-eye']}>Why 65 Degrees</p>
             <div className={styles['why-grid']}>
-              <div className={styles['why-item']}><span className={styles['why-num']}>01</span><h3 className={styles['why-title']}>Single origin Kenya</h3><p className={styles['why-desc']}>Sourced from Kiambu County — one of Kenya's finest growing regions, 30 minutes from our roastery.</p></div>
+              <div className={styles['why-item']}><span className={styles['why-num']}>01</span><h3 className={styles['why-title']}>Single origin Kenya</h3><p className={styles['why-desc']}>Sourced from across Kenya's finest growing regions — every lot traceable, single origin, and SCA-graded before it reaches our roastery.</p></div>
               <div className={styles['why-item']}><span className={styles['why-num']}>02</span><h3 className={styles['why-title']}>Roasted in Nairobi</h3><p className={styles['why-desc']}>Small batch roasting. Your coffee ships within days of roasting, not weeks or months.</p></div>
               <div className={styles['why-item']}><span className={styles['why-num']}>03</span><h3 className={styles['why-title']}>To your door</h3><p className={styles['why-desc']}>Free delivery across Nairobi on orders above KES 3,000. Same day available in most areas.</p></div>
             </div>

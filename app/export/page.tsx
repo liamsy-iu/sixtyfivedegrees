@@ -7,7 +7,7 @@ import styles from './page.module.css'
 
 export const metadata: Metadata = {
   title: 'Green Coffee Export — Kenyan Specialty Coffee, SCA Graded',
-  description: 'Kenyan green coffee for international roasters, graded and cupped to SCA standards from mill to shipment. AA, AB, and PB available. Request samples.',
+  description: 'Traceable Kenyan green coffee for international roasters, sourced across Kenya and SCA-graded and cupped from mill to shipment. Request samples.',
   alternates: { canonical: 'https://www.sixtyfivedegrees.com/export' },
 }
 
@@ -22,6 +22,7 @@ const GRADES = [
   { name: 'AA', screen: 'Screen 17–18', desc: 'The largest standard bean size. Not a cup-quality guarantee on its own — every lot is still cupped and scored regardless of size grade.' },
   { name: 'AB', screen: 'Screen 15–16', desc: 'A mix of two adjacent screen sizes, and the most widely planted grade in Kenya. Frequently outscores AA from the same lot in the cup.' },
   { name: 'PB', screen: 'Peaberry', desc: 'A single rounded bean formed when only one seed develops in the cherry, graded separately from the standard flat-bean sizes.' },
+  { name: 'Other grades', screen: 'C, TT, naturals, and more', desc: 'Screen size isn\u2019t what determines whether we\u2019ll offer a lot. Any grade that clears the SCA cupping threshold is fair game \u2014 AA and AB just happen to be common.' },
 ]
 
 export default function ExportPage() {
@@ -35,7 +36,7 @@ export default function ExportPage() {
             <p className={styles.eye}>For roasters &amp; importers</p>
             <h1 className={styles.title}>Green coffee,<br /><em>graded to standard.</em></h1>
             <p className={styles.sub}>
-              We work directly with coffee farmers in Kiambu County, and we're opening that
+              We work directly with coffee farmers across Kenya, and we're opening that
               sourcing to international buyers for the first time. Every lot is milled, graded,
               and cupped against SCA green coffee standards before it's offered for export —
               nothing shipped that hasn't been verified first.
@@ -71,8 +72,8 @@ export default function ExportPage() {
         {/* Grades */}
         <section className={styles.grades}>
           <div className={styles.container}>
-            <p className={styles['sec-eye']}>What's available</p>
-            <h2 className={styles['sec-title']}>Grades we offer</h2>
+            <p className={styles['sec-eye']}>Grade isn't the gate, the cup score is</p>
+            <h2 className={styles['sec-title']}>What we're currently offering</h2>
             <div className={styles['grades-grid']}>
               {GRADES.map((g) => (
                 <div key={g.name} className={styles['grade-card']}>

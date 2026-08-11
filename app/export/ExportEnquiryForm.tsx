@@ -74,13 +74,13 @@ export function ExportEnquiryForm() {
           <input className={styles.input} type="tel" value={form.phone} onChange={e => update('phone', e.target.value)} placeholder="Include country code" />
         </div>
         <div className={styles.field}>
-          <label className={styles.label}>Grade interested in</label>
+          <label className={styles.label}>Grade preference</label>
           <select className={styles.input} value={form.product} onChange={e => update('product', e.target.value)}>
             <option value="">Select grade</option>
             <option value="AA">AA</option>
             <option value="AB">AB</option>
             <option value="PB">PB (Peaberry)</option>
-            <option value="Not sure">Not sure — send samples</option>
+            <option value="Other/any grade — SCA 80+">Other / no preference — just SCA 80+</option>
           </select>
         </div>
       </div>
