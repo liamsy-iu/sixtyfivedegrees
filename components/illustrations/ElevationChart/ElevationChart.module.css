@@ -1,4 +1,4 @@
-.chart { width: 100%; max-width: 380px; height: auto; overflow: visible; }
+.chart { width: 100%; max-width: 380px; height: auto; overflow: visible; display: block; }
 .axis { stroke: rgba(245, 240, 232, 0.35); stroke-width: 1; }
 .tick { stroke: rgba(245, 240, 232, 0.3); stroke-width: 1; }
 .tick-label { font-family: var(--font-mono); font-size: 9px; fill: rgba(245, 240, 232, 0.45); }

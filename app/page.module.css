@@ -28,6 +28,7 @@
   max-width: 300px;
   height: auto;
   overflow: visible;
+  display: block;
   animation: molecule-glow 2.8s cubic-bezier(0.45, 0, 0.55, 1) 2200ms infinite;
 }
 .molecule-lines {

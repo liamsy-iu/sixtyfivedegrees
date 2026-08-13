@@ -1,4 +1,4 @@
-.map { width: 100%; height: auto; overflow: visible; }
+.map { width: 100%; height: auto; overflow: visible; display: block; }
 .outline { fill: none; stroke: rgba(245, 240, 232, 0.35); stroke-width: 1; }
 .county { fill: rgba(200, 146, 42, 0.18); stroke: rgba(200, 146, 42, 0.4); stroke-width: 0.75; }
 .active { fill: var(--color-crema); stroke: var(--color-crema-light); stroke-width: 1; }

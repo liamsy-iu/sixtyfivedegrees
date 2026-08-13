@@ -41,7 +41,7 @@ export default function AboutPage() {
                   is what we apply to everything we do.
                 </p>
 
-                <h2 className={styles['content-title']} style={{ marginTop: 'var(--space-8)' }}>The beans</h2>
+                <h2 className={styles['content-title']} style={{ marginTop: 'var(--space-8)' }}>The coffee</h2>
                 <p className={styles.para}>
                   We buy traceable, single origin, SCA-graded coffee from farmers across Kenya —
                   wherever we find it that clears that bar. Right now, that's Kiambu County; we're
