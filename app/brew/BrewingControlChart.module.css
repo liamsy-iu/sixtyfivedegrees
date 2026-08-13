@@ -1,0 +1,8 @@
+.chart { width: 100%; max-width: 480px; height: auto; overflow: visible; }
+.axis { stroke: rgba(245, 240, 232, 0.4); stroke-width: 1; }
+.tick { stroke: rgba(245, 240, 232, 0.3); stroke-width: 1; }
+.tick-label { font-family: var(--font-mono); font-size: 8px; fill: rgba(245, 240, 232, 0.45); }
+.axis-title { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.06em; text-transform: uppercase; fill: rgba(245, 240, 232, 0.55); }
+.zone { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.08em; fill: rgba(245, 240, 232, 0.4); }
+.ideal { fill: var(--color-crema-dim); stroke: var(--color-crema); stroke-width: 1.2; }
+.ideal-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; fill: var(--color-crema); font-weight: 600; }

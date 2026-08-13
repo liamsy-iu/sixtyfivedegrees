@@ -1,5 +1,7 @@
 import { Nav } from '@/components/layout/Nav/Nav'
 import { Footer } from '@/components/layout/Footer/Footer'
+import { BrewMethodIcon } from './BrewMethodIcon'
+import { BrewingControlChart } from './BrewingControlChart'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import styles from './page.module.css'
@@ -166,6 +168,16 @@ export default function BrewPage() {
                 <span className={styles['sca-label']}>Optimal milk temperature for espresso drinks</span>
               </div>
             </div>
+            <div className={styles['chart-block']}>
+              <p className={styles['chart-intro']}>
+                Those numbers plot onto the SCA&apos;s Coffee Brewing Control Chart — the
+                reference every filter-coffee recipe on this page is built around. Extraction
+                too low and it tastes sour and thin; too high and it turns bitter. Strength is
+                a separate axis entirely — how concentrated the brew is, independent of how
+                much was actually pulled from the grounds.
+              </p>
+              <BrewingControlChart />
+            </div>
           </div>
         </section>
 
@@ -175,6 +187,7 @@ export default function BrewPage() {
             <div className={styles['method-links']}>
               {METHODS.map(m => (
                 <a key={m.id} href={`#${m.id}`} className={styles['method-link']}>
+                  <BrewMethodIcon id={m.id} className={styles['nav-icon']} />
                   {m.name}
                 </a>
               ))}
@@ -189,6 +202,7 @@ export default function BrewPage() {
               <section key={method.id} id={method.id} className={styles.method}>
                 <div className={styles['method-header']}>
                   <div className={styles['method-title-row']}>
+                    <BrewMethodIcon id={method.id} className={styles['method-icon']} />
                     <span className={styles['method-num']}>0{i + 1}</span>
                     <h2 className={styles['method-name']}>{method.name}</h2>
                     {method.sca && (
