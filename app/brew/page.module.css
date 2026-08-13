@@ -24,6 +24,10 @@
 .chart-block { padding-top: var(--space-8); border-top: 1px solid rgba(245,240,232,0.08); margin-top: var(--space-2); display: grid; grid-template-columns: 1fr 480px; gap: var(--space-10); align-items: center; }
 .chart-intro { font-size: var(--text-sm); color: rgba(245,240,232,0.6); line-height: 1.75; }
 
+.grind-section { padding: var(--space-12) 0; border-bottom: 1px solid var(--color-parchment-3); text-align: center; }
+.grind-eye { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--color-crema); margin-bottom: var(--space-2); }
+.grind-title { font-family: var(--font-serif); font-size: var(--text-2xl); font-weight: var(--weight-medium); color: var(--color-roast); letter-spacing: -0.02em; }
+
 .method-links { display: flex; gap: var(--space-6); overflow-x: auto; scrollbar-width: none; }
 .method-links::-webkit-scrollbar { display: none; }
 .method-link { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-bark); text-decoration: none; white-space: nowrap; transition: color var(--dur-fast); padding: var(--space-1) 0; display: flex; align-items: center; gap: 6px; }

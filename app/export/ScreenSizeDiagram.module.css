@@ -1,0 +1,5 @@
+.diagram { width: 100%; max-width: 400px; height: auto; overflow: visible; margin: 0 auto; display: block; }
+.circle { fill: none; stroke: var(--color-roast); stroke-width: 1.6; }
+.crease { stroke: var(--color-roast); stroke-width: 1.2; }
+.label { font-family: var(--font-serif); font-size: 15px; fill: var(--color-roast); }
+.sub { font-family: var(--font-mono); font-size: 8.5px; fill: var(--color-bark); }

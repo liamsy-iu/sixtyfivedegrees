@@ -2,6 +2,7 @@ import { Nav } from '@/components/layout/Nav/Nav'
 import { Footer } from '@/components/layout/Footer/Footer'
 import { ExportProcess } from './ExportProcess'
 import { ExportEnquiryForm } from './ExportEnquiryForm'
+import { ScreenSizeDiagram } from './ScreenSizeDiagram'
 import type { Metadata } from 'next'
 import styles from './page.module.css'
 
@@ -74,6 +75,7 @@ export default function ExportPage() {
           <div className={styles.container}>
             <p className={styles['sec-eye']}>Grade isn't the gate, the cup score is</p>
             <h2 className={styles['sec-title']}>What we're currently offering</h2>
+            <ScreenSizeDiagram />
             <div className={styles['grades-grid']}>
               {GRADES.map((g) => (
                 <div key={g.name} className={styles['grade-card']}>

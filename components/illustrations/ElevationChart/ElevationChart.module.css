@@ -1,0 +1,9 @@
+.chart { width: 100%; max-width: 380px; height: auto; overflow: visible; }
+.axis { stroke: rgba(245, 240, 232, 0.35); stroke-width: 1; }
+.tick { stroke: rgba(245, 240, 232, 0.3); stroke-width: 1; }
+.tick-label { font-family: var(--font-mono); font-size: 9px; fill: rgba(245, 240, 232, 0.45); }
+.bar { fill: rgba(200, 146, 42, 0.5); }
+.bar-active { fill: var(--color-crema); }
+.bar-dim { fill: rgba(245, 240, 232, 0.15); }
+.name { font-family: var(--font-mono); font-size: 9px; fill: rgba(245, 240, 232, 0.55); }
+.name-active { font-family: var(--font-mono); font-size: 9px; font-weight: 600; fill: var(--color-crema-light); }

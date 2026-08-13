@@ -1,0 +1,11 @@
+.scale { display: flex; gap: var(--space-8); justify-content: center; flex-wrap: wrap; padding: var(--space-10) 0; }
+.level { display: flex; flex-direction: column; align-items: center; text-align: center; }
+.swatch { width: 64px; height: 64px; }
+.swatchBg { fill: var(--color-parchment); stroke: var(--color-parchment-3); }
+.dot { fill: var(--color-roast); }
+.name { font-family: var(--font-serif); font-size: var(--text-md); color: var(--color-roast); margin-top: var(--space-3); margin-bottom: 2px; }
+.methods { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.04em; color: var(--color-bark); max-width: 120px; }
+
+@media (max-width: 480px) {
+  .scale { gap: var(--space-5); }
+}

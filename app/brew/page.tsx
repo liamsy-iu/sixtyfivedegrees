@@ -2,6 +2,7 @@ import { Nav } from '@/components/layout/Nav/Nav'
 import { Footer } from '@/components/layout/Footer/Footer'
 import { BrewMethodIcon } from './BrewMethodIcon'
 import { BrewingControlChart } from './BrewingControlChart'
+import { GrindScale } from './GrindScale'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import styles from './page.module.css'
@@ -194,6 +195,15 @@ export default function BrewPage() {
             </div>
           </div>
         </div>
+
+        {/* Grind guide */}
+        <section className={styles['grind-section']}>
+          <div className={styles.container}>
+            <p className={styles['grind-eye']}>At a glance</p>
+            <h2 className={styles['grind-title']}>Grind size, by method</h2>
+            <GrindScale />
+          </div>
+        </section>
 
         {/* Methods */}
         <div className={styles.methods}>

@@ -1,6 +1,7 @@
 import { Nav } from '@/components/layout/Nav/Nav'
 import { Footer } from '@/components/layout/Footer/Footer'
 import { KenyaMap } from '@/components/illustrations/KenyaMap/KenyaMap'
+import { ElevationChart } from '@/components/illustrations/ElevationChart/ElevationChart'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import styles from './page.module.css'
@@ -95,6 +96,25 @@ export default function OriginsPage() {
                   <span className={styles['region-link']}>Read more →</span>
                 </Link>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Altitude comparison */}
+        <section className={styles.compare}>
+          <div className={styles.container}>
+            <div className={styles['compare-inner']}>
+              <div>
+                <p className={styles['sec-eye']}>Why altitude matters</p>
+                <h2 className={styles['sec-title']} style={{ color: 'var(--color-parchment)' }}>Same mountain, different bands</h2>
+                <p className={styles['compare-body']}>
+                  Cooler air at altitude slows how fast cherries ripen, which gives sugars and
+                  acids more time to develop before harvest. All four counties sit on the same
+                  Mount Kenya–Aberdare massif, but the exact band each farm occupies is part of
+                  what makes its cup distinct.
+                </p>
+              </div>
+              <ElevationChart />
             </div>
           </div>
         </section>
