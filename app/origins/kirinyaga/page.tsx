@@ -1,5 +1,6 @@
 import { Nav } from '@/components/layout/Nav/Nav'
 import { Footer } from '@/components/layout/Footer/Footer'
+import { KenyaMap } from '@/components/illustrations/KenyaMap/KenyaMap'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import styles from './page.module.css'
@@ -35,15 +36,21 @@ export default function KirinyagaPage() {
         {/* Hero */}
         <section className={styles.hero}>
           <div className={styles.container}>
-            <p className={styles.eye}>Origin · Central Kenya</p>
-            <h1 className={styles.title}>Kirinyaga</h1>
-            <p className={styles.sub}>
-              Nyeri's eastern neighbour on the slopes of Mount Kenya, Kirinyaga's varied
-              terrain — from steep upper mountain ground to gentler hillsides — produces
-              some of Kenya's most layered, complex cups.
-            </p>
+            <div className={styles['hero-inner']}>
+              <div>
+                <p className={styles.eye}>Origin · Central Kenya</p>
+                <h1 className={styles.title}>Kirinyaga</h1>
+                <p className={styles.sub}>
+                  Nyeri's eastern neighbour on the slopes of Mount Kenya, Kirinyaga's varied
+                  terrain — from steep upper mountain ground to gentler hillsides — produces
+                  some of Kenya's most layered, complex cups.
+                </p>
+              </div>
+              <div className={styles['hero-map']}>
+                <KenyaMap highlight="kirinyaga" />
+              </div>
+            </div>
           </div>
-          <div className={styles['hero-deco']} aria-hidden="true">1,900m</div>
         </section>
 
         {/* Fast facts */}

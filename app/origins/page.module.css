@@ -2,6 +2,8 @@
 
 /* Hero */
 .hero { background: var(--color-roast); padding: var(--space-20) 0 var(--space-16); position: relative; overflow: hidden; }
+.hero-inner { display: grid; grid-template-columns: 1fr 280px; gap: var(--space-12); align-items: center; }
+.hero-map { width: 100%; }
 .eye { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--color-crema); margin-bottom: var(--space-3); }
 .title { font-family: var(--font-serif); font-size: clamp(42px, 6vw, 68px); font-weight: var(--weight-medium); color: var(--color-parchment); letter-spacing: -0.02em; line-height: 0.98; margin-bottom: var(--space-6); max-width: 760px; }
 .title em { color: var(--color-crema); font-style: normal; }
@@ -35,6 +37,8 @@
 
 @media (max-width: 768px) {
   .container { padding: 0 var(--space-5); }
+  .hero-inner { grid-template-columns: 1fr; gap: var(--space-8); }
+  .hero-map { max-width: 260px; margin: 0 auto; }
   .region-grid { grid-template-columns: 1fr; }
   .beyond-grid { grid-template-columns: 1fr; }
 }

@@ -1,5 +1,6 @@
 import { Nav } from '@/components/layout/Nav/Nav'
 import { Footer } from '@/components/layout/Footer/Footer'
+import { KenyaMap } from '@/components/illustrations/KenyaMap/KenyaMap'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import styles from './page.module.css'
@@ -35,16 +36,22 @@ export default function KiambuPage() {
         {/* Hero */}
         <section className={styles.hero}>
           <div className={styles.container}>
-            <p className={styles.eye}>Origin · Central Kenya</p>
-            <h1 className={styles.title}>Kiambu</h1>
-            <p className={styles.sub}>
-              We buy traceable, single origin, SCA-graded coffee from across Kenya —
-              wherever we find it. Right now, that includes the slopes of the Aberdare
-              range in Kiambu County, thirty kilometres from our roastery. Here's what
-              makes this particular origin exceptional.
-            </p>
+            <div className={styles['hero-inner']}>
+              <div>
+                <p className={styles.eye}>Origin · Central Kenya</p>
+                <h1 className={styles.title}>Kiambu</h1>
+                <p className={styles.sub}>
+                  We buy traceable, single origin, SCA-graded coffee from across Kenya —
+                  wherever we find it. Right now, that includes the slopes of the Aberdare
+                  range in Kiambu County, thirty kilometres from our roastery. Here's what
+                  makes this particular origin exceptional.
+                </p>
+              </div>
+              <div className={styles['hero-map']}>
+                <KenyaMap highlight="kiambu" />
+              </div>
+            </div>
           </div>
-          <div className={styles['hero-deco']} aria-hidden="true">1,700m</div>
         </section>
 
         {/* Fast facts */}

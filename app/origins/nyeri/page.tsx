@@ -1,5 +1,6 @@
 import { Nav } from '@/components/layout/Nav/Nav'
 import { Footer } from '@/components/layout/Footer/Footer'
+import { KenyaMap } from '@/components/illustrations/KenyaMap/KenyaMap'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import styles from './page.module.css'
@@ -35,15 +36,21 @@ export default function NyeriPage() {
         {/* Hero */}
         <section className={styles.hero}>
           <div className={styles.container}>
-            <p className={styles.eye}>Origin · Central Kenya</p>
-            <h1 className={styles.title}>Nyeri</h1>
-            <p className={styles.sub}>
-              On the northern slopes of Mount Kenya, with the Aberdare Range to the west,
-              Nyeri County produces what a lot of specialty buyers consider the most
-              structurally complete washed coffee in the world.
-            </p>
+            <div className={styles['hero-inner']}>
+              <div>
+                <p className={styles.eye}>Origin · Central Kenya</p>
+                <h1 className={styles.title}>Nyeri</h1>
+                <p className={styles.sub}>
+                  On the northern slopes of Mount Kenya, with the Aberdare Range to the west,
+                  Nyeri County produces what a lot of specialty buyers consider the most
+                  structurally complete washed coffee in the world.
+                </p>
+              </div>
+              <div className={styles['hero-map']}>
+                <KenyaMap highlight="nyeri" />
+              </div>
+            </div>
           </div>
-          <div className={styles['hero-deco']} aria-hidden="true">2,000m</div>
         </section>
 
         {/* Fast facts */}

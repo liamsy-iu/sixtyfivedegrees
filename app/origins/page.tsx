@@ -1,5 +1,6 @@
 import { Nav } from '@/components/layout/Nav/Nav'
 import { Footer } from '@/components/layout/Footer/Footer'
+import { KenyaMap } from '@/components/illustrations/KenyaMap/KenyaMap'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import styles from './page.module.css'
@@ -56,14 +57,21 @@ export default function OriginsPage() {
         {/* Hero */}
         <section className={styles.hero}>
           <div className={styles.container}>
-            <p className={styles.eye}>Where we source</p>
-            <h1 className={styles.title}>Kenya&apos;s coffee,<br /><em>region by region.</em></h1>
-            <p className={styles.sub}>
-              We buy traceable, single origin, SCA-graded coffee from across Kenya — wherever
-              we find it. Most of that has been Central Kenya so far: the band of high-altitude,
-              volcanic-soil counties surrounding Mount Kenya and the Aberdare Range that produces
-              the country&apos;s most celebrated arabica.
-            </p>
+            <div className={styles['hero-inner']}>
+              <div>
+                <p className={styles.eye}>Where we source</p>
+                <h1 className={styles.title}>Kenya&apos;s coffee,<br /><em>region by region.</em></h1>
+                <p className={styles.sub}>
+                  We buy traceable, single origin, SCA-graded coffee from across Kenya — wherever
+                  we find it. Most of that has been Central Kenya so far: the band of high-altitude,
+                  volcanic-soil counties surrounding Mount Kenya and the Aberdare Range that produces
+                  the country&apos;s most celebrated arabica.
+                </p>
+              </div>
+              <div className={styles['hero-map']}>
+                <KenyaMap showAll highlight="kiambu" />
+              </div>
+            </div>
           </div>
         </section>
 

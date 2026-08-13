@@ -1,5 +1,6 @@
 import { Nav } from '@/components/layout/Nav/Nav'
 import { Footer } from '@/components/layout/Footer/Footer'
+import { KenyaMap } from '@/components/illustrations/KenyaMap/KenyaMap'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import styles from './page.module.css'
@@ -28,15 +29,21 @@ export default function MurangaPage() {
         {/* Hero */}
         <section className={styles.hero}>
           <div className={styles.container}>
-            <p className={styles.eye}>Origin · Central Kenya</p>
-            <h1 className={styles.title}>Murang&apos;a</h1>
-            <p className={styles.sub}>
-              On the foothills of the Aberdare Ridge, between Kiambu and Nyeri, Murang&apos;a
-              is one of Central Kenya&apos;s major growing counties — and one that rarely
-              gets marketed on its own.
-            </p>
+            <div className={styles['hero-inner']}>
+              <div>
+                <p className={styles.eye}>Origin · Central Kenya</p>
+                <h1 className={styles.title}>Murang&apos;a</h1>
+                <p className={styles.sub}>
+                  On the foothills of the Aberdare Ridge, between Kiambu and Nyeri, Murang&apos;a
+                  is one of Central Kenya&apos;s major growing counties — and one that rarely
+                  gets marketed on its own.
+                </p>
+              </div>
+              <div className={styles['hero-map']}>
+                <KenyaMap highlight="muranga" />
+              </div>
+            </div>
           </div>
-          <div className={styles['hero-deco']} aria-hidden="true">1,950m</div>
         </section>
 
         {/* Fast facts */}
