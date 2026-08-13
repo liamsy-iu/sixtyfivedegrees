@@ -23,10 +23,10 @@ const COUNTY_LABELS: Record<string, string> = {
 
 const NAIROBI: [number, number] = [179.6, 387.6]
 
-export function KenyaMap({ highlight, showAll }: { highlight?: string; showAll?: boolean }) {
+export function KenyaMap({ highlight, showAll, dark = true }: { highlight?: string; showAll?: boolean; dark?: boolean }) {
   const label = highlight ? `Map of Kenya with ${COUNTY_LABELS[highlight] ?? highlight} highlighted` : 'Map of Kenya, Central Kenya counties highlighted'
   return (
-    <svg viewBox="0 0 500 600" className={styles.map} role="img" aria-label={label}>
+    <svg viewBox="0 0 500 600" className={`${styles.map} ${!dark ? styles.light : ''}`} role="img" aria-label={label}>
       <path d={KENYA_PATH} className={styles.outline} />
       {showAll
         ? Object.entries(COUNTY_PATHS).map(([slug, path]) => (

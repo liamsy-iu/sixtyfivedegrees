@@ -57,7 +57,7 @@ export default function AboutPage() {
               </div>
 
               <div className={styles['content-aside']}>
-                <KenyaMap showAll highlight="kiambu" />
+                <KenyaMap showAll highlight="kiambu" dark={false} />
                 <div className={styles.stat}>
                   <span className={styles['stat-num']}>100%</span>
                   <span className={styles['stat-label']}>Kenyan single origin</span>
