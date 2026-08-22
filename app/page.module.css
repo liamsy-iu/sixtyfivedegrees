@@ -11,10 +11,12 @@
 .hero-inner { max-width: var(--max-w); margin: 0 auto; padding: 0 var(--space-10); display: grid; grid-template-columns: 1fr 300px; gap: var(--space-12); align-items: center; }
 .hero-left { border-left: 3px solid var(--color-crema); padding-left: var(--space-6); }
 .hero-eye { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--color-crema); margin-bottom: var(--space-3); }
-.hero-title { font-family: var(--font-serif); font-size: clamp(44px, 6vw, 80px); font-weight: var(--weight-medium); color: var(--color-roast); line-height: 0.9; letter-spacing: -0.03em; margin-bottom: var(--space-5); }
-.hero-title em { font-style: italic; }
-.hero-sub { font-size: var(--text-base); color: var(--color-bark); max-width: 360px; line-height: 1.7; margin-bottom: var(--space-6); }
+.hero-title { font-family: var(--font-display); font-size: clamp(44px, 6vw, 78px); text-transform: uppercase; color: var(--color-roast); line-height: 0.95; letter-spacing: -0.01em; margin-bottom: var(--space-6); }
 .hero-actions { display: flex; align-items: center; gap: var(--space-3); flex-wrap: wrap; }
+.hero-btn-primary { display: inline-flex; align-items: center; padding: 15px 26px; background: #fff; color: var(--color-roast); font-family: var(--font-display); font-size: 14px; letter-spacing: 0.02em; text-transform: uppercase; text-decoration: none; border: none; transition: background-color var(--dur-fast); }
+.hero-btn-primary:hover { background: var(--color-fog); }
+.hero-btn-secondary { display: inline-flex; align-items: center; padding: 15px 26px; background: var(--color-crema); color: #fff; font-family: var(--font-display); font-size: 14px; letter-spacing: 0.02em; text-transform: uppercase; text-decoration: none; border: none; transition: background-color var(--dur-fast); }
+.hero-btn-secondary:hover { background: var(--color-bark); }
 .hero-quiz-link { display: inline-block; margin-top: var(--space-5); font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.04em; color: var(--color-crema); text-decoration: none; border-bottom: 1px solid var(--color-crema); padding-bottom: 2px; }
 .hero-quiz-link:hover { color: var(--color-roast); border-color: var(--color-roast); }
 .hero-right {
