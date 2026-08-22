@@ -1,0 +1,8 @@
+.container { max-width: 720px; margin: 0 auto; padding: 0 var(--space-10); }
+.hero { background: var(--color-roast); padding: var(--space-16) 0 var(--space-8); text-align: center; }
+.eye { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--color-crema); margin-bottom: var(--space-4); }
+.title { font-family: var(--font-serif); font-size: clamp(48px, 8vw, 84px); font-weight: var(--weight-medium); color: var(--color-parchment); letter-spacing: -0.03em; line-height: 0.95; }
+
+@media (max-width: 640px) {
+  .container { padding: 0 var(--space-5); }
+}

@@ -43,6 +43,7 @@ export function ShopClient({ products }: { products: Product[] }) {
         <div className={styles.container}>
           <p className={styles.eye}>Single origin · Kenya</p>
           <h1 className={styles.title}>The beans</h1>
+          <Link href="/quiz" className={styles['quiz-link']}>Not sure which grade? Find your roast →</Link>
         </div>
       </div>
       <div className={styles['filter-bar']}>

@@ -98,11 +98,12 @@ export default function HomePage() {
             <div className={styles['hero-left']}>
               <p className={styles['hero-eye']}>Single origin</p>
               <h1 className={styles['hero-title']}>Kenya&apos;s finest<br /><em>coffee.</em></h1>
-              <p className={styles['hero-sub']}>65° is the temperature at which milk reaches its natural sweetness. We roast the coffee worthy of it.</p>
+              <p className={styles['hero-sub']}>65° is where milk turns sweet. We roast the coffee that earns it.</p>
               <div className={styles['hero-actions']}>
                 <Link href="/shop" className={styles['btn-primary']}>Shop the beans</Link>
                 <Link href="/trade" className={styles['btn-secondary']}>Wholesale enquiry</Link>
               </div>
+              <Link href="/quiz" className={styles['hero-quiz-link']}>Not sure which one? Find your roast →</Link>
             </div>
             <div className={styles['hero-right']}>
               <div className={styles['hero-molecule']}>
