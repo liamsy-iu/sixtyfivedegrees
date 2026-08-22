@@ -30,11 +30,8 @@
 .grade-icon { width: 30px; height: 30px; color: var(--color-crema); margin-bottom: var(--space-4); }
 .pricing-grade { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-crema); margin-bottom: var(--space-3); }
 .pricing-desc { font-size: var(--text-sm); color: rgba(245,240,232,0.45); margin-bottom: var(--space-6); line-height: 1.6; }
-.tiers { display: flex; flex-direction: column; gap: 0; }
-.tier { display: flex; justify-content: space-between; padding: var(--space-3) 0; border-bottom: 1px solid rgba(245,240,232,0.07); font-size: var(--text-sm); color: rgba(245,240,232,0.55); }
-.tier:last-child { border-bottom: none; }
-.tier span:last-child { font-family: var(--font-mono); font-weight: var(--weight-medium); color: var(--color-parchment); }
-.custom { color: var(--color-crema) !important; }
+.pricing-cta { display: inline-block; padding: 10px 18px; border: 1px solid var(--color-crema); color: var(--color-crema); font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none; transition: background-color var(--dur-fast), color var(--dur-fast); }
+.pricing-cta:hover { background: var(--color-crema); color: var(--color-roast); }
 .delivery-note { font-size: var(--text-xs); color: rgba(245,240,232,0.35); font-family: var(--font-mono); letter-spacing: 0.04em; }
 
 /* Enquiry */

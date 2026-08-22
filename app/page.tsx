@@ -208,7 +208,7 @@ export default function HomePage() {
                 <p className={styles['sec-eye']}>For cafés &amp; businesses</p>
                 <h2 className={styles['trade-title']}>Supply your café with Kenyan specialty</h2>
                 <p className={styles['trade-sub']}>Wholesale from 5kg. Consistent quality, reliable delivery, direct pricing.</p>
-                <Link href="/trade" className={styles['btn-primary']}>View trade pricing</Link>
+                <Link href="/trade" className={styles['btn-primary']}>Get wholesale pricing</Link>
                 <p className={styles['trade-export-note']}>
                   Buying green coffee internationally instead? <Link href="/export" className={styles['export-link']}>See our export program →</Link>
                 </p>
@@ -219,13 +219,17 @@ export default function HomePage() {
                     <ellipse cx="20" cy="20" rx="9" ry="13" />
                     <path d="M20 8 C15 13 15 27 20 32" />
                   </svg>
-                  <p className={styles['tier-grade']}>Classic grade</p><div className={styles['tier-row']}><span>5 – 30 kg</span><span>KES 1,500/kg</span></div><div className={styles['tier-row']}><span>31 – 100 kg</span><span>KES 1,400/kg</span></div><div className={styles['tier-row']}><span>100 kg+</span><span className={styles['tier-custom']}>Custom</span></div></div>
+                  <p className={styles['tier-grade']}>Classic grade</p>
+                  <p className={styles['tier-desc']}>Everyday drinking coffee for house blends and filter programmes.</p>
+                </div>
                 <div className={styles['tier-card']}>
                   <svg viewBox="0 0 40 40" className={styles['tier-icon']} fill="none" stroke="currentColor" strokeWidth="1.6">
                     <ellipse cx="20" cy="20" rx="9" ry="13" />
                     <path d="M20 8 C15 13 15 27 20 32" />
                   </svg>
-                  <p className={styles['tier-grade']}>Premium grade</p><div className={styles['tier-row']}><span>5 – 30 kg</span><span>KES 2,000/kg</span></div><div className={styles['tier-row']}><span>31 – 100 kg</span><span>KES 1,900/kg</span></div><div className={styles['tier-row']}><span>100 kg+</span><span className={styles['tier-custom']}>Custom</span></div></div>
+                  <p className={styles['tier-grade']}>Premium grade</p>
+                  <p className={styles['tier-desc']}>Complex, vibrant single origin for your espresso bar.</p>
+                </div>
               </div>
             </div>
           </div>

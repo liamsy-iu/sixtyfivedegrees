@@ -7,7 +7,7 @@ import styles from './page.module.css'
 
 export const metadata: Metadata = {
   title: 'Wholesale Coffee Kenya — Specialty Coffee for Cafés and Businesses',
-  description: 'Wholesale specialty coffee for Nairobi cafés, restaurants and offices. Single origin Kenyan arabica from 5kg. Classic KES 1,500/kg, Premium KES 2,000/kg.',
+  description: 'Wholesale specialty coffee for Nairobi cafés, restaurants and offices. Single origin Kenyan arabica from 5kg, Classic and Premium grades. Request pricing.',
   alternates: { canonical: 'https://www.sixtyfivedegrees.com/trade' },
 }
 
@@ -65,9 +65,9 @@ export default function TradePage() {
         {/* Pricing */}
         <section className={styles.pricing} id="pricing">
           <div className={styles.container}>
-            <p className={styles['sec-eye']} style={{ color: 'var(--color-crema)' }}>Transparent pricing</p>
-            <h2 className={styles['sec-title']} style={{ color: 'var(--color-parchment)' }}>Trade rates</h2>
-            <p className={styles['pricing-note']}>Minimum order 5kg. All prices per kilogram of roasted coffee.</p>
+            <p className={styles['sec-eye']} style={{ color: 'var(--color-crema)' }}>Wholesale rates</p>
+            <h2 className={styles['sec-title']} style={{ color: 'var(--color-parchment)' }}>Get pricing for your business</h2>
+            <p className={styles['pricing-note']}>Minimum order 5kg. Rates depend on volume — tell us what you need and we'll quote you directly.</p>
             <div className={styles['pricing-grid']}>
               <div className={styles['pricing-card']}>
                 <svg viewBox="0 0 40 40" className={styles['grade-icon']} fill="none" stroke="currentColor" strokeWidth="1.6">
@@ -76,11 +76,7 @@ export default function TradePage() {
                 </svg>
                 <p className={styles['pricing-grade']}>Classic grade</p>
                 <p className={styles['pricing-desc']}>Excellent everyday drinking coffee. Perfect for house blends and filter programmes.</p>
-                <div className={styles.tiers}>
-                  <div className={styles.tier}><span>5 – 30 kg</span><span>KES 1,500 / kg</span></div>
-                  <div className={styles.tier}><span>31 – 100 kg</span><span>KES 1,400 / kg</span></div>
-                  <div className={styles.tier}><span>100 kg +</span><span className={styles.custom}>Custom pricing</span></div>
-                </div>
+                <a href="#enquiry" className={styles['pricing-cta']}>Request pricing</a>
               </div>
               <div className={styles['pricing-card']}>
                 <svg viewBox="0 0 40 40" className={styles['grade-icon']} fill="none" stroke="currentColor" strokeWidth="1.6">
@@ -89,11 +85,7 @@ export default function TradePage() {
                 </svg>
                 <p className={styles['pricing-grade']}>Premium grade</p>
                 <p className={styles['pricing-desc']}>Top-grade Kenyan beans. Complex, vibrant, and exceptional as single origin on your espresso bar.</p>
-                <div className={styles.tiers}>
-                  <div className={styles.tier}><span>5 – 30 kg</span><span>KES 2,000 / kg</span></div>
-                  <div className={styles.tier}><span>31 – 100 kg</span><span>KES 1,900 / kg</span></div>
-                  <div className={styles.tier}><span>100 kg +</span><span className={styles.custom}>Custom pricing</span></div>
-                </div>
+                <a href="#enquiry" className={styles['pricing-cta']}>Request pricing</a>
               </div>
             </div>
             <p className={styles['delivery-note']}>
