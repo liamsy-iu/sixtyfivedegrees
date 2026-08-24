@@ -1,7 +1,7 @@
 .container { max-width: var(--max-w); margin: 0 auto; padding: 0 var(--space-10); }
 .hero { background: var(--color-roast); padding: var(--space-20) 0 var(--space-16); position: relative; overflow: hidden; }
 .eye { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--color-crema); margin-bottom: var(--space-3); }
-.title { font-family: var(--font-serif); font-size: clamp(42px, 6vw, 64px); font-weight: var(--weight-medium); color: var(--color-parchment); letter-spacing: -0.02em; line-height: 0.95; margin-bottom: var(--space-6); }
+.title { font-family: var(--font-serif); font-size: clamp(42px, 6vw, 64px); font-weight: var(--weight-medium); color: var(--color-parchment); letter-spacing: -0.02em; line-height: 0.95; margin-bottom: var(--space-6); text-transform: uppercase; }
 
 .products { padding: var(--space-16) 0; background: var(--color-parchment); }
 
