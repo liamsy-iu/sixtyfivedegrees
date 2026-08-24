@@ -4,11 +4,15 @@ import { initiateSTKPush } from '@/lib/mpesa'
 
 export async function POST(req: NextRequest) {
   try {
-    const { orderId, phone, amount, orderRef } = await req.json()
+    const { orderId, phone, amount, orderRef, orderType } = await req.json()
 
     if (!orderId || !phone || !amount || !orderRef) {
       return NextResponse.json({ error: 'Missing fields' }, { status: 400 })
     }
+
+    // 'coffee' is the default so any existing caller that doesn't pass
+    // orderType (the main checkout) keeps working exactly as before.
+    const type = orderType === 'merch' ? 'merch' : 'coffee'
 
     // Callback URL — explicit env var, fallback to hardcoded production URL
     const callbackUrl =
@@ -20,6 +24,7 @@ export async function POST(req: NextRequest) {
       : `254${phone.replace(/^0/, '')}`
 
     console.log('[65D push] orderId:', orderId)
+    console.log('[65D push] orderType:', type)
     console.log('[65D push] phone:', normalized)
     console.log('[65D push] amount:', amount)
     console.log('[65D push] callbackUrl:', callbackUrl)
@@ -36,6 +41,7 @@ export async function POST(req: NextRequest) {
     const supabase = createServiceClient()
     await supabase.from('mpesa_transactions').insert({
       order_id:            orderId,
+      order_type:          type,
       checkout_request_id: result.CheckoutRequestID,
       merchant_request_id: result.MerchantRequestID,
       phone:               normalized,

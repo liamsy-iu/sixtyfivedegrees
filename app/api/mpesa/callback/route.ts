@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase/server'
-import { notifyNewOrder } from '@/lib/notify'
+import { notifyNewOrder, notifyMerchOrder } from '@/lib/notify'
 
 const OK = NextResponse.json({ ResultCode: 0, ResultDesc: 'Success' })
 
@@ -32,12 +32,43 @@ export async function POST(req: NextRequest) {
         completed_at:       new Date().toISOString(),
       })
       .eq('checkout_request_id', CheckoutRequestID)
-      .select('order_id, phone')
+      .select('order_id, phone, order_type')
       .single()
 
     console.log('[65D callback] tx update:', { tx, txError })
     if (!tx?.order_id) return OK
 
+    // ── Merch order branch ──────────────────────────────────────────
+    if (tx.order_type === 'merch') {
+      await supabase
+        .from('merch_orders')
+        .update({
+          payment_status: isSuccess ? 'completed' : 'failed',
+          mpesa_receipt:  mpesaReceipt,
+        })
+        .eq('id', tx.order_id)
+
+      if (isSuccess) {
+        const { data: order } = await supabase
+          .from('merch_orders')
+          .select('order_ref, name, email, phone, colour, size, quantity, address, message, total_kes')
+          .eq('id', tx.order_id)
+          .single()
+
+        if (order) {
+          notifyMerchOrder({
+            name: order.name, email: order.email, phone: order.phone,
+            colour: order.colour, size: order.size, quantity: order.quantity,
+            address: order.address, message: order.message, total_kes: order.total_kes,
+            orderRef: order.order_ref, mpesaReceipt: mpesaReceipt ?? undefined,
+          }).catch(err => console.error('[notify merch order]', err))
+        }
+      }
+
+      return OK
+    }
+
+    // ── Coffee order branch (unchanged from before) ────────────────
     await supabase
       .from('orders')
       .update({

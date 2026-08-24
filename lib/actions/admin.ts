@@ -4,6 +4,7 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { createServiceClient } from '@/lib/supabase/server'
 import { notifyNewEnquiry, notifyExportEnquiry, notifyMerchOrder } from '@/lib/notify'
+import { generateOrderRef } from '@/lib/utils/pricing'
 
 const ADMIN_TOKEN = 'admin-session-v1'
 
@@ -112,14 +113,32 @@ export async function saveMerchOrder(data: {
   name: string; email: string; phone: string
   colour: string; size: string; quantity: string
   address: string; message: string; total_kes: number
+  paymentMethod: 'mpesa' | 'cod'
 }) {
   const supabase = createServiceClient()
-  const { error } = await supabase.from('merch_orders').insert(data)
-  if (!error) {
-    // Notify you by email
-    await notifyMerchOrder(data).catch(err => console.error('[notify merch order]', err))
+  const orderRef = generateOrderRef()
+  const { data: order, error } = await supabase
+    .from('merch_orders')
+    .insert({
+      name: data.name, email: data.email, phone: data.phone,
+      colour: data.colour, size: data.size, quantity: data.quantity,
+      address: data.address, message: data.message, total_kes: data.total_kes,
+      order_ref: orderRef, payment_method: data.paymentMethod,
+      payment_status: data.paymentMethod === 'cod' ? 'pending_cod' : 'pending',
+    })
+    .select('id')
+    .single()
+  if (error) return { error: error.message }
+
+  // Notify you immediately for pay-on-delivery orders.
+  // M-Pesa orders are notified after the callback confirms payment (see
+  // /api/mpesa/callback), same pattern as the main coffee checkout --
+  // avoids emailing you about a payment that may never actually complete.
+  if (data.paymentMethod === 'cod') {
+    await notifyMerchOrder({ ...data, orderRef }).catch(err => console.error('[notify merch order]', err))
   }
-  return { error: error?.message }
+
+  return { orderId: order.id, orderRef }
 }
 
 export async function getProducts() {

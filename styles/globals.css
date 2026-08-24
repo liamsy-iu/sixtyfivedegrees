@@ -126,3 +126,6 @@ input, textarea, select { font-family: var(--font-sans); }
 
 /* ── Selection ───────────────────────────────────────────────────────────────── */
 ::selection { background: var(--color-crema-light); color: var(--color-roast); }
+
+/* ── Global spin keyframe, for inline-style loading spinners ────────────────── */
+@keyframes spin { to { transform: rotate(360deg); } }
