@@ -129,7 +129,7 @@ export function OrderStatusClient({ orderRef }: { orderRef: string }) {
                 <div key={i} className={styles.item}>
                   <div>
                     <p className={styles['item-name']}>{item.product_name}</p>
-                    <p className={styles['item-meta']}>{item.size} · {item.grind === 'whole_bean' ? 'Whole bean' : 'Ground'} · x{item.quantity}</p>
+                    <p className={styles['item-meta']}>{item.product_type === 'merch' ? `${item.colour} · ${item.size}` : `${item.size} · ${item.grind === 'whole_bean' ? 'Whole bean' : 'Ground'}`} · x{item.quantity}</p>
                   </div>
                   <span className={styles['item-price']}>{formatKES(item.subtotal)}</span>
                 </div>

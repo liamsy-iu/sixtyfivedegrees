@@ -239,7 +239,7 @@ function OrderCard({ order, onUpdate }: { order: any; onUpdate: () => void }) {
                 <p className={styles['section-label']}>Items</p>
                 {order.order_items?.map((item: any, i: number) => (
                   <p key={i} className={styles['section-val']}>
-                    {item.quantity}× {item.product_name} ({item.size} · {item.grind === 'whole_bean' ? 'Whole bean' : 'Ground'}) — {formatKES(item.subtotal)}
+                    {item.quantity}× {item.product_name} ({item.product_type === 'merch' ? `${item.colour} · ${item.size}` : `${item.size} · ${item.grind === 'whole_bean' ? 'Whole bean' : 'Ground'}`}) — {formatKES(item.subtotal)}
                   </p>
                 ))}
                 <p className={styles['section-val']} style={{ marginTop: 8 }}>

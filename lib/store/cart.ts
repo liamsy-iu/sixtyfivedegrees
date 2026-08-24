@@ -1,7 +1,8 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
-export interface CartItem {
+export interface CoffeeCartItem {
+  kind: 'coffee'
   variantId: string
   productId: string
   productName: string
@@ -13,13 +14,38 @@ export interface CartItem {
   quantity: number
 }
 
+export interface MerchCartItem {
+  kind: 'merch'
+  productName: string  // e.g. "65 Degrees Hoodie"
+  colour: string
+  size: string          // clothing size (S/M/L/XL), not grams
+  price: number          // in cents
+  quantity: number
+}
+
+export type CartItem = CoffeeCartItem | MerchCartItem
+
+// Plain `Omit<Union, K>` does not distribute over a union in TypeScript --
+// it flattens to the combined key set across all members, which breaks
+// correct discrimination on `kind` for object literals passed to addItem.
+// This distributes Omit across each member of the union separately.
+type DistributiveOmit<T, K extends PropertyKey> = T extends any ? Omit<T, K> : never
+
+// A stable identity key per item, used for dedup/update/remove -- coffee
+// items are identified by variant+grind, merch items by colour+size.
+// Anything adding a new item kind in future just needs a case here.
+export function itemKey(item: DistributiveOmit<CartItem, 'quantity'> | CartItem): string {
+  if (item.kind === 'coffee') return `coffee-${item.variantId}-${item.grind}`
+  return `merch-${item.colour}-${item.size}`
+}
+
 interface CartStore {
   items: CartItem[]
   isOpen: boolean
 
-  addItem: (item: Omit<CartItem, 'quantity'>) => void
-  removeItem: (variantId: string, grind: string) => void
-  updateQuantity: (variantId: string, grind: string, quantity: number) => void
+  addItem: (item: DistributiveOmit<CartItem, 'quantity'>) => void
+  removeItem: (key: string) => void
+  updateQuantity: (key: string, quantity: number) => void
   clearCart: () => void
   openCart: () => void
   closeCart: () => void
@@ -36,41 +62,33 @@ export const useCartStore = create<CartStore>()(
 
       addItem: (newItem) => {
         set((state) => {
-          const key = `${newItem.variantId}-${newItem.grind}`
-          const existing = state.items.find(
-            (i) => `${i.variantId}-${i.grind}` === key
-          )
+          const key = itemKey(newItem)
+          const existing = state.items.find((i) => itemKey(i) === key)
           if (existing) {
             return {
               items: state.items.map((i) =>
-                `${i.variantId}-${i.grind}` === key
-                  ? { ...i, quantity: i.quantity + 1 }
-                  : i
+                itemKey(i) === key ? { ...i, quantity: i.quantity + 1 } : i
               ),
             }
           }
-          return { items: [...state.items, { ...newItem, quantity: 1 }] }
+          return { items: [...state.items, { ...newItem, quantity: 1 } as CartItem] }
         })
       },
 
-      removeItem: (variantId, grind) => {
+      removeItem: (key) => {
         set((state) => ({
-          items: state.items.filter(
-            (i) => !(i.variantId === variantId && i.grind === grind)
-          ),
+          items: state.items.filter((i) => itemKey(i) !== key),
         }))
       },
 
-      updateQuantity: (variantId, grind, quantity) => {
+      updateQuantity: (key, quantity) => {
         if (quantity <= 0) {
-          get().removeItem(variantId, grind)
+          get().removeItem(key)
           return
         }
         set((state) => ({
           items: state.items.map((i) =>
-            i.variantId === variantId && i.grind === grind
-              ? { ...i, quantity }
-              : i
+            itemKey(i) === key ? { ...i, quantity } : i
           ),
         }))
       },
@@ -83,7 +101,11 @@ export const useCartStore = create<CartStore>()(
       itemCount: () => get().items.reduce((s, i) => s + i.quantity, 0),
     }),
     {
-      name: '65d-cart-v1',
+      // Bumped from v1 -- the item shape changed (added a required `kind`
+      // discriminator), so any old persisted cart is safely abandoned
+      // rather than loaded in a shape the new code doesn't expect. This
+      // clears in-progress carts, not placed orders -- low stakes.
+      name: '65d-cart-v2',
       partialize: (state) => ({ items: state.items }),
     }
   )

@@ -5,8 +5,11 @@ import { generateOrderRef } from '@/lib/utils/pricing'
 import { notifyNewOrder } from '@/lib/notify'
 
 export interface OrderItem {
-  productName: string; grade: string; roast: string
-  size: string; grind: string; quantity: number; unitPrice: number
+  productName: string
+  productType: 'coffee' | 'merch'
+  grade: string | null; roast: string | null
+  size: string; grind: string | null; colour: string | null
+  quantity: number; unitPrice: number
 }
 
 export interface CreateOrderInput {
@@ -41,9 +44,9 @@ export async function createOrderAction(input: CreateOrderInput) {
 
   await supabase.from('order_items').insert(
     input.items.map(i => ({
-      order_id: order.id, product_name: i.productName, grade: i.grade,
-      roast: i.roast, size: i.size, grind: i.grind, quantity: i.quantity,
-      unit_price: i.unitPrice, subtotal: i.unitPrice * i.quantity,
+      order_id: order.id, product_name: i.productName, product_type: i.productType,
+      grade: i.grade, roast: i.roast, size: i.size, grind: i.grind, colour: i.colour,
+      quantity: i.quantity, unit_price: i.unitPrice, subtotal: i.unitPrice * i.quantity,
     }))
   )
 
@@ -55,7 +58,7 @@ export async function createOrderAction(input: CreateOrderInput) {
       customerName:    input.customerName,
       customerPhone:   input.customerPhone,
       items:           input.items.map(i => ({
-        product_name: i.productName, size: i.size, grind: i.grind,
+        product_name: i.productName, size: i.size, grind: i.grind, colour: i.colour,
         quantity: i.quantity, subtotal: i.unitPrice * i.quantity,
       })),
       deliveryAddress: input.deliveryAddress,

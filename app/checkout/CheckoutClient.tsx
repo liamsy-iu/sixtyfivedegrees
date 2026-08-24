@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { CheckCircle2, Loader2, AlertCircle, ArrowLeft } from 'lucide-react'
-import { useCartStore } from '@/lib/store/cart'
+import { useCartStore, itemKey } from '@/lib/store/cart'
 import { createOrderAction } from '@/lib/actions/orders'
 import { formatKES, formatSize, formatGrind } from '@/lib/utils/pricing'
 import { createClient } from '@/lib/supabase/client'
@@ -86,15 +86,27 @@ export function CheckoutClient() {
         customerPhone: normalized,
         deliveryAddress: { line1: address, area, city: 'Nairobi' },
         deliveryFee: delivery,
-        items: items.map(i => ({
+        items: items.map(i => i.kind === 'coffee' ? {
           productName: i.productName,
-          grade:       i.grade,
-          roast:       i.roast,
-          size:        `${formatSize(i.sizeGrams)}`,
-          grind:       i.grind,
-          quantity:    i.quantity,
-          unitPrice:   i.price,
-        })),
+          productType: 'coffee' as const,
+          grade: i.grade,
+          roast: i.roast,
+          size: formatSize(i.sizeGrams),
+          grind: i.grind,
+          colour: null,
+          quantity: i.quantity,
+          unitPrice: i.price,
+        } : {
+          productName: i.productName,
+          productType: 'merch' as const,
+          grade: null,
+          roast: null,
+          size: i.size,
+          grind: null,
+          colour: i.colour,
+          quantity: i.quantity,
+          unitPrice: i.price,
+        }),
         paymentMethod: payment,
       })
 
@@ -293,11 +305,13 @@ export function CheckoutClient() {
               <h2 className={styles['summary-title']}>Order summary</h2>
               <div className={styles['summary-items']}>
                 {items.map(item => (
-                  <div key={`${item.variantId}-${item.grind}`} className={styles['summary-item']}>
+                  <div key={itemKey(item)} className={styles['summary-item']}>
                     <div>
                       <p className={styles['summary-item-name']}>{item.productName}</p>
                       <p className={styles['summary-item-meta']}>
-                        {formatSize(item.sizeGrams)} · {formatGrind(item.grind)} · ×{item.quantity}
+                        {item.kind === 'coffee'
+                          ? <>{formatSize(item.sizeGrams)} · {formatGrind(item.grind)} · ×{item.quantity}</>
+                          : <>{item.colour} · {item.size} · ×{item.quantity}</>}
                       </p>
                     </div>
                     <span className={styles['summary-item-price']}>{formatKES(item.price * item.quantity)}</span>

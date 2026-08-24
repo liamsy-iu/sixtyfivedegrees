@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Image from 'next/image'
-import { useMerchCartStore } from '@/lib/store/merchCart'
+import { useCartStore } from '@/lib/store/cart'
 import { formatKES } from '@/lib/utils/pricing'
 import styles from './MerchSection.module.css'
 
@@ -20,12 +20,17 @@ const SIZES = ['S', 'M', 'L', 'XL'] as const
 
 export function MerchSection() {
   const [selectedSize, setSelectedSize] = useState<Record<string, string>>({})
-  const addItem = useMerchCartStore((s) => s.addItem)
+  const addItem = useCartStore((s) => s.addItem)
 
   function handleAdd(colour: string) {
     const size = selectedSize[colour]
     if (!size) return
-    addItem(colour, size)
+    addItem({
+      kind: 'merch',
+      productName: '65 Degrees Hoodie',
+      colour, size,
+      price: HOODIE_PRICE_CENTS,
+    })
   }
 
   return (

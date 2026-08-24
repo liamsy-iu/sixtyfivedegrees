@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Minus, Plus, ShoppingBag } from 'lucide-react'
-import { useCartStore } from '@/lib/store/cart'
+import { useCartStore, itemKey } from '@/lib/store/cart'
 import { formatKES, formatSize, formatGrind } from '@/lib/utils/pricing'
 import styles from './CartDrawer.module.css'
 
@@ -72,53 +72,64 @@ export function CartDrawer() {
               <>
                 <div className={styles.items}>
                   <AnimatePresence initial={false}>
-                    {items.map((item) => (
-                      <motion.div
-                        key={`${item.variantId}-${item.grind}`}
-                        className={styles.item}
-                        initial={{ opacity: 0, y: -8 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, x: 20, height: 0, padding: 0 }}
-                        transition={{ duration: 0.18 }}
-                      >
-                        <div className={styles['item-visual']} data-grade={item.grade}>
-                          <span className={styles['item-initial']}>K</span>
-                        </div>
-                        <div className={styles['item-info']}>
-                          <p className={styles['item-name']}>{item.productName}</p>
-                          <p className={styles['item-meta']}>
-                            {formatSize(item.sizeGrams)} · {formatGrind(item.grind)}
-                          </p>
-                          <div className={styles['item-row']}>
-                            <div className={styles['item-qty']}>
-                              <button
-                                className={styles['qty-btn']}
-                                onClick={() => updateQty(item.variantId, item.grind, item.quantity - 1)}
-                              >
-                                <Minus size={12} strokeWidth={2} />
-                              </button>
-                              <span className={styles['qty-val']}>{item.quantity}</span>
-                              <button
-                                className={styles['qty-btn']}
-                                onClick={() => updateQty(item.variantId, item.grind, item.quantity + 1)}
-                              >
-                                <Plus size={12} strokeWidth={2} />
-                              </button>
-                            </div>
-                            <span className={styles['item-price']}>
-                              {formatKES(item.price * item.quantity)}
-                            </span>
-                          </div>
-                        </div>
-                        <button
-                          className={styles['item-remove']}
-                          onClick={() => removeItem(item.variantId, item.grind)}
-                          aria-label="Remove item"
+                    {items.map((item) => {
+                      const key = itemKey(item)
+                      return (
+                        <motion.div
+                          key={key}
+                          className={styles.item}
+                          initial={{ opacity: 0, y: -8 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, x: 20, height: 0, padding: 0 }}
+                          transition={{ duration: 0.18 }}
                         >
-                          <X size={14} strokeWidth={1.5} />
-                        </button>
-                      </motion.div>
-                    ))}
+                          {item.kind === 'coffee' ? (
+                            <div className={styles['item-visual']} data-grade={item.grade}>
+                              <span className={styles['item-initial']}>K</span>
+                            </div>
+                          ) : (
+                            <div className={styles['item-visual']} data-grade="merch">
+                              <span className={styles['item-initial']}>65</span>
+                            </div>
+                          )}
+                          <div className={styles['item-info']}>
+                            <p className={styles['item-name']}>{item.productName}</p>
+                            <p className={styles['item-meta']}>
+                              {item.kind === 'coffee'
+                                ? <>{formatSize(item.sizeGrams)} · {formatGrind(item.grind)}</>
+                                : <>{item.colour} · {item.size}</>}
+                            </p>
+                            <div className={styles['item-row']}>
+                              <div className={styles['item-qty']}>
+                                <button
+                                  className={styles['qty-btn']}
+                                  onClick={() => updateQty(key, item.quantity - 1)}
+                                >
+                                  <Minus size={12} strokeWidth={2} />
+                                </button>
+                                <span className={styles['qty-val']}>{item.quantity}</span>
+                                <button
+                                  className={styles['qty-btn']}
+                                  onClick={() => updateQty(key, item.quantity + 1)}
+                                >
+                                  <Plus size={12} strokeWidth={2} />
+                                </button>
+                              </div>
+                              <span className={styles['item-price']}>
+                                {formatKES(item.price * item.quantity)}
+                              </span>
+                            </div>
+                          </div>
+                          <button
+                            className={styles['item-remove']}
+                            onClick={() => removeItem(key)}
+                            aria-label="Remove item"
+                          >
+                            <X size={14} strokeWidth={1.5} />
+                          </button>
+                        </motion.div>
+                      )
+                    })}
                   </AnimatePresence>
                 </div>
 

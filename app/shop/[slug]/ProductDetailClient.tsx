@@ -52,6 +52,7 @@ export function ProductDetailClient({ product }: { product: Product }) {
   const handleAdd = useCallback(async () => {
     if (!selectedVariant || added) return
     addItem({
+      kind: 'coffee',
       variantId: selectedVariant.id, productId: product.id, productName: product.name,
       grade: product.grade as 'classic' | 'premium', roast: product.roast as 'medium' | 'dark',
       sizeGrams: selectedSize, grind: selectedGrind, price: selectedVariant.price,

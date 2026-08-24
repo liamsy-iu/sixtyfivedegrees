@@ -84,6 +84,7 @@
 }
 .item-visual[data-grade='premium'] { background: #1E1208; color: var(--color-crema); }
 .item-visual[data-grade='classic'] { background: #1E1208; color: rgba(245,240,232,0.5); }
+.item-visual[data-grade='merch'] { background: #1E1208; color: var(--color-crema); font-size: 14px; }
 .item-initial { line-height: 1; }
 
 .item-info { flex: 1; min-width: 0; }
