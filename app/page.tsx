@@ -5,6 +5,7 @@ import { Nav } from '@/components/layout/Nav/Nav'
 import { Footer } from '@/components/layout/Footer/Footer'
 import { JourneyTimeline } from '@/components/home/JourneyTimeline/JourneyTimeline'
 import { ProductGridReveal } from '@/components/home/ProductGridReveal/ProductGridReveal'
+import { HeroVideo } from '@/components/home/HeroVideo/HeroVideo'
 import { createClient } from '@/lib/supabase/server'
 import { formatKES } from '@/lib/utils/pricing'
 import { getProductImage } from '@/lib/utils/productImages'
@@ -94,6 +95,7 @@ export default function HomePage() {
       <Nav />
       <main>
         <section className={styles.hero}>
+          <HeroVideo />
           <div className={styles['hero-inner']}>
             <div className={styles['hero-left']}>
               <p className={styles['hero-eye']}>Single origin</p>
