@@ -3,7 +3,7 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { createServiceClient } from '@/lib/supabase/server'
-import { notifyNewEnquiry, notifyExportEnquiry } from '@/lib/notify'
+import { notifyNewEnquiry, notifyExportEnquiry, notifyMerchOrder } from '@/lib/notify'
 
 const ADMIN_TOKEN = 'admin-session-v1'
 
@@ -104,6 +104,20 @@ export async function saveExportEnquiry(data: {
   if (!error) {
     // Notify you by email
     await notifyExportEnquiry(data).catch(err => console.error('[notify export enquiry]', err))
+  }
+  return { error: error?.message }
+}
+
+export async function saveMerchOrder(data: {
+  name: string; email: string; phone: string
+  colour: string; size: string; quantity: string
+  address: string; message: string; total_kes: number
+}) {
+  const supabase = createServiceClient()
+  const { error } = await supabase.from('merch_orders').insert(data)
+  if (!error) {
+    // Notify you by email
+    await notifyMerchOrder(data).catch(err => console.error('[notify merch order]', err))
   }
   return { error: error?.message }
 }

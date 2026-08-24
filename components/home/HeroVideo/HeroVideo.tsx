@@ -15,6 +15,11 @@ const SOURCES = [
   '/videos/hero-5-finished-drink.mp4',
 ]
 
+// Playback speed for all hero clips. 1.5x keeps footage looking natural
+// (2x+ tends to look choppy/unnatural for handheld or slow-motion source
+// footage) while still visibly picking up the pace and cycling faster.
+const PLAYBACK_RATE = 1.5
+
 export function HeroVideo() {
   const [active, setActive] = useState(0)
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([])
@@ -23,6 +28,7 @@ export function HeroVideo() {
     const current = videoRefs.current[active]
     if (current) {
       current.currentTime = 0
+      current.playbackRate = PLAYBACK_RATE
       current.play().catch(() => {})
     }
   }, [active])
