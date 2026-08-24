@@ -5,20 +5,13 @@ import { CheckCircle2, Loader2 } from 'lucide-react'
 import { saveMerchOrder } from '@/lib/actions/admin'
 import { createClient } from '@/lib/supabase/client'
 import { formatKES } from '@/lib/utils/pricing'
-import { HOODIE_PRICE_CENTS } from './MerchSection'
+import type { CartItem } from './MerchSection'
 import styles from '@/app/trade/TradeEnquiryForm.module.css'
-
-const COLOURS = ['Roast Brown', 'Black', 'White', 'Stone Grey', 'Crema Orange']
-const SIZES = ['S', 'M', 'L', 'XL']
 
 type Step = 'form' | 'mpesa_wait' | 'success' | 'cod_success'
 
-export function MerchOrderForm({ defaultColour }: { defaultColour?: string }) {
-  const [form, setForm] = useState({
-    name: '', email: '', phone: '',
-    colour: defaultColour ?? '', size: '', quantity: '1',
-    address: '', message: '',
-  })
+export function MerchOrderForm({ cart, totalKES }: { cart: CartItem[]; totalKES: number }) {
+  const [form, setForm] = useState({ name: '', email: '', phone: '', address: '', message: '' })
   const [payment, setPayment] = useState<'mpesa' | 'cod'>('mpesa')
   const [step, setStep] = useState<Step>('form')
   const [loading, setLoading] = useState(false)
@@ -33,9 +26,6 @@ export function MerchOrderForm({ defaultColour }: { defaultColour?: string }) {
   function update(field: string, value: string) {
     setForm(prev => ({ ...prev, [field]: value }))
   }
-
-  const qty = Math.max(1, parseInt(form.quantity, 10) || 1)
-  const totalKES = (HOODIE_PRICE_CENTS / 100) * qty
 
   function stopWaiting() {
     if (pollRef.current) { clearInterval(pollRef.current); pollRef.current = null }
@@ -70,15 +60,15 @@ export function MerchOrderForm({ defaultColour }: { defaultColour?: string }) {
       stopWaiting()
       setStep('form')
       setError('Payment timed out. Please try again.')
-    }, 180000) // 3 minutes, same window as the main checkout
+    }, 180000)
   }
 
   async function handleSubmit() {
-    if (!form.name || !form.phone || !form.email || !form.colour || !form.size) return
+    if (cart.length === 0 || !form.name || !form.phone || !form.email) return
     setError('')
     setLoading(true)
 
-    const result = await saveMerchOrder({ ...form, total_kes: totalKES, paymentMethod: payment })
+    const result = await saveMerchOrder({ ...form, items: cart, total_kes: totalKES, paymentMethod: payment })
     if ('error' in result && result.error) {
       setError(result.error)
       setLoading(false)
@@ -92,7 +82,6 @@ export function MerchOrderForm({ defaultColour }: { defaultColour?: string }) {
       return
     }
 
-    // M-Pesa STK push
     const normalized = form.phone.startsWith('254') ? form.phone : `254${form.phone.replace(/^0/, '')}`
     const pushRes = await fetch('/api/mpesa/push', {
       method: 'POST',
@@ -143,41 +132,20 @@ export function MerchOrderForm({ defaultColour }: { defaultColour?: string }) {
   return (
     <div className={styles.form}>
       {error && <p style={{ color: '#b91c1c', fontSize: '13px' }}>{error}</p>}
+      {cart.length === 0 && <p style={{ fontSize: '13px', color: 'var(--color-bark)' }}>Add a hoodie above to continue.</p>}
       <div className={styles.row}>
         <div className={styles.field}>
           <label className={styles.label}>Your name *</label>
           <input className={styles.input} value={form.name} onChange={e => update('name', e.target.value)} placeholder="Full name" />
         </div>
         <div className={styles.field}>
-          <label className={styles.label}>Quantity</label>
-          <input className={styles.input} type="number" min="1" value={form.quantity} onChange={e => update('quantity', e.target.value)} />
-        </div>
-      </div>
-      <div className={styles.row}>
-        <div className={styles.field}>
-          <label className={styles.label}>Email *</label>
-          <input className={styles.input} type="email" value={form.email} onChange={e => update('email', e.target.value)} placeholder="your@email.com" />
-        </div>
-        <div className={styles.field}>
           <label className={styles.label}>Phone *</label>
           <input className={styles.input} type="tel" value={form.phone} onChange={e => update('phone', e.target.value)} placeholder="0712 345 678" />
         </div>
       </div>
-      <div className={styles.row}>
-        <div className={styles.field}>
-          <label className={styles.label}>Colour *</label>
-          <select className={styles.input} value={form.colour} onChange={e => update('colour', e.target.value)}>
-            <option value="">Select colour</option>
-            {COLOURS.map(c => <option key={c} value={c}>{c}</option>)}
-          </select>
-        </div>
-        <div className={styles.field}>
-          <label className={styles.label}>Size *</label>
-          <select className={styles.input} value={form.size} onChange={e => update('size', e.target.value)}>
-            <option value="">Select size</option>
-            {SIZES.map(s => <option key={s} value={s}>{s}</option>)}
-          </select>
-        </div>
+      <div className={styles.field}>
+        <label className={styles.label}>Email *</label>
+        <input className={styles.input} type="email" value={form.email} onChange={e => update('email', e.target.value)} placeholder="your@email.com" />
       </div>
       <div className={styles.field}>
         <label className={styles.label}>Delivery address</label>
@@ -197,19 +165,10 @@ export function MerchOrderForm({ defaultColour }: { defaultColour?: string }) {
           value={form.message}
           onChange={e => update('message', e.target.value)}
           placeholder="Questions, sizing help, anything else…"
-          rows={4}
+          rows={3}
         />
       </div>
-      <div className={styles.field}>
-        <label className={styles.label}>Total</label>
-        <p style={{ fontFamily: 'var(--font-mono)', fontSize: '20px', color: 'var(--color-roast)' }}>
-          {formatKES(totalKES * 100)}
-          <span style={{ fontSize: '13px', color: 'var(--color-bark)', marginLeft: '8px' }}>
-            ({qty} × {formatKES(HOODIE_PRICE_CENTS)})
-          </span>
-        </p>
-      </div>
-      <button className={styles.submit} onClick={handleSubmit} disabled={loading || !form.name || !form.phone || !form.email || !form.colour || !form.size}>
+      <button className={styles.submit} onClick={handleSubmit} disabled={loading || cart.length === 0 || !form.name || !form.phone || !form.email}>
         {loading ? 'Sending…' : payment === 'mpesa' ? `Pay ${formatKES(totalKES * 100)} via M-Pesa` : 'Place order — pay on delivery'}
       </button>
     </div>

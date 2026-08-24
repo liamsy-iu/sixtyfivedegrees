@@ -111,7 +111,7 @@ export async function saveExportEnquiry(data: {
 
 export async function saveMerchOrder(data: {
   name: string; email: string; phone: string
-  colour: string; size: string; quantity: string
+  items: { colour: string; size: string; quantity: number }[]
   address: string; message: string; total_kes: number
   paymentMethod: 'mpesa' | 'cod'
 }) {
@@ -121,7 +121,7 @@ export async function saveMerchOrder(data: {
     .from('merch_orders')
     .insert({
       name: data.name, email: data.email, phone: data.phone,
-      colour: data.colour, size: data.size, quantity: data.quantity,
+      items: data.items,
       address: data.address, message: data.message, total_kes: data.total_kes,
       order_ref: orderRef, payment_method: data.paymentMethod,
       payment_status: data.paymentMethod === 'cod' ? 'pending_cod' : 'pending',

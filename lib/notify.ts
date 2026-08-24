@@ -172,9 +172,7 @@ export async function notifyMerchOrder(params: {
   name: string
   email: string
   phone: string
-  colour: string
-  size: string
-  quantity: string
+  items: { colour: string; size: string; quantity: number }[]
   address?: string
   message?: string
   total_kes?: number
@@ -182,6 +180,10 @@ export async function notifyMerchOrder(params: {
   mpesaReceipt?: string
 }) {
   const from = process.env.BREVO_FROM ?? 'hello@sixtyfivedegrees.com'
+
+  const itemRows = params.items
+    .map(i => `<tr><td style="padding:4px 0;font-size:14px;">${i.colour}</td><td style="padding:4px 0;font-size:14px;">${i.size}</td><td style="padding:4px 0;font-size:14px;text-align:right;">×${i.quantity}</td></tr>`)
+    .join('')
 
   const html = `
     <div style="font-family:Georgia,serif;max-width:560px;margin:0 auto;">
@@ -196,10 +198,15 @@ export async function notifyMerchOrder(params: {
           <tr><td style="padding:6px 0;font-size:13px;color:#8B6F4E;width:120px;">Name</td><td style="padding:6px 0;font-size:14px;">${params.name}</td></tr>
           <tr><td style="padding:6px 0;font-size:13px;color:#8B6F4E;">Email</td><td style="padding:6px 0;font-size:14px;"><a href="mailto:${params.email}" style="color:#C8922A;">${params.email}</a></td></tr>
           <tr><td style="padding:6px 0;font-size:13px;color:#8B6F4E;">Phone</td><td style="padding:6px 0;font-size:14px;"><a href="tel:${params.phone}" style="color:#C8922A;">${params.phone}</a></td></tr>
-          <tr><td style="padding:6px 0;font-size:13px;color:#8B6F4E;">Colour</td><td style="padding:6px 0;font-size:14px;">${params.colour}</td></tr>
-          <tr><td style="padding:6px 0;font-size:13px;color:#8B6F4E;">Size</td><td style="padding:6px 0;font-size:14px;">${params.size}</td></tr>
-          <tr><td style="padding:6px 0;font-size:13px;color:#8B6F4E;">Quantity</td><td style="padding:6px 0;font-size:14px;">${params.quantity}</td></tr>
-          ${params.total_kes ? `<tr><td style="padding:6px 0;font-size:13px;color:#8B6F4E;">Total</td><td style="padding:6px 0;font-size:14px;font-weight:bold;">KES ${params.total_kes.toLocaleString('en-KE')}</td></tr>` : ''}
+        </table>
+
+        <table style="width:100%;border-collapse:collapse;margin-top:16px;border-top:1px solid #e8e0d0;padding-top:8px;">
+          <tr><td colspan="3" style="padding-top:12px;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:#8B6F4E;">Items</td></tr>
+          ${itemRows}
+        </table>
+
+        <table style="width:100%;border-collapse:collapse;margin-top:8px;">
+          ${params.total_kes ? `<tr><td style="padding:6px 0;font-size:13px;color:#8B6F4E;width:120px;">Total</td><td style="padding:6px 0;font-size:14px;font-weight:bold;">KES ${params.total_kes.toLocaleString('en-KE')}</td></tr>` : ''}
           ${params.mpesaReceipt ? `<tr><td style="padding:6px 0;font-size:13px;color:#8B6F4E;">M-Pesa receipt</td><td style="padding:6px 0;font-size:14px;font-weight:bold;color:#2D5A3D;">${params.mpesaReceipt} — PAID</td></tr>` : `<tr><td style="padding:6px 0;font-size:13px;color:#8B6F4E;">Payment</td><td style="padding:6px 0;font-size:14px;">Pay on delivery</td></tr>`}
           ${params.address ? `<tr><td style="padding:6px 0;font-size:13px;color:#8B6F4E;vertical-align:top;">Delivery to</td><td style="padding:6px 0;font-size:14px;line-height:1.6;">${params.address}</td></tr>` : ''}
           ${params.message ? `<tr><td style="padding:6px 0;font-size:13px;color:#8B6F4E;vertical-align:top;">Message</td><td style="padding:6px 0;font-size:14px;line-height:1.6;">${params.message}</td></tr>` : ''}
@@ -216,7 +223,7 @@ export async function notifyMerchOrder(params: {
 
   await sendEmail({
     to: [{ email: from, name: '65 Degrees Coffee' }],
-    subject: `New merch order${params.orderRef ? ` ${params.orderRef}` : ''} from ${params.name} — ${params.colour}, ${params.size}${params.total_kes ? ` — KES ${params.total_kes.toLocaleString('en-KE')}` : ''}`,
+    subject: `New merch order${params.orderRef ? ` ${params.orderRef}` : ''} from ${params.name} — ${params.items.length} item${params.items.length === 1 ? '' : 's'}${params.total_kes ? ` — KES ${params.total_kes.toLocaleString('en-KE')}` : ''}`,
     htmlContent: html,
   })
 }

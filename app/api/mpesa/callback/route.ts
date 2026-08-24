@@ -51,15 +51,14 @@ export async function POST(req: NextRequest) {
       if (isSuccess) {
         const { data: order } = await supabase
           .from('merch_orders')
-          .select('order_ref, name, email, phone, colour, size, quantity, address, message, total_kes')
+          .select('order_ref, name, email, phone, items, address, message, total_kes')
           .eq('id', tx.order_id)
           .single()
 
         if (order) {
           notifyMerchOrder({
             name: order.name, email: order.email, phone: order.phone,
-            colour: order.colour, size: order.size, quantity: order.quantity,
-            address: order.address, message: order.message, total_kes: order.total_kes,
+            items: order.items, address: order.address, message: order.message, total_kes: order.total_kes,
             orderRef: order.order_ref, mpesaReceipt: mpesaReceipt ?? undefined,
           }).catch(err => console.error('[notify merch order]', err))
         }
