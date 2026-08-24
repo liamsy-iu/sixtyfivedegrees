@@ -92,7 +92,7 @@ export function MerchSection() {
               onClick={() => addToCart(c.name)}
               disabled={!selectedSize[c.name]}
             >
-              Add to order
+              Add to cart
             </button>
           </div>
         ))}
@@ -100,7 +100,7 @@ export function MerchSection() {
 
       {cart.length > 0 && (
         <div className={styles.cart}>
-          <p className={styles['cart-title']}>Your order</p>
+          <p className={styles['cart-title']}>Your cart</p>
           {cart.map((i) => (
             <div key={`${i.colour}-${i.size}`} className={styles['cart-row']}>
               <span className={styles['cart-item']}>{i.colour} · {i.size}</span>
@@ -120,13 +120,6 @@ export function MerchSection() {
       )}
 
       <div id="order" className={styles['order-section']}>
-        <p className={styles['order-eye']}>Checkout</p>
-        <h2 className={styles['order-title']}>
-          {totalItems > 0 ? `${totalItems} ${totalItems === 1 ? 'hoodie' : 'hoodies'}` : 'Order a hoodie'}
-        </h2>
-        <p className={styles['order-sub']}>
-          Add at least one hoodie above, then pay securely with M-Pesa or choose pay on delivery.
-        </p>
         <MerchOrderForm cart={cart} totalKES={totalKES} />
       </div>
     </>

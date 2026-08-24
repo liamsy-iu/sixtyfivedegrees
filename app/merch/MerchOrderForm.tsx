@@ -1,19 +1,25 @@
 'use client'
 
 import { useState, useRef, useCallback } from 'react'
-import { CheckCircle2, Loader2 } from 'lucide-react'
+import { CheckCircle2, Loader2, AlertCircle, ArrowLeft } from 'lucide-react'
 import { saveMerchOrder } from '@/lib/actions/admin'
 import { createClient } from '@/lib/supabase/client'
 import { formatKES } from '@/lib/utils/pricing'
 import type { CartItem } from './MerchSection'
-import styles from '@/app/trade/TradeEnquiryForm.module.css'
+import { HOODIE_PRICE_CENTS } from './MerchSection'
+import styles from './MerchOrderForm.module.css'
 
-type Step = 'form' | 'mpesa_wait' | 'success' | 'cod_success'
+type Step = 'details' | 'payment' | 'mpesa_wait' | 'success' | 'cod_success'
 
 export function MerchOrderForm({ cart, totalKES }: { cart: CartItem[]; totalKES: number }) {
-  const [form, setForm] = useState({ name: '', email: '', phone: '', address: '', message: '' })
+  const [step, setStep] = useState<Step>('details')
+  const [name, setName] = useState('')
+  const [phone, setPhone] = useState('')
+  const [email, setEmail] = useState('')
+  const [address, setAddress] = useState('')
+  const [message, setMessage] = useState('')
   const [payment, setPayment] = useState<'mpesa' | 'cod'>('mpesa')
-  const [step, setStep] = useState<Step>('form')
+  const [mpesaPhone, setMpesaPhone] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [mpesaReceipt, setMpesaReceipt] = useState('')
@@ -23,8 +29,11 @@ export function MerchOrderForm({ cart, totalKES }: { cart: CartItem[]; totalKES:
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const channelRef = useRef<ReturnType<ReturnType<typeof createClient>['channel']> | null>(null)
 
-  function update(field: string, value: string) {
-    setForm(prev => ({ ...prev, [field]: value }))
+  function handleContinueToPayment() {
+    if (!name || !phone || !email) { setError('Please fill in your name, phone, and email.'); return }
+    setError('')
+    if (!mpesaPhone) setMpesaPhone(phone)
+    setStep('payment')
   }
 
   function stopWaiting() {
@@ -42,7 +51,7 @@ export function MerchOrderForm({ cart, totalKES }: { cart: CartItem[]; totalKES:
       setStep('success')
     } else if (data?.payment_status === 'failed') {
       stopWaiting()
-      setStep('form')
+      setStep('payment')
       setError('Payment was cancelled or failed. Please try again.')
     }
   }, [])
@@ -58,17 +67,20 @@ export function MerchOrderForm({ cart, totalKES }: { cart: CartItem[]; totalKES:
 
     timeoutRef.current = setTimeout(() => {
       stopWaiting()
-      setStep('form')
+      setStep('payment')
       setError('Payment timed out. Please try again.')
     }, 180000)
   }
 
-  async function handleSubmit() {
-    if (cart.length === 0 || !form.name || !form.phone || !form.email) return
+  async function handlePlaceOrder() {
+    if (cart.length === 0) return
     setError('')
     setLoading(true)
 
-    const result = await saveMerchOrder({ ...form, items: cart, total_kes: totalKES, paymentMethod: payment })
+    const result = await saveMerchOrder({
+      name, email, phone, address, message,
+      items: cart, total_kes: totalKES, paymentMethod: payment,
+    })
     if ('error' in result && result.error) {
       setError(result.error)
       setLoading(false)
@@ -82,7 +94,7 @@ export function MerchOrderForm({ cart, totalKES }: { cart: CartItem[]; totalKES:
       return
     }
 
-    const normalized = form.phone.startsWith('254') ? form.phone : `254${form.phone.replace(/^0/, '')}`
+    const normalized = mpesaPhone.startsWith('254') ? mpesaPhone : `254${mpesaPhone.replace(/^0/, '')}`
     const pushRes = await fetch('/api/mpesa/push', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -103,12 +115,24 @@ export function MerchOrderForm({ cart, totalKES }: { cart: CartItem[]; totalKES:
     startWaiting(result.orderId!)
   }
 
+  if (step === 'mpesa_wait') {
+    return (
+      <div className={styles['status-screen']}>
+        <Loader2 size={40} strokeWidth={1} className={`${styles.spin} ${styles['status-icon-wait']}`} />
+        <h2 className={styles['status-title']}>Check your phone</h2>
+        <p className={styles['status-sub']}>
+          A payment prompt for {formatKES(totalKES * 100)} has been sent to {mpesaPhone}. Enter your M-Pesa PIN to complete the order — this can take up to a minute.
+        </p>
+      </div>
+    )
+  }
+
   if (step === 'success' || step === 'cod_success') {
     return (
-      <div className={styles.success}>
-        <CheckCircle2 size={32} strokeWidth={1.5} className={styles['success-icon']} />
-        <h3 className={styles['success-title']}>Order confirmed — {orderRef}</h3>
-        <p className={styles['success-sub']}>
+      <div className={styles['status-screen']}>
+        <CheckCircle2 size={40} strokeWidth={1} className={styles['status-icon-success']} />
+        <h2 className={styles['status-title']}>Order confirmed — {orderRef}</h2>
+        <p className={styles['status-sub']}>
           {step === 'success'
             ? <>Payment received{mpesaReceipt ? ` (M-Pesa code ${mpesaReceipt})` : ''}. We'll be in touch to confirm delivery.</>
             : <>We'll be in touch to confirm delivery — pay {formatKES(totalKES * 100)} on arrival.</>}
@@ -117,60 +141,112 @@ export function MerchOrderForm({ cart, totalKES }: { cart: CartItem[]; totalKES:
     )
   }
 
-  if (step === 'mpesa_wait') {
-    return (
-      <div className={styles.success}>
-        <Loader2 size={32} strokeWidth={1.5} className={styles['success-icon']} style={{ animation: 'spin 1.5s linear infinite' }} />
-        <h3 className={styles['success-title']}>Check your phone</h3>
-        <p className={styles['success-sub']}>
-          A payment prompt for {formatKES(totalKES * 100)} has been sent to {form.phone}. Enter your M-Pesa PIN to complete the order — this can take up to a minute.
-        </p>
-      </div>
-    )
-  }
-
   return (
-    <div className={styles.form}>
-      {error && <p style={{ color: '#b91c1c', fontSize: '13px' }}>{error}</p>}
-      {cart.length === 0 && <p style={{ fontSize: '13px', color: 'var(--color-bark)' }}>Add a hoodie above to continue.</p>}
-      <div className={styles.row}>
-        <div className={styles.field}>
-          <label className={styles.label}>Your name *</label>
-          <input className={styles.input} value={form.name} onChange={e => update('name', e.target.value)} placeholder="Full name" />
+    <div className={styles.layout}>
+      {/* Left — form */}
+      <div>
+        <p className={styles['sec-eye']}>{step === 'details' ? '01 — Delivery details' : '02 — Payment'}</p>
+        <h2 className={styles.title}>{step === 'details' ? 'Where should we deliver?' : 'How would you like to pay?'}</h2>
+
+        {error && (
+          <div className={styles.error}>
+            <AlertCircle size={16} strokeWidth={1.5} />
+            {error}
+          </div>
+        )}
+
+        {step === 'details' && (
+          <div>
+            <div className={styles.field}>
+              <label className={styles.label}>Full name *</label>
+              <input className={styles.input} value={name} onChange={e => setName(e.target.value)} placeholder="Full name" />
+            </div>
+            <div className={styles.field}>
+              <label className={styles.label}>Phone *</label>
+              <input className={styles.input} value={phone} onChange={e => setPhone(e.target.value)} placeholder="0712 345 678" type="tel" />
+            </div>
+            <div className={styles.field}>
+              <label className={styles.label}>Email *</label>
+              <input className={styles.input} value={email} onChange={e => setEmail(e.target.value)} placeholder="your@email.com" type="email" />
+            </div>
+            <div className={styles.field}>
+              <label className={styles.label}>Delivery address</label>
+              <input className={styles.input} value={address} onChange={e => setAddress(e.target.value)} placeholder="Apartment, street, area" />
+            </div>
+            <div className={styles.field}>
+              <label className={styles.label}>Anything else <span className={styles.optional}>(optional)</span></label>
+              <textarea className={styles.textarea} value={message} onChange={e => setMessage(e.target.value)} placeholder="Questions, sizing help…" rows={3} />
+            </div>
+            <button className={styles['submit-btn']} onClick={handleContinueToPayment} disabled={cart.length === 0}>
+              Continue to payment
+            </button>
+          </div>
+        )}
+
+        {step === 'payment' && (
+          <div>
+            <button className={styles['back-btn']} onClick={() => setStep('details')}>
+              <ArrowLeft size={13} strokeWidth={1.5} /> Back to delivery details
+            </button>
+            <div className={styles['pay-options']}>
+              <button
+                className={`${styles['pay-option']} ${payment === 'mpesa' ? styles['pay-active'] : ''}`}
+                onClick={() => setPayment('mpesa')}
+              >
+                <span className={styles['pay-name']}>M-Pesa</span>
+                <span className={styles['pay-desc']}>STK push to your phone</span>
+              </button>
+              <button
+                className={`${styles['pay-option']} ${payment === 'cod' ? styles['pay-active'] : ''}`}
+                onClick={() => setPayment('cod')}
+              >
+                <span className={styles['pay-name']}>Cash on delivery</span>
+                <span className={styles['pay-desc']}>Pay when you receive</span>
+              </button>
+            </div>
+
+            {payment === 'mpesa' && (
+              <div className={styles.field}>
+                <label className={styles.label}>M-Pesa phone number</label>
+                <input
+                  className={styles.input}
+                  value={mpesaPhone}
+                  onChange={e => setMpesaPhone(e.target.value)}
+                  placeholder="0712 345 678"
+                  type="tel"
+                />
+                <p className={styles.hint}>You'll receive a payment prompt on this number</p>
+              </div>
+            )}
+
+            <button className={styles['submit-btn']} onClick={handlePlaceOrder} disabled={loading}>
+              {loading
+                ? <><Loader2 size={16} strokeWidth={1.5} className={styles.spin} /> Processing…</>
+                : payment === 'mpesa' ? `Pay ${formatKES(totalKES * 100)} via M-Pesa` : 'Place order — pay on delivery'}
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Right — cart summary */}
+      <div className={styles.summary}>
+        <h2 className={styles['summary-title']}>Your cart</h2>
+        <div className={styles['summary-items']}>
+          {cart.length === 0 && <p className={styles['summary-item-meta']}>No items yet — add a hoodie above.</p>}
+          {cart.map(item => (
+            <div key={`${item.colour}-${item.size}`} className={styles['summary-item']}>
+              <div>
+                <p className={styles['summary-item-name']}>65 Degrees Hoodie</p>
+                <p className={styles['summary-item-meta']}>{item.colour} · {item.size} · ×{item.quantity}</p>
+              </div>
+              <span className={styles['summary-item-price']}>{formatKES(HOODIE_PRICE_CENTS * item.quantity)}</span>
+            </div>
+          ))}
         </div>
-        <div className={styles.field}>
-          <label className={styles.label}>Phone *</label>
-          <input className={styles.input} type="tel" value={form.phone} onChange={e => update('phone', e.target.value)} placeholder="0712 345 678" />
+        <div className={styles['summary-totals']}>
+          <div className={`${styles['summary-row']} ${styles['summary-total']}`}><span>Total</span><span>{formatKES(totalKES * 100)}</span></div>
         </div>
       </div>
-      <div className={styles.field}>
-        <label className={styles.label}>Email *</label>
-        <input className={styles.input} type="email" value={form.email} onChange={e => update('email', e.target.value)} placeholder="your@email.com" />
-      </div>
-      <div className={styles.field}>
-        <label className={styles.label}>Delivery address</label>
-        <input className={styles.input} value={form.address} onChange={e => update('address', e.target.value)} placeholder="Where should this be delivered?" />
-      </div>
-      <div className={styles.field}>
-        <label className={styles.label}>Payment method</label>
-        <select className={styles.input} value={payment} onChange={e => setPayment(e.target.value as 'mpesa' | 'cod')}>
-          <option value="mpesa">M-Pesa — pay now</option>
-          <option value="cod">Pay on delivery</option>
-        </select>
-      </div>
-      <div className={styles.field}>
-        <label className={styles.label}>Anything else</label>
-        <textarea
-          className={styles.textarea}
-          value={form.message}
-          onChange={e => update('message', e.target.value)}
-          placeholder="Questions, sizing help, anything else…"
-          rows={3}
-        />
-      </div>
-      <button className={styles.submit} onClick={handleSubmit} disabled={loading || cart.length === 0 || !form.name || !form.phone || !form.email}>
-        {loading ? 'Sending…' : payment === 'mpesa' ? `Pay ${formatKES(totalKES * 100)} via M-Pesa` : 'Place order — pay on delivery'}
-      </button>
     </div>
   )
 }

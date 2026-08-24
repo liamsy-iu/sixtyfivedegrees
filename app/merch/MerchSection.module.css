@@ -24,10 +24,7 @@
 .cart-price { font-family: var(--font-mono); min-width: 80px; text-align: right; }
 .cart-total { display: flex; justify-content: space-between; padding-top: var(--space-4); margin-top: var(--space-2); font-family: var(--font-mono); font-size: var(--text-lg); font-weight: var(--weight-medium); color: var(--color-roast); }
 
-.order-section { max-width: 560px; margin: var(--space-20) auto 0; scroll-margin-top: var(--space-10); }
-.order-eye { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--color-crema); margin-bottom: var(--space-3); text-align: center; }
-.order-title { font-family: var(--font-serif); font-size: var(--text-3xl); color: var(--color-roast); text-align: center; margin-bottom: var(--space-3); }
-.order-sub { font-size: var(--text-sm); color: var(--color-bark); text-align: center; margin-bottom: var(--space-8); line-height: 1.7; }
+.order-section { max-width: 900px; margin: var(--space-20) auto 0; scroll-margin-top: var(--space-10); }
 
 @media (max-width: 900px) {
   .grid { grid-template-columns: repeat(2, 1fr); }
