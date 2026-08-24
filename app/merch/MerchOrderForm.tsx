@@ -222,7 +222,7 @@ export function MerchOrderForm({ cart, totalKES }: { cart: CartItem[]; totalKES:
             <button className={styles['submit-btn']} onClick={handlePlaceOrder} disabled={loading}>
               {loading
                 ? <><Loader2 size={16} strokeWidth={1.5} className={styles.spin} /> Processing…</>
-                : payment === 'mpesa' ? `Pay ${formatKES(totalKES * 100)} via M-Pesa` : 'Place order — pay on delivery'}
+                : payment === 'mpesa' ? 'Pay Now' : 'Place order — pay on delivery'}
             </button>
           </div>
         )}
