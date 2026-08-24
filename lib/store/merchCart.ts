@@ -9,11 +9,14 @@ export interface MerchCartItem {
 
 interface MerchCartStore {
   items: MerchCartItem[]
+  isOpen: boolean
 
   addItem: (colour: string, size: string) => void
   removeItem: (colour: string, size: string) => void
   updateQuantity: (colour: string, size: string, delta: number) => void
   clearCart: () => void
+  openCart: () => void
+  closeCart: () => void
 
   total: () => number
   itemCount: () => number
@@ -25,6 +28,7 @@ export const useMerchCartStore = create<MerchCartStore>()(
   persist(
     (set, get) => ({
       items: [],
+      isOpen: false,
 
       addItem: (colour, size) => {
         set((state) => {
@@ -56,6 +60,8 @@ export const useMerchCartStore = create<MerchCartStore>()(
       },
 
       clearCart: () => set({ items: [] }),
+      openCart:  () => set({ isOpen: true }),
+      closeCart: () => set({ isOpen: false }),
 
       total: () => get().items.reduce((s, i) => s + UNIT_PRICE_CENTS * i.quantity, 0),
       itemCount: () => get().items.reduce((s, i) => s + i.quantity, 0),

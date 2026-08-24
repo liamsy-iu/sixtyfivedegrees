@@ -2,15 +2,18 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { ShoppingBag, Menu, X } from 'lucide-react'
+import { ShoppingBag, Shirt, Menu, X } from 'lucide-react'
 import { useState } from 'react'
 import { useCartStore } from '@/lib/store/cart'
+import { useMerchCartStore } from '@/lib/store/merchCart'
 import styles from './Nav.module.css'
 
 export function Nav() {
   const [menuOpen, setMenuOpen] = useState(false)
   const itemCount = useCartStore((s) => s.itemCount())
   const openCart  = useCartStore((s) => s.openCart)
+  const merchItemCount = useMerchCartStore((s) => s.itemCount())
+  const openMerchCart  = useMerchCartStore((s) => s.openCart)
 
   return (
     <header className={styles.header}>
@@ -33,6 +36,10 @@ export function Nav() {
           <button className={styles['cart-btn']} onClick={openCart} aria-label={`Cart — ${itemCount} items`}>
             <ShoppingBag size={18} strokeWidth={1.5} />
             {itemCount > 0 && <span className={styles['cart-count']}>{itemCount}</span>}
+          </button>
+          <button className={styles['cart-btn']} onClick={openMerchCart} aria-label={`Merch cart — ${merchItemCount} items`}>
+            <Shirt size={18} strokeWidth={1.5} />
+            {merchItemCount > 0 && <span className={styles['cart-count']}>{merchItemCount}</span>}
           </button>
           <button className={styles['menu-btn']} onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu">
             {menuOpen ? <X size={20} strokeWidth={1.5} /> : <Menu size={20} strokeWidth={1.5} />}

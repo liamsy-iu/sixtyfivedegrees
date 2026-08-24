@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import { CartDrawer } from '@/components/shop/CartDrawer/CartDrawer'
+import { MerchCartDrawer } from '@/components/merch/MerchCartDrawer/MerchCartDrawer'
 import { IntroOverlay } from '@/components/layout/IntroOverlay/IntroOverlay'
 import '../styles/globals.css'
 
@@ -55,6 +56,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         {children}
         <CartDrawer />
+        <MerchCartDrawer />
         <IntroOverlay />
       </body>
     </html>

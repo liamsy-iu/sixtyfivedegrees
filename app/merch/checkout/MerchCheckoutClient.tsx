@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { motion } from 'framer-motion'
 import { CheckCircle2, Loader2, AlertCircle, ArrowLeft } from 'lucide-react'
 import { useMerchCartStore } from '@/lib/store/merchCart'
 import { saveMerchOrder } from '@/lib/actions/admin'
@@ -15,7 +16,7 @@ const HOODIE_PRICE_CENTS = 400000 // KES 4,000
 // STK push prompts on the customer's phone typically expire well before
 // this window closes, whether they enter their PIN, explicitly cancel, or
 // just dismiss it. This is a safety-net ceiling, not the expected wait --
-// the "Cancel and try again" link below gives an immediate way out
+// the "Cancel and go back" link below gives an immediate way out
 // regardless of how long Safaricom's callback actually takes to arrive.
 const MPESA_TIMEOUT_MS = 90000
 
@@ -263,28 +264,53 @@ export function MerchCheckoutClient() {
         )}
 
         {step === 'mpesa_wait' && (
-          <div className={styles['status-screen']}>
-            <Loader2 size={40} strokeWidth={1} className={`${styles.spin} ${styles['status-icon-wait']}`} />
-            <h2 className={styles['status-title']}>Check your phone</h2>
-            <p className={styles['status-sub']}>
-              A payment prompt for {formatKES(total)} has been sent to {mpesaPhone}. Enter your M-Pesa PIN to complete the order.
+          <div className={styles['mpesa-screen']}>
+            <Loader2 size={40} strokeWidth={1} className={styles.spin} style={{ color: 'var(--color-crema)' }} />
+            <h2 className={styles['mpesa-title']}>Check your phone</h2>
+            <p className={styles['mpesa-sub']}>
+              A payment prompt of <strong>{formatKES(total)}</strong> has been sent to <strong>{mpesaPhone}</strong>.
+              Enter your M-Pesa PIN to complete the purchase.
             </p>
-            <button className={styles['cancel-link']} onClick={handleCancelWait}>
-              Cancel and try again
+            <div className={styles['mpesa-order']}>
+              <span>Order</span>
+              <span className={styles['mpesa-ref']}>{orderRef}</span>
+            </div>
+            <button className={styles['mpesa-cancel']} onClick={handleCancelWait}>
+              Cancel and go back
             </button>
           </div>
         )}
 
         {(step === 'success' || step === 'cod_success') && (
-          <div className={styles['status-screen']}>
-            <CheckCircle2 size={40} strokeWidth={1} className={styles['status-icon-success']} />
-            <h2 className={styles['status-title']}>Order confirmed — {orderRef}</h2>
-            <p className={styles['status-sub']}>
+          <div className={styles['success-screen']}>
+            <motion.div
+              className={styles['success-check']}
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ type: 'spring', damping: 12, stiffness: 300 }}
+            >
+              <CheckCircle2 size={40} strokeWidth={1.5} color="#fff" />
+            </motion.div>
+            <h1 className={styles['success-title']}>Order confirmed!</h1>
+            <p className={styles['success-sub']}>
               {step === 'success'
-                ? <>Payment received{mpesaReceipt ? ` (M-Pesa code ${mpesaReceipt})` : ''}. We'll be in touch to confirm delivery.</>
-                : <>We'll be in touch to confirm delivery — pay {formatKES(total)} on arrival.</>}
+                ? <>Thank you, {name.split(' ')[0]}. Payment received — we'll be in touch to confirm delivery.</>
+                : <>Thank you, {name.split(' ')[0]}. We'll be in touch to confirm delivery — pay {formatKES(total)} on arrival.</>}
             </p>
-            <Link href="/shop" className={styles['cancel-link']}>Continue shopping →</Link>
+            <div className={styles['success-details']}>
+              <div className={styles['detail-row']}><span>Order ref</span><span className={styles['detail-val']}>{orderRef}</span></div>
+              {address && <div className={styles['detail-row']}><span>Delivery to</span><span className={styles['detail-val']}>{address}</span></div>}
+              <div className={styles['detail-row']}><span>Total</span><span className={styles['detail-val']}>{formatKES(total)}</span></div>
+              {mpesaReceipt && <div className={styles['detail-row']}><span>M-Pesa code</span><span className={styles['detail-val']}>{mpesaReceipt}</span></div>}
+            </div>
+            <div className={styles['success-actions']}>
+              <Link href="/merch" className={styles['success-btn']}>
+                Continue shopping
+              </Link>
+              <Link href="/" className={styles['success-btn']} style={{ background: 'transparent', color: 'var(--color-roast)', border: '1px solid var(--color-parchment-3)' }}>
+                Back home
+              </Link>
+            </div>
           </div>
         )}
       </div>
