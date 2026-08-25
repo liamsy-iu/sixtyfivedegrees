@@ -61,7 +61,7 @@ export async function POST(req: NextRequest) {
         .single()
 
       if (order) {
-        notifyNewOrder({
+        await notifyNewOrder({
           orderRef:        order.order_ref,
           customerName:    order.customer_name,
           customerPhone:   order.customer_phone,

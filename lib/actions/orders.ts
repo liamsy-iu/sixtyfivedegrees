@@ -53,7 +53,7 @@ export async function createOrderAction(input: CreateOrderInput) {
   // Notify you by email for COD orders immediately
   // M-Pesa orders are notified after callback confirms payment
   if (input.paymentMethod === 'cod') {
-    notifyNewOrder({
+    await notifyNewOrder({
       orderRef:        order.order_ref,
       customerName:    input.customerName,
       customerPhone:   input.customerPhone,
