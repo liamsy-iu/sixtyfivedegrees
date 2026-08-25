@@ -81,7 +81,10 @@
   width: 48px; height: 48px; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
   font-family: var(--font-serif); font-size: 20px; font-weight: 600;
+  position: relative;
+  overflow: hidden;
 }
+.item-photo { object-fit: contain; background: var(--color-fog); }
 .item-visual[data-grade='premium'] { background: #1E1208; color: var(--color-crema); }
 .item-visual[data-grade='classic'] { background: #1E1208; color: rgba(245,240,232,0.5); }
 .item-visual[data-grade='merch'] { background: #1E1208; color: var(--color-crema); font-size: 14px; }

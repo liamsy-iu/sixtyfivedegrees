@@ -12,6 +12,7 @@ export interface CoffeeCartItem {
   grind: 'whole_bean' | 'ground'
   price: number  // in cents
   quantity: number
+  image: string | null
 }
 
 export interface MerchCartItem {
@@ -21,6 +22,7 @@ export interface MerchCartItem {
   size: string          // clothing size (S/M/L/XL), not grams
   price: number          // in cents
   quantity: number
+  image: string | null
 }
 
 export type CartItem = CoffeeCartItem | MerchCartItem

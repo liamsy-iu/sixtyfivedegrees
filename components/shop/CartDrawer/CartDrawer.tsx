@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Minus, Plus, ShoppingBag } from 'lucide-react'
 import { useCartStore, itemKey } from '@/lib/store/cart'
@@ -83,7 +84,11 @@ export function CartDrawer() {
                           exit={{ opacity: 0, x: 20, height: 0, padding: 0 }}
                           transition={{ duration: 0.18 }}
                         >
-                          {item.kind === 'coffee' ? (
+                          {item.image ? (
+                            <div className={styles['item-visual']}>
+                              <Image src={item.image} alt={item.productName} fill className={styles['item-photo']} />
+                            </div>
+                          ) : item.kind === 'coffee' ? (
                             <div className={styles['item-visual']} data-grade={item.grade}>
                               <span className={styles['item-initial']}>K</span>
                             </div>

@@ -20,17 +20,28 @@ const SIZES = ['S', 'M', 'L', 'XL'] as const
 
 export function MerchSection() {
   const [selectedSize, setSelectedSize] = useState<Record<string, string>>({})
+  const [added, setAdded] = useState<Record<string, boolean>>({})
   const addItem = useCartStore((s) => s.addItem)
+  const openCart = useCartStore((s) => s.openCart)
 
-  function handleAdd(colour: string) {
+  function handleAdd(colour: string, slug: string) {
     const size = selectedSize[colour]
-    if (!size) return
+    if (!size || added[colour]) return
     addItem({
       kind: 'merch',
       productName: '65 Degrees Hoodie',
       colour, size,
       price: HOODIE_PRICE_CENTS,
+      image: `/merch/hoodie/${slug}-front.jpg`,
     })
+    // Same pattern as the coffee product page: brief "Added" feedback on
+    // the button itself, then open the shared cart drawer -- previously
+    // this just called addItem() and stopped, so the drawer never opened.
+    setAdded((prev) => ({ ...prev, [colour]: true }))
+    setTimeout(() => {
+      setAdded((prev) => ({ ...prev, [colour]: false }))
+      openCart()
+    }, 500)
   }
 
   return (
@@ -68,10 +79,10 @@ export function MerchSection() {
 
           <button
             className={styles.order}
-            onClick={() => handleAdd(c.name)}
-            disabled={!selectedSize[c.name]}
+            onClick={() => handleAdd(c.name, c.slug)}
+            disabled={!selectedSize[c.name] || added[c.name]}
           >
-            Add to cart
+            {added[c.name] ? 'Added ✓' : 'Add to cart'}
           </button>
         </div>
       ))}

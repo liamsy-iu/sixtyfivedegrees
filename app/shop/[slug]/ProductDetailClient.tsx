@@ -56,6 +56,7 @@ export function ProductDetailClient({ product }: { product: Product }) {
       variantId: selectedVariant.id, productId: product.id, productName: product.name,
       grade: product.grade as 'classic' | 'premium', roast: product.roast as 'medium' | 'dark',
       sizeGrams: selectedSize, grind: selectedGrind, price: selectedVariant.price,
+      image,
     })
     setAdded(true)
     if (btnRef.current) {
@@ -70,7 +71,7 @@ export function ProductDetailClient({ product }: { product: Product }) {
       ],{duration:600,easing:'cubic-bezier(0.16,1,0.3,1)'}).onfinish = () => flyEl.remove()
     }
     setTimeout(() => { setAdded(false); openCart() }, 1200)
-  }, [selectedVariant, added, addItem, product, selectedSize, selectedGrind, openCart])
+  }, [selectedVariant, added, addItem, product, selectedSize, selectedGrind, openCart, image])
 
   return (
     <div className={styles.page} ref={flyScope}>
