@@ -6,11 +6,11 @@ export interface CoffeeCartItem {
   variantId: string
   productId: string
   productName: string
-  grade: 'classic' | 'premium' | 'AA' | 'AB'   // widened during the tier→lot transition
+  grade: 'classic' | 'premium' | 'AA' | 'AB'
   roast: 'medium' | 'dark'
   sizeGrams: number
   grind: 'whole_bean' | 'ground'
-  grindSize: 'coarse' | 'medium-coarse' | 'medium' | 'fine' | null   // new
+  grindSize?: 'coarse' | 'medium-coarse' | 'medium' | 'fine' | null   // now optional — old fixed-tier items never set this
   price: number  // in cents
   quantity: number
   image: string | null

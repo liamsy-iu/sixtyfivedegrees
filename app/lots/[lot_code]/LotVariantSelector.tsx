@@ -38,21 +38,23 @@ export function LotVariantSelector({
   )
 
   function handleAdd() {
-    if (!selectedVariant) return
-    addItem({
-      variantId: selectedVariant.id,
-      productId: lotId,
-      productName: lotName,
-      grade,
-      roast: selectedVariant.roast,
-      sizeGrams: selectedVariant.size_grams,
-      grind: selectedVariant.grind,
-      grindSize: selectedVariant.grind_size,
-      price: selectedVariant.price,
-    })
-    setAdded(true)
-    setTimeout(() => { setAdded(false); openCart() }, 1200)
-  }
+  if (!selectedVariant) return
+  addItem({
+    kind: 'coffee',
+    variantId: selectedVariant.id,
+    productId: lotId,
+    productName: lotName,
+    grade,
+    roast: selectedVariant.roast,
+    sizeGrams: selectedVariant.size_grams,
+    grind: selectedVariant.grind,
+    grindSize: selectedVariant.grind_size,
+    price: selectedVariant.price,
+    image: null,
+  })
+  setAdded(true)
+  setTimeout(() => { setAdded(false); openCart() }, 1200)
+}
 
   if (availableVariants.length === 0) {
     return <p className="lot-out-of-stock">Currently out of stock — check back soon.</p>
