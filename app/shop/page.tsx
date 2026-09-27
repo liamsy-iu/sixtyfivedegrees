@@ -2,6 +2,8 @@ import { createClient } from '@/lib/supabase/server'
 import { Nav } from '@/components/layout/Nav/Nav'
 import { Footer } from '@/components/layout/Footer/Footer'
 import { ShopClient } from './ShopClient'
+import { getActiveLots } from '@/lib/lots'
+import { LotsSection } from './LotsSection'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -27,10 +29,13 @@ export default async function ShopPage() {
     .order('grade', { ascending: false })
     .order('roast', { ascending: true })
 
+  const lots = await getActiveLots()
+
   return (
     <>
       <Nav />
       <main>
+        <LotsSection lots={lots} />
         <ShopClient products={products ?? []} />
       </main>
       <Footer />

@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase/server'
-const supabase = createServiceClient()
 
 function generateLotCode(region: string, grade: string) {
   const slug = region.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
@@ -9,7 +8,7 @@ function generateLotCode(region: string, grade: string) {
 }
 
 export async function GET() {
-  const supabase = await createServiceClient()
+  const supabase = createServiceClient()
   const { data, error } = await supabase
     .from('lots')
     .select('*, name_words(word)')
@@ -22,11 +21,11 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-  const supabase = await createServiceClient()
+  const supabase = createServiceClient()
   const body = await req.json()
   const {
     grade, name_word_id, region, farm, process, altitude, variety,
-    tasting_notes, cupping_score, harvest_date, story,
+    tasting_notes, cupping_score, harvest_date, story, image_url,
   } = body
 
   if (!grade || !name_word_id || !region) {
@@ -53,7 +52,7 @@ export async function POST(req: Request) {
       farm: farm || null, process: process || null, altitude: altitude || null,
       variety: variety || null, tasting_notes: tasting_notes || null,
       cupping_score: cupping_score || null, harvest_date: harvest_date || null,
-      story: story || null,
+      story: story || null, image_url: image_url || null,
       lot_code: generateLotCode(region, grade),
       status: 'active',
     })
@@ -66,7 +65,7 @@ export async function POST(req: Request) {
     .from('name_words').update({ status: 'in_use' }).eq('id', name_word_id)
 
   if (flipError) {
-    await supabase.from('lots').delete().eq('id', lot.id) // don't leave an orphaned lot
+    await supabase.from('lots').delete().eq('id', lot.id)
     return NextResponse.json({ error: 'Failed to reserve name word, lot not created' }, { status: 500 })
   }
 

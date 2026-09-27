@@ -1,5 +1,16 @@
 import { createClient } from '@/lib/supabase/server'
 
+export type Variant = {
+  id: string
+  lot_id: string
+  roast: 'medium' | 'dark'
+  grind: 'ground' | 'whole_bean'
+  grind_size: 'coarse' | 'medium-coarse' | 'medium' | 'fine' | null
+  size_grams: number
+  price: number
+  is_available: boolean
+}
+
 export type Lot = {
   id: string
   lot_code: string
@@ -16,18 +27,8 @@ export type Lot = {
   date_received: string
   story: string | null
   status: 'active' | 'sold_out' | 'archived'
+  image_url: string | null
   variants: Variant[]
-}
-
-export type Variant = {
-  id: string
-  lot_id: string
-  roast: 'medium' | 'dark'
-  grind: 'ground' | 'whole_bean'
-  grind_size: 'coarse' | 'medium-coarse' | 'medium' | 'fine' | null
-  size_grams: number
-  price: number
-  is_available: boolean
 }
 
 function mapLotRow(row: any): Lot {

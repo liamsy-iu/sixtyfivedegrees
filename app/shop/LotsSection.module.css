@@ -1,0 +1,96 @@
+.section {
+  padding: var(--space-8) 0;
+  border-bottom: 1px solid var(--color-parchment-3);
+}
+
+.heading {
+  font-family: var(--font-serif);
+  font-size: var(--text-2xl);
+  font-weight: var(--weight-medium);
+  color: var(--color-roast);
+  margin-bottom: var(--space-6);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--space-6);
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-5);
+  border: 1px solid var(--color-parchment-3);
+  border-radius: var(--radius-md);
+  background: var(--color-parchment);
+  text-decoration: none;
+  transition: border-color var(--dur-fast), transform var(--dur-fast);
+}
+
+.card:hover {
+  border-color: var(--color-crema);
+  transform: translateY(-2px);
+}
+
+.cardSoldOut { opacity: 0.65; }
+.cardSoldOut:hover { transform: none; }
+
+.grade {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-crema);
+  margin-bottom: var(--space-2);
+}
+
+.name {
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  font-weight: var(--weight-medium);
+  color: var(--color-roast);
+  margin-bottom: var(--space-2);
+}
+
+.price {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  color: var(--color-roast);
+  margin-bottom: var(--space-3);
+}
+
+.notes {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 12px;
+  color: var(--color-bark);
+  line-height: 1.4;
+  margin-bottom: var(--space-4);
+}
+
+.cta {
+  margin-top: auto;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--color-roast);
+}
+
+.oosBanner {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--color-crema);
+  color: var(--color-roast);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 7px 0;
+  font-weight: var(--weight-medium);
+}

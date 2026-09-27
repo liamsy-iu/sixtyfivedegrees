@@ -7,9 +7,17 @@ import { notifyNewOrder } from '@/lib/notify'
 export interface OrderItem {
   productName: string
   productType: 'coffee' | 'merch'
-  grade: string | null; roast: string | null
-  size: string; grind: string | null; colour: string | null
-  quantity: number; unitPrice: number
+  grade: string | null
+  roast: string | null
+  size: string
+  grind: string | null
+  grindSize?: string | null
+  quantity: number
+  unitPrice: number
+  lotName?: string | null
+  lotRegion?: string | null
+  lotCode?: string | null
+  colour?: string | null
 }
 
 export interface CreateOrderInput {
@@ -44,9 +52,11 @@ export async function createOrderAction(input: CreateOrderInput) {
 
   await supabase.from('order_items').insert(
     input.items.map(i => ({
-      order_id: order.id, product_name: i.productName, product_type: i.productType,
-      grade: i.grade, roast: i.roast, size: i.size, grind: i.grind, colour: i.colour,
-      quantity: i.quantity, unit_price: i.unitPrice, subtotal: i.unitPrice * i.quantity,
+      order_id: order.id, product_name: i.productName, grade: i.grade,
+      roast: i.roast, size: i.size, grind: i.grind, quantity: i.quantity,
+      unit_price: i.unitPrice, subtotal: i.unitPrice * i.quantity,
+      grind_size: i.grindSize ?? null,
+      lot_name: i.lotName ?? null, lot_region: i.lotRegion ?? null, lot_code: i.lotCode ?? null,
     }))
   )
 

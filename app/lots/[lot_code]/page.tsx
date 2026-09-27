@@ -1,5 +1,8 @@
 import { notFound } from 'next/navigation'
+import Link from 'next/link'
 import { getLotByCode } from '@/lib/lots'
+import { LotVariantSelector } from './LotVariantSelector'
+import styles from './page.module.css'
 
 export default async function LotPage({
   params,
@@ -11,38 +14,62 @@ export default async function LotPage({
   if (!lot) notFound()
 
   return (
-    <main className="lot-page">
-      <p className="lot-grade">{lot.grade} Grade</p>
-      <h1 className="lot-name">{lot.name}</h1>
-      <p className="lot-region">{lot.region}{lot.farm ? ` · ${lot.farm}` : ''}</p>
+    <main className={styles.page}>
+      <div className={styles.container}>
+        <Link href="/shop" className={styles.back}>← Back to shop</Link>
 
-      {lot.status === 'sold_out' && (
-        <p className="lot-status-badge">Currently sold out</p>
-      )}
+        <div className={styles.layout}>
+          <div className={styles.visual}>
+            {lot.image_url ? (
+              <img src={lot.image_url} alt={lot.name} />
+            ) : (
+              <div className={styles['visual-fallback']}>
+                <p className={styles['visual-fallback-name']}>{lot.name}</p>
+              </div>
+            )}
+          </div>
 
-      <dl className="lot-details">
-        {lot.process && (<><dt>Process</dt><dd>{lot.process}</dd></>)}
-        {lot.altitude && (<><dt>Altitude</dt><dd>{lot.altitude}</dd></>)}
-        {lot.variety && (<><dt>Variety</dt><dd>{lot.variety}</dd></>)}
-        {lot.harvest_date && (<><dt>Harvest</dt><dd>{new Date(lot.harvest_date).toLocaleDateString()}</dd></>)}
-        {lot.cupping_score && (<><dt>Cupping Score</dt><dd>{lot.cupping_score}</dd></>)}
-      </dl>
+          <div>
+            <p className={styles.badge}>{lot.grade} Grade</p>
+            <h1 className={styles.name}>{lot.name}</h1>
+            <p className={styles.region}>{lot.region}{lot.farm ? ` · ${lot.farm}` : ''}</p>
 
-      {lot.tasting_notes && (
-        <section className="lot-tasting-notes">
-          <h2>Tasting Notes</h2>
-          <p>{lot.tasting_notes}</p>
-        </section>
-      )}
+            {lot.status === 'sold_out' && (
+              <p className={styles['status-badge']}>Currently sold out</p>
+            )}
 
-      {lot.story && (
-        <section className="lot-story">
-          <h2>The Story</h2>
-          <p>{lot.story}</p>
-        </section>
-      )}
+            <dl className={styles.details}>
+              {lot.process && (<><dt>Process</dt><dd>{lot.process}</dd></>)}
+              {lot.altitude && (<><dt>Altitude</dt><dd>{lot.altitude}</dd></>)}
+              {lot.variety && (<><dt>Variety</dt><dd>{lot.variety}</dd></>)}
+              {lot.harvest_date && (<><dt>Harvest</dt><dd>{new Date(lot.harvest_date).toLocaleDateString()}</dd></>)}
+              {lot.cupping_score && (<><dt>Cupping Score</dt><dd>{lot.cupping_score}</dd></>)}
+            </dl>
 
-      {/* Roast level + grind-size + pack-size selectors and add-to-cart go here — wired in the variant work next */}
+            {lot.tasting_notes && (
+              <div className={styles.section}>
+                <h2>Tasting Notes</h2>
+                <p>{lot.tasting_notes}</p>
+              </div>
+            )}
+
+            {lot.story && (
+              <div className={styles.section}>
+                <h2>The Story</h2>
+                <p>{lot.story}</p>
+              </div>
+            )}
+
+            <LotVariantSelector
+              lotId={lot.id}
+              lotName={lot.name}
+              grade={lot.grade}
+              variants={lot.variants}
+              imageUrl={lot.image_url}
+            />
+          </div>
+        </div>
+      </div>
     </main>
   )
 }

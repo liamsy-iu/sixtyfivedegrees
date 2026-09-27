@@ -16,6 +16,7 @@ type NameWord = { id: string; word: string; grade: 'AA' | 'AB' }
 const emptyForm = {
   grade: 'AA' as 'AA' | 'AB', name_word_id: '', region: '', farm: '', process: '',
   altitude: '', variety: '', tasting_notes: '', cupping_score: '', harvest_date: '', story: '',
+  image_url: '',
 }
 
 const BADGE_CLASS: Record<Lot['status'], string> = {
@@ -96,6 +97,11 @@ export function LotsAdminClient() {
             {words && words.length === 0 && (
               <span className={styles.warning}>No available names left for grade {form.grade}.</span>
             )}
+          </label>
+
+          <label className={`${styles.field} ${styles['field-wide']}`}>
+            Image URL
+            <input value={form.image_url} onChange={(e) => update('image_url', e.target.value)} placeholder="https://..." />
           </label>
 
           <label className={styles.field}>
