@@ -1,0 +1,232 @@
+.page {
+  padding: 32px 16px;
+  max-width: 1100px;
+  margin: 0 auto;
+  font-family: var(--font-sans);
+  color: var(--color-text);
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 32px;
+}
+
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg, 12px);
+  padding: 24px;
+  margin-bottom: 32px;
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--color-text-muted);
+}
+
+.field-wide {
+  grid-column: 1 / -1;
+}
+
+.field input,
+.field select,
+.field textarea {
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 8px 12px;
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  transition: border-color var(--duration-fast) ease;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: var(--color-brand);
+}
+
+.field textarea {
+  resize: vertical;
+  min-height: 72px;
+}
+
+.warning {
+  color: var(--color-amber-text);
+  font-size: 12px;
+}
+
+.error {
+  color: var(--color-red-text);
+  font-size: 13px;
+  margin-top: 12px;
+}
+
+.submitBtn {
+  grid-column: 1 / -1;
+  justify-self: start;
+  background: var(--color-brand);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background var(--duration-fast) ease;
+}
+
+.submitBtn:hover:not(:disabled) {
+  background: var(--color-brand-hover);
+}
+
+.submitBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ── Lots table ── */
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.table th {
+  text-align: left;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-subtle);
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--color-border-strong);
+}
+
+.table td {
+  padding: 12px;
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: middle;
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.badgeActive   { background: var(--color-brand-dim); color: var(--color-brand-text); border: 1px solid var(--color-brand); }
+.badgeSoldOut  { background: var(--color-amber-dim); color: var(--color-amber-text); border: 1px solid var(--color-amber); }
+.badgeArchived { background: var(--color-surface-3); color: var(--color-text-subtle); border: 1px solid var(--color-border-strong); }
+
+.actionBtn {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-text-muted);
+  font-size: 12px;
+  padding: 5px 10px;
+  margin-right: 8px;
+  cursor: pointer;
+  transition: all var(--duration-fast) ease;
+}
+
+.actionBtn:hover {
+  border-color: var(--color-border-strong);
+  color: var(--color-text);
+}
+
+.qrLink {
+  color: var(--color-blue-text);
+  font-size: 12px;
+  text-decoration: none;
+}
+
+.qrLink:hover {
+  text-decoration: underline;
+}
+
+/* ── Variants sub-panel ── */
+
+.variantsPanel {
+  background: var(--color-surface-2);
+  border-radius: var(--radius-md);
+  padding: 16px;
+}
+
+.variantsEmpty {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--color-text-muted);
+  font-size: 13px;
+}
+
+.generateBtn {
+  background: var(--color-brand-dim);
+  color: var(--color-brand-text);
+  border: 1px solid var(--color-brand);
+  border-radius: var(--radius-md);
+  padding: 6px 14px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.variantsTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.variantsTable th {
+  text-align: left;
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--color-text-subtle);
+  padding: 8px;
+}
+
+.variantsTable td {
+  padding: 8px;
+  border-top: 1px solid var(--color-border);
+}
+
+.variantRowOff {
+  opacity: 0.45;
+}
+
+.priceInput {
+  width: 90px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm, 6px);
+  padding: 4px 8px;
+  color: var(--color-text);
+  font-size: 13px;
+}

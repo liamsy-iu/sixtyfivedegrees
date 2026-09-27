@@ -2,6 +2,7 @@
 
 import useSWR from 'swr'
 import { useState } from 'react'
+import styles from './LotsAdminClient.module.css'
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
 
@@ -30,42 +31,53 @@ export function LotVariantsEditor({ lotId }: { lotId: string }) {
     mutate()
   }
 
-  if (!variants) return <p>Loading variants…</p>
+  if (!variants) return <p className={styles.variantsEmpty}>Loading variants…</p>
 
   if (variants.length === 0) {
     return (
-      <div className="lot-variants-empty">
-        <p>No variants yet for this lot.</p>
-        <button onClick={generate} disabled={generating}>
-          {generating ? 'Generating…' : 'Generate all combinations'}
-        </button>
+      <div className={styles.variantsPanel}>
+        <div className={styles.variantsEmpty}>
+          <span>No variants yet for this lot.</span>
+          <button className={styles.generateBtn} onClick={generate} disabled={generating}>
+            {generating ? 'Generating…' : 'Generate all combinations'}
+          </button>
+        </div>
       </div>
     )
   }
 
   return (
-    <table className="lot-variants-table">
-      <thead>
-        <tr><th>Roast</th><th>Format</th><th>Grind size</th><th>Size</th><th>Price (KES)</th><th>Available</th></tr>
-      </thead>
-      <tbody>
-        {variants.map((v) => (
-          <tr key={v.id} className={v.is_available ? '' : 'lot-variants-row-off'}>
-            <td>{v.roast}</td>
-            <td>{v.grind === 'whole_bean' ? 'Whole bean' : 'Ground'}</td>
-            <td>{v.grind_size ?? '—'}</td>
-            <td>{v.size_grams}g</td>
-            <td>
-              <input type="number" value={v.price}
-                onChange={(e) => updateVariant(v.id, { price: Number(e.target.value) })} />
-            </td>
-            <td>
-              <input type="checkbox" checked={v.is_available}
-                onChange={(e) => updateVariant(v.id, { is_available: e.target.checked })} />
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <div className={styles.variantsPanel}>
+      <table className={styles.variantsTable}>
+        <thead>
+          <tr><th>Roast</th><th>Format</th><th>Grind size</th><th>Size</th><th>Price (KES)</th><th>Available</th></tr>
+        </thead>
+        <tbody>
+          {variants.map((v) => (
+            <tr key={v.id} className={v.is_available ? undefined : styles.variantRowOff}>
+              <td>{v.roast}</td>
+              <td>{v.grind === 'whole_bean' ? 'Whole bean' : 'Ground'}</td>
+              <td>{v.grind_size ?? '—'}</td>
+              <td>{v.size_grams}g</td>
+              <td>
+                <input
+                  className={styles.priceInput}
+                  type="number"
+                  value={v.price}
+                  onChange={(e) => updateVariant(v.id, { price: Number(e.target.value) })}
+                />
+              </td>
+              <td>
+                <input
+                  type="checkbox"
+                  checked={v.is_available}
+                  onChange={(e) => updateVariant(v.id, { is_available: e.target.checked })}
+                />
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   )
 }
