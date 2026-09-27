@@ -11,6 +11,8 @@ export interface CoffeeCartItem {
   sizeGrams: number
   grind: 'whole_bean' | 'ground'
   grindSize?: 'coarse' | 'medium-coarse' | 'medium' | 'fine' | null   // now optional — old fixed-tier items never set this
+  lotCode?: string | null    // new — lot's lot_code, for order snapshot; null for old fixed-tier items
+  lotRegion?: string | null  // new — lot's region, for order snapshot; null for old fixed-tier items
   price: number  // in cents
   quantity: number
   image: string | null

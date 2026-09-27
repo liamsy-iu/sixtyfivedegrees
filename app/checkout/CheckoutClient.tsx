@@ -93,7 +93,11 @@ export function CheckoutClient() {
           roast: i.roast,
           size: formatSize(i.sizeGrams),
           grind: i.grind,
+          grindSize: i.grindSize ?? null,
           colour: null,
+          lotName: (i.grade === 'AA' || i.grade === 'AB') ? i.productName : null,
+          lotRegion: i.lotRegion ?? null,
+          lotCode: i.lotCode ?? null,
           quantity: i.quantity,
           unitPrice: i.price,
         } : {

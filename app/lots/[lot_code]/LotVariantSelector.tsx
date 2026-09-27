@@ -18,13 +18,15 @@ const SIZES = [250, 500, 1000]
 const GRIND_SIZES = ['coarse', 'medium-coarse', 'medium', 'fine'] as const
 
 export function LotVariantSelector({
-  lotId, lotName, grade, variants, imageUrl,
+  lotId, lotName, grade, variants, imageUrl, lotCode, region,
 }: {
   lotId: string
   lotName: string
   grade: 'AA' | 'AB'
   variants: Variant[]
   imageUrl: string | null
+  lotCode: string
+  region: string
 }) {
   const availableVariants = variants.filter((v) => v.is_available)
   const availableRoasts = [...new Set(availableVariants.map((v) => v.roast))]
@@ -57,6 +59,8 @@ export function LotVariantSelector({
       grindSize: selectedVariant.grind_size,
       price: selectedVariant.price,
       image: imageUrl,
+      lotCode,
+      lotRegion: region,
     })
     setAdded(true)
     setTimeout(() => { setAdded(false); openCart() }, 1200)

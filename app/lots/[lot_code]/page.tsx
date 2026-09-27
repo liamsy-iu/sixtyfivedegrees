@@ -66,6 +66,8 @@ export default async function LotPage({
               grade={lot.grade}
               variants={lot.variants}
               imageUrl={lot.image_url}
+              lotCode={lot.lot_code}
+              region={lot.region}
             />
           </div>
         </div>
