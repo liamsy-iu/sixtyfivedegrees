@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useCartStore } from '@/lib/store/cart'
 import { formatKES } from '@/lib/utils/pricing'
+import styles from './LotVariantSelector.module.css'
 
 type Variant = {
   id: string
@@ -67,53 +68,69 @@ export function LotVariantSelector({
   }
 
   if (availableVariants.length === 0) {
-    return <p className="lot-out-of-stock">Currently out of stock — check back soon.</p>
+    return <p className={styles.outOfStock}>Currently out of stock — check back soon.</p>
   }
 
   return (
-    <div className="lot-variant-selector">
+    <div className={styles.selector}>
       {availableRoasts.length > 1 && (
-        <fieldset>
-          <legend>Roast</legend>
-          {availableRoasts.map((r) => (
-            <button key={r} data-active={roast === r} onClick={() => setRoast(r)}>
-              {r === 'medium' ? 'Medium' : 'Dark'}
-            </button>
-          ))}
-        </fieldset>
+        <div className={styles.group}>
+          <span className={styles.groupLabel}>Roast</span>
+          <div className={styles.row}>
+            {availableRoasts.map((r) => (
+              <button
+                key={r}
+                className={`${styles.pill} ${roast === r ? styles.pillActive : ''}`}
+                onClick={() => setRoast(r)}
+              >
+                {r === 'medium' ? 'Medium' : 'Dark'}
+              </button>
+            ))}
+          </div>
+        </div>
       )}
 
-      <fieldset>
-        <legend>Format</legend>
-        <button data-active={grind === 'whole_bean'} onClick={() => setGrind('whole_bean')}>Whole Bean</button>
-        <button data-active={grind === 'ground'} onClick={() => setGrind('ground')}>Ground</button>
-      </fieldset>
+      <div className={styles.group}>
+        <span className={styles.groupLabel}>Format</span>
+        <div className={styles.row}>
+          <button className={`${styles.pill} ${grind === 'whole_bean' ? styles.pillActive : ''}`} onClick={() => setGrind('whole_bean')}>Whole Bean</button>
+          <button className={`${styles.pill} ${grind === 'ground' ? styles.pillActive : ''}`} onClick={() => setGrind('ground')}>Ground</button>
+        </div>
+      </div>
 
       {grind === 'ground' && (
-        <fieldset>
-          <legend>Grind size</legend>
-          {GRIND_SIZES.map((g) => (
-            <button key={g} data-active={grindSize === g} onClick={() => setGrindSize(g)}>{g}</button>
-          ))}
-        </fieldset>
+        <div className={styles.group}>
+          <span className={styles.groupLabel}>Grind size</span>
+          <div className={styles.row}>
+            {GRIND_SIZES.map((g) => (
+              <button key={g} className={`${styles.pill} ${grindSize === g ? styles.pillActive : ''}`} onClick={() => setGrindSize(g)}>
+                {g}
+              </button>
+            ))}
+          </div>
+        </div>
       )}
 
-      <fieldset>
-        <legend>Size</legend>
-        {SIZES.map((s) => (
-          <button key={s} data-active={sizeGrams === s} onClick={() => setSizeGrams(s)}>{s}g</button>
-        ))}
-      </fieldset>
+      <div className={styles.group}>
+        <span className={styles.groupLabel}>Size</span>
+        <div className={styles.row}>
+          {SIZES.map((s) => (
+            <button key={s} className={`${styles.pill} ${sizeGrams === s ? styles.pillActive : ''}`} onClick={() => setSizeGrams(s)}>
+              {s}g
+            </button>
+          ))}
+        </div>
+      </div>
 
       {selectedVariant ? (
         <>
-          <p className="lot-price">{formatKES(selectedVariant.price)}</p>
-          <button className="lot-add-to-cart" onClick={handleAdd}>
+          <p className={styles.price}>{formatKES(selectedVariant.price)}</p>
+          <button className={styles.addBtn} onClick={handleAdd}>
             {added ? 'Added ✓' : 'Add to Cart'}
           </button>
         </>
       ) : (
-        <p className="lot-variant-unavailable">This combination isn't currently available.</p>
+        <p className={styles.unavailable}>This combination isn't currently available.</p>
       )}
     </div>
   )

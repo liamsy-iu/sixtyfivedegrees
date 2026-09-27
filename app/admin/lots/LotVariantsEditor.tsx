@@ -63,8 +63,8 @@ export function LotVariantsEditor({ lotId }: { lotId: string }) {
                 <input
                   className={styles.priceInput}
                   type="number"
-                  value={v.price}
-                  onChange={(e) => updateVariant(v.id, { price: Number(e.target.value) })}
+                  value={v.price / 100}
+                  onChange={(e) => updateVariant(v.id, { price: Math.round(Number(e.target.value) * 100) })}
                 />
               </td>
               <td>
