@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
+import { createServiceClient } from '@/lib/supabase/server'
+const supabase = createServiceClient()
 
 function generateLotCode(region: string, grade: string) {
   const slug = region.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')
@@ -8,7 +9,7 @@ function generateLotCode(region: string, grade: string) {
 }
 
 export async function GET() {
-  const supabase = await createClient()
+  const supabase = await createServiceClient()
   const { data, error } = await supabase
     .from('lots')
     .select('*, name_words(word)')
@@ -21,7 +22,7 @@ export async function GET() {
 }
 
 export async function POST(req: Request) {
-  const supabase = await createClient()
+  const supabase = await createServiceClient()
   const body = await req.json()
   const {
     grade, name_word_id, region, farm, process, altitude, variety,

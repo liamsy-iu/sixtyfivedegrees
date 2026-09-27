@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
+import { createServiceClient } from '@/lib/supabase/server'
+const supabase = createServiceClient()
 
 const SIZES = [250, 500, 1000]
 const ROASTS = ['medium', 'dark'] as const
@@ -7,7 +8,7 @@ const GRIND_SIZES = ['coarse', 'medium-coarse', 'medium', 'fine'] as const
 
 export async function GET(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
-  const supabase = await createClient()
+  const supabase = await createServiceClient()
   const { data, error } = await supabase
     .from('retail_variants').select('*').eq('lot_id', id)
     .order('roast').order('grind').order('grind_size').order('size_grams')
@@ -20,7 +21,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ id: str
 // price 0 / is_available false — admin turns on and prices only what's actually stocked.
 export async function POST(_req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id: lotId } = await params
-  const supabase = await createClient()
+  const supabase = await createServiceClient()
 
   const { count } = await supabase
     .from('retail_variants').select('id', { count: 'exact', head: true }).eq('lot_id', lotId)

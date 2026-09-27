@@ -1,11 +1,12 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
+import { createServiceClient } from '@/lib/supabase/server'
+const supabase = createServiceClient()
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url)
   const grade = searchParams.get('grade')
 
-  const supabase = await createClient()
+  const supabase = await createServiceClient()
   let query = supabase.from('name_words').select('*').eq('status', 'available')
   if (grade) query = query.eq('grade', grade)
 

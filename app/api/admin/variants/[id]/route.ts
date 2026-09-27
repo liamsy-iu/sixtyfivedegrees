@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
-import { createClient } from '@/lib/supabase/server'
+import { createServiceClient } from '@/lib/supabase/server'
+const supabase = createServiceClient()
 
 export async function PATCH(req: Request, { params }: { params: Promise<{ id: string }> }) {
   const { id } = await params
@@ -8,7 +9,7 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
   if ('price' in body) patch.price = body.price
   if ('is_available' in body) patch.is_available = body.is_available
 
-  const supabase = await createClient()
+  const supabase = await createServiceClient()
   const { data, error } = await supabase
     .from('retail_variants').update(patch).eq('id', id).select().single()
 
