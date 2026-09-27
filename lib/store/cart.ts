@@ -6,10 +6,11 @@ export interface CoffeeCartItem {
   variantId: string
   productId: string
   productName: string
-  grade: 'classic' | 'premium'
+  grade: 'classic' | 'premium' | 'AA' | 'AB'   // widened during the tier→lot transition
   roast: 'medium' | 'dark'
   sizeGrams: number
   grind: 'whole_bean' | 'ground'
+  grindSize: 'coarse' | 'medium-coarse' | 'medium' | 'fine' | null   // new
   price: number  // in cents
   quantity: number
   image: string | null
@@ -103,11 +104,12 @@ export const useCartStore = create<CartStore>()(
       itemCount: () => get().items.reduce((s, i) => s + i.quantity, 0),
     }),
     {
-      // Bumped from v1 -- the item shape changed (added a required `kind`
-      // discriminator), so any old persisted cart is safely abandoned
-      // rather than loaded in a shape the new code doesn't expect. This
-      // clears in-progress carts, not placed orders -- low stakes.
-      name: '65d-cart-v2',
+      // Bumped v2 -> v3 -- CoffeeCartItem's shape changed again (added
+      // `grindSize`, widened `grade` to include 'AA' | 'AB'), so any
+      // v2-persisted cart is safely abandoned rather than loaded in a
+      // shape the new code doesn't expect. Clears in-progress carts,
+      // not placed orders -- low stakes.
+      name: '65d-cart-v3',
       partialize: (state) => ({ items: state.items }),
     }
   )
