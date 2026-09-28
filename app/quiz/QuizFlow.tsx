@@ -2,26 +2,26 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
-import { getProductImage } from '@/lib/utils/productImages'
+import type { Lot } from '@/lib/lots'
+import {
+  getLotCardColor, getStartingPrice, getAvailableRoasts, isLotSoldOut,
+} from '@/lib/utils/lotDisplay'
 import styles from './QuizFlow.module.css'
 
 type Roast = 'dark' | 'medium'
-type Grade = 'classic' | 'premium'
+type Drink = 'black' | 'milk'
 type Vibe = 'ritual' | 'adventure'
 
-const CARD_COLORS: Record<string, string> = {
-  'kenya-premium-dark': '#5C2D0E',
-  'kenya-premium-medium': '#1E4035',
-  'kenya-classic-dark': '#1A2744',
-  'kenya-classic-medium': '#7A3120',
+const RESULTS: Record<string, string> = {
+  'milk-dark': 'Bold, familiar, no fuss.',
+  'milk-medium': 'Smooth, balanced, reliable.',
+  'black-dark': 'Intense, complex, unapologetic.',
+  'black-medium': 'Vibrant, layered, worth slowing down for.',
 }
 
-const RESULTS: Record<string, { title: string; line: string }> = {
-  'kenya-classic-dark': { title: 'Bold, familiar, no fuss.', line: 'daily ritual, sorted.' },
-  'kenya-classic-medium': { title: 'Smooth, balanced, reliable.', line: 'daily ritual, sorted.' },
-  'kenya-premium-dark': { title: 'Intense, complex, unapologetic.', line: 'next adventure, brewing.' },
-  'kenya-premium-medium': { title: 'Vibrant, layered, worth slowing down for.', line: 'next adventure, brewing.' },
+const VIBE_LINES: Record<Vibe, string> = {
+  ritual: 'daily ritual, sorted.',
+  adventure: 'next adventure, brewing.',
 }
 
 const QUESTIONS = [
@@ -35,8 +35,8 @@ const QUESTIONS = [
   {
     q: 'How do you take it?',
     options: [
-      { label: 'Black. Let the coffee speak.', value: 'premium' as Grade },
-      { label: 'With milk. Every single day.', value: 'classic' as Grade },
+      { label: 'Black. Let the coffee speak.', value: 'black' as Drink },
+      { label: 'With milk. Every single day.', value: 'milk' as Drink },
     ],
   },
   {
@@ -48,21 +48,41 @@ const QUESTIONS = [
   },
 ]
 
-export function QuizFlow() {
+// Roast decides which lots are eligible. Black drinkers get the highest-scoring
+// eligible lot; milk drinkers get the best value (lowest starting price).
+// If nothing in stock has the chosen roast, fall back to any in-stock lot.
+function pickLot(lots: Lot[], roast: Roast, drink: Drink) {
+  const inStock = lots.filter((l) => !isLotSoldOut(l))
+  if (inStock.length === 0) return null
+
+  const matching = inStock.filter((l) => getAvailableRoasts(l.variants).includes(roast))
+  const pool = matching.length > 0 ? matching : inStock
+
+  const sorted = [...pool].sort((a, b) => {
+    if (drink === 'black') return Number(b.cupping_score ?? 0) - Number(a.cupping_score ?? 0)
+    const pa = getStartingPrice(a.variants)?.price ?? Infinity
+    const pb = getStartingPrice(b.variants)?.price ?? Infinity
+    return pa - pb
+  })
+
+  return { lot: sorted[0], roastMatched: matching.length > 0 }
+}
+
+export function QuizFlow({ lots }: { lots: Lot[] }) {
   const [step, setStep] = useState(0)
   const [roast, setRoast] = useState<Roast | null>(null)
-  const [grade, setGrade] = useState<Grade | null>(null)
+  const [drink, setDrink] = useState<Drink | null>(null)
   const [vibe, setVibe] = useState<Vibe | null>(null)
 
   function answer(index: number, value: string) {
     if (index === 0) setRoast(value as Roast)
-    if (index === 1) setGrade(value as Grade)
+    if (index === 1) setDrink(value as Drink)
     if (index === 2) setVibe(value as Vibe)
     setStep(index + 1)
   }
 
   function restart() {
-    setStep(0); setRoast(null); setGrade(null); setVibe(null)
+    setStep(0); setRoast(null); setDrink(null); setVibe(null)
   }
 
   if (step < 3) {
@@ -89,27 +109,65 @@ export function QuizFlow() {
     )
   }
 
-  const slug = `kenya-${grade}-${roast}`
-  const result = RESULTS[slug]
-  const image = getProductImage(slug)
-  const cardColor = CARD_COLORS[slug]
-  const gradeLabel = grade === 'classic' ? 'Classic' : 'Premium'
-  const roastLabel = roast === 'dark' ? 'Dark roast' : 'Medium roast'
+  const match = pickLot(lots, roast!, drink!)
+
+  if (!match) {
+    return (
+      <section className={styles.result}>
+        <div className={styles.container}>
+          <div className={styles['result-empty']}>
+            <p className={styles['result-empty-text']}>
+              Our current lots are all sold out. New ones are on their way.
+            </p>
+            <Link href="/shop" className={styles['result-empty-link']}>See the shop →</Link>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  const { lot, roastMatched } = match
+  const lotRoasts = getAvailableRoasts(lot.variants)
+  const shownRoast: Roast = roastMatched ? roast! : (lotRoasts[0] ?? roast!)
+  const roastLabel = shownRoast === 'dark' ? 'Dark roast' : 'Medium roast'
+  const title = RESULTS[`${drink}-${shownRoast}`]
+  const line = VIBE_LINES[vibe!]
 
   return (
     <section className={styles.result}>
       <div className={styles.container}>
         <p className={styles['result-eye']}>Your match</p>
-        <div className={styles['result-card']} style={{ '--card-color': cardColor } as React.CSSProperties}>
+        <div className={styles['result-card']} style={{ '--card-color': getLotCardColor(lot.lot_code) } as React.CSSProperties}>
           <div className={styles['result-visual']}>
-            {image && <Image src={image} alt={`${gradeLabel} ${roastLabel}`} fill className={styles['result-img']} />}
+            {lot.image_url ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={lot.image_url}
+                alt={lot.name}
+                className={styles['result-img']}
+                style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}
+              />
+            ) : (
+              <div className={styles['result-typo']}>
+                <span className={styles['result-typo-name']}>{lot.name}</span>
+                <span className={styles['result-typo-grade']}>{lot.grade} Grade</span>
+              </div>
+            )}
           </div>
           <div className={styles['result-info']}>
-            <p className={styles['result-tag']}>{gradeLabel} · {roastLabel}</p>
-            <h2 className={styles['result-title']}>{result.title}</h2>
-            <p className={styles['result-line']}>Your {result.line}</p>
+            <p className={styles['result-tag']}>{lot.grade} grade · {roastLabel}</p>
+            <h2 className={styles['result-title']}>{title}</h2>
+            <p className={styles['result-line']}>Your {line}</p>
+            <p className={styles['result-lot']}>
+              {lot.name} · {lot.region}{lot.process ? ` · ${lot.process}` : ''}
+            </p>
+            {!roastMatched && (
+              <p className={styles['result-note']}>
+                We don&apos;t have a {roast} roast in stock right now, so this is the best match we have.
+              </p>
+            )}
             <div className={styles['result-actions']}>
-              <Link href={`/shop/${slug}`} className={styles['result-cta']}>Shop this roast</Link>
+              <Link href={`/lots/${lot.lot_code}`} className={styles['result-cta']}>Shop this lot</Link>
               <button onClick={restart} className={styles['result-retry']}>Retake the quiz</button>
             </div>
           </div>

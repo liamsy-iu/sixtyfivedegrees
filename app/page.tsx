@@ -1,14 +1,17 @@
 import { Suspense } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
 import { Nav } from '@/components/layout/Nav/Nav'
 import { Footer } from '@/components/layout/Footer/Footer'
 import { JourneyTimeline } from '@/components/home/JourneyTimeline/JourneyTimeline'
 import { ProductGridReveal } from '@/components/home/ProductGridReveal/ProductGridReveal'
 import { HeroVideo } from '@/components/home/HeroVideo/HeroVideo'
-import { createClient } from '@/lib/supabase/server'
+import { getActiveLots } from '@/lib/lots'
+import type { Lot } from '@/lib/lots'
 import { formatKES } from '@/lib/utils/pricing'
-import { getProductImage } from '@/lib/utils/productImages'
+import {
+  getLotCardColor, getStartingPrice, getAvailableRoasts,
+  getRoastLabel, formatNotes, isLotSoldOut,
+} from '@/lib/utils/lotDisplay'
 import { ArrowRight } from 'lucide-react'
 import type { Metadata } from 'next'
 import styles from './page.module.css'
@@ -19,52 +22,31 @@ export const metadata: Metadata = {
   alternates: { canonical: 'https://www.sixtyfivedegrees.com' },
   openGraph: {
     title: '65 Degrees Coffee Roastery — Specialty Coffee Nairobi, Kenya',
-    description: 'Fresh roasted single origin Kenyan coffee delivered to your door in Nairobi. Classic from KES 750, Premium from KES 1,100.',
+    description: 'Fresh roasted single origin Kenyan coffee delivered to your door in Nairobi. Small lots, traceable to the farm.',
     url: 'https://www.sixtyfivedegrees.com',
     images: [{ url: '/og-image.png', width: 1200, height: 630 }],
   },
 }
 
-export const revalidate = 3600
-
-const CARD_COLORS: Record<string, string> = {
-  'kenya-premium-dark':   '#5C2D0E',
-  'kenya-premium-medium': '#1E4035',
-  'kenya-classic-dark':   '#1A2744',
-  'kenya-classic-medium': '#7A3120',
-}
-
-async function getProducts() {
-  const supabase = await createClient()
-  const { data } = await supabase
-    .from('products')
-    .select('id, name, slug, grade, roast, description, tasting_notes, origin_region, origin_process, is_available')
-    .order('grade', { ascending: false })
-    .order('roast', { ascending: true })
-  return data ?? []
-}
-
-async function getLowestRetailPrice(productId: string): Promise<number | null> {
-  const supabase = await createClient()
-  const { data } = await supabase
-    .from('retail_variants').select('price')
-    .eq('product_id', productId).eq('size_grams', 250)
-    .eq('grind', 'whole_bean').eq('is_available', true).single()
-  return data?.price ?? null
-}
+export const revalidate = 60
 
 // Isolated behind its own Suspense boundary so the Supabase round-trip for
-// products/pricing never blocks the initial HTML response — everything
+// lots/pricing never blocks the initial HTML response — everything
 // above and around this (nav, hero, intro overlay, why/journey sections)
 // streams to the browser immediately regardless of how long this takes.
 async function HomeProducts() {
-  const products = await getProducts()
-  const productsWithPrices = await Promise.all(
-    products.map(async (p) => ({ ...p, startingPrice: await getLowestRetailPrice(p.id) }))
-  )
+  const lots = await getActiveLots()
+  const featured = [...lots]
+    .sort((a, b) => Number(isLotSoldOut(a)) - Number(isLotSoldOut(b)))
+    .slice(0, 4)
+
+  if (featured.length === 0) {
+    return <p className={styles['sec-eye']}>New lots are on their way. Check back soon.</p>
+  }
+
   return (
     <ProductGridReveal className={styles['product-grid']}>
-      {productsWithPrices.map((product) => <ProductCard key={product.id} product={product} />)}
+      {featured.map((lot) => <LotCard key={lot.id} lot={lot} />)}
     </ProductGridReveal>
   )
 }
@@ -242,44 +224,52 @@ export default function HomePage() {
   )
 }
 
-function ProductCard({ product }: { product: any }) {
-  const notes      = product.tasting_notes as string[]
-  const image      = getProductImage(product.slug)
-  const isOOS      = !product.is_available
-  const isPremium  = product.grade === 'premium'
-  const roastLabel = product.roast === 'medium' ? 'Medium roast' : 'Dark roast'
-  const cardColor  = CARD_COLORS[product.slug] ?? '#2D3A2E'
+function LotCard({ lot }: { lot: Lot }) {
+  const isOOS      = isLotSoldOut(lot)
+  const start      = getStartingPrice(lot.variants)
+  const roastLabel = getRoastLabel(getAvailableRoasts(lot.variants))
+  const notes      = formatNotes(lot.tasting_notes)
 
   return (
-    <Link href={`/shop/${product.slug}`}
+    <Link
+      href={`/lots/${lot.lot_code}`}
       className={`${styles['product-card']} ${isOOS ? styles['product-card-oos'] : ''}`}
-      style={{ '--card-bg': cardColor } as React.CSSProperties}>
+      style={{ '--card-bg': getLotCardColor(lot.lot_code) } as React.CSSProperties}
+    >
       <div className={styles['product-visual']}>
-        {image ? (
-          <Image src={image} alt={product.name} fill
-            sizes="(max-width: 640px) 100vw, 25vw"
-            className={styles['product-img']} />
+        {lot.image_url ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={lot.image_url}
+            alt={lot.name}
+            className={styles['product-img']}
+            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}
+          />
         ) : (
           <div className={styles['product-typo']}>
-            <span className={styles['typo-origin']}>Kenya</span>
-            <span className={styles['typo-grade']}>{isPremium ? 'Premium' : 'Classic'}</span>
+            <span className={styles['typo-origin']}>{lot.name}</span>
+            <span className={styles['typo-grade']}>{lot.grade} Grade</span>
           </div>
         )}
         {isOOS && <div className={styles['oos-band']}>Out of stock</div>}
       </div>
       <div className={styles['product-info']}>
         <div className={styles['product-meta']}>
-          <span className={styles['product-tag']}>{isPremium ? 'Premium' : 'Classic'}</span>
-          <span className={styles['product-dot']}>·</span>
-          <span className={styles['product-tag']}>{roastLabel}</span>
+          <span className={styles['product-tag']}>{lot.grade} grade</span>
+          {roastLabel && (
+            <>
+              <span className={styles['product-dot']}>·</span>
+              <span className={styles['product-tag']}>{roastLabel}</span>
+            </>
+          )}
         </div>
-        <h2 className={styles['product-name']}>{product.name}</h2>
-        <p className={styles['product-notes']}>{notes.join(' · ')}</p>
-        <p className={styles['product-origin']}>{product.origin_region ?? 'Kenya'}{product.origin_process ? ` · ${product.origin_process}` : ''}</p>
+        <h2 className={styles['product-name']}>{lot.name}</h2>
+        {notes && <p className={styles['product-notes']}>{notes}</p>}
+        <p className={styles['product-origin']}>{lot.region}{lot.process ? ` · ${lot.process}` : ''}</p>
       </div>
       <div className={styles['product-footer']}>
         <span className={styles['product-price']}>
-          {isOOS ? 'Unavailable' : product.startingPrice ? `${formatKES(product.startingPrice)} /250g` : '—'}
+          {isOOS ? 'Unavailable' : start ? `${formatKES(start.price)} /${start.sizeGrams}g` : '—'}
         </span>
         <span className={styles['product-btn']}>
           {isOOS ? 'View' : 'Shop now'} <ArrowRight size={12} strokeWidth={2} />

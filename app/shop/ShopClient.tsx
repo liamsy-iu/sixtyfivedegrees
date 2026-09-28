@@ -2,40 +2,27 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
 import { ArrowRight } from 'lucide-react'
+import type { Lot } from '@/lib/lots'
 import { formatKES } from '@/lib/utils/pricing'
-import { getProductImage } from '@/lib/utils/productImages'
+import {
+  getLotCardColor, getStartingPrice, getAvailableRoasts,
+  getRoastLabel, formatNotes, isLotSoldOut,
+} from '@/lib/utils/lotDisplay'
 import styles from './page.module.css'
 
-interface Variant { id: string; size_grams: number; grind: string; price: number; is_available: boolean }
-interface Product {
-  id: string; name: string; slug: string; grade: string; roast: string
-  description: string; tasting_notes: string[]; is_available: boolean; retail_variants: Variant[]
-  origin_region?: string | null; origin_process?: string | null
-}
-
-function getLowestPrice(variants: Variant[]): number | null {
-  const prices = variants.filter(v => v.size_grams === 250 && v.is_available).map(v => v.price)
-  return prices.length ? Math.min(...prices) : null
-}
-
-const CARD_COLORS: Record<string, string> = {
-  'kenya-premium-dark':   '#5C2D0E',
-  'kenya-premium-medium': '#1E4035',
-  'kenya-classic-dark':   '#1A2744',
-  'kenya-classic-medium': '#7A3120',
-}
-
-export function ShopClient({ products }: { products: Product[] }) {
+export function ShopClient({ lots }: { lots: Lot[] }) {
   const [roastFilter, setRoastFilter] = useState<string>('all')
   const [gradeFilter, setGradeFilter] = useState<string>('all')
 
-  const filtered = products.filter(p => {
-    if (roastFilter !== 'all' && p.roast !== roastFilter) return false
-    if (gradeFilter !== 'all' && p.grade !== gradeFilter) return false
+  const filtered = lots.filter((l) => {
+    if (roastFilter !== 'all' && !getAvailableRoasts(l.variants).includes(roastFilter as 'medium' | 'dark')) return false
+    if (gradeFilter !== 'all' && l.grade !== gradeFilter) return false
     return true
   })
+
+  // In-stock lots first; the sort is stable, so newest-first order is kept within each group.
+  const sorted = [...filtered].sort((a, b) => Number(isLotSoldOut(a)) - Number(isLotSoldOut(b)))
 
   return (
     <div className={styles.page}>
@@ -43,7 +30,7 @@ export function ShopClient({ products }: { products: Product[] }) {
         <div className={styles.container}>
           <p className={styles.eye}>Single origin · Kenya</p>
           <h1 className={styles.title}>The beans</h1>
-          <Link href="/quiz" className={styles['quiz-link']}>Not sure which grade? Find your roast →</Link>
+          <Link href="/quiz" className={styles['quiz-link']}>Not sure which one? Find your roast →</Link>
         </div>
       </div>
       <div className={styles['filter-bar']}>
@@ -51,7 +38,7 @@ export function ShopClient({ products }: { products: Product[] }) {
           <div className={styles.filters}>
             <div className={styles['filter-group']}>
               <span className={styles['filter-label']}>Roast</span>
-              {['all', 'medium', 'dark'].map(r => (
+              {['all', 'medium', 'dark'].map((r) => (
                 <button key={r} className={`${styles['filter-btn']} ${roastFilter === r ? styles.active : ''}`} onClick={() => setRoastFilter(r)}>
                   {r === 'all' ? 'All' : r.charAt(0).toUpperCase() + r.slice(1)}
                 </button>
@@ -59,9 +46,9 @@ export function ShopClient({ products }: { products: Product[] }) {
             </div>
             <div className={styles['filter-group']}>
               <span className={styles['filter-label']}>Grade</span>
-              {['all', 'classic', 'premium'].map(g => (
+              {['all', 'AA', 'AB'].map((g) => (
                 <button key={g} className={`${styles['filter-btn']} ${gradeFilter === g ? styles.active : ''}`} onClick={() => setGradeFilter(g)}>
-                  {g === 'all' ? 'All' : g.charAt(0).toUpperCase() + g.slice(1)}
+                  {g === 'all' ? 'All' : g}
                 </button>
               ))}
             </div>
@@ -70,14 +57,18 @@ export function ShopClient({ products }: { products: Product[] }) {
       </div>
       <div className={styles.products}>
         <div className={styles.container}>
-          {filtered.length === 0 ? (
+          {lots.length === 0 ? (
             <div className={styles.empty}>
-              <p>No products match your filters.</p>
+              <p>New lots are on their way. Check back soon.</p>
+            </div>
+          ) : sorted.length === 0 ? (
+            <div className={styles.empty}>
+              <p>No lots match your filters.</p>
               <button onClick={() => { setRoastFilter('all'); setGradeFilter('all') }} className={styles['clear-btn']}>Clear filters</button>
             </div>
           ) : (
             <div className={styles.grid}>
-              {filtered.map(p => <ProductCard key={p.id} product={p} />)}
+              {sorted.map((lot) => <LotCard key={lot.id} lot={lot} />)}
             </div>
           )}
         </div>
@@ -86,44 +77,52 @@ export function ShopClient({ products }: { products: Product[] }) {
   )
 }
 
-function ProductCard({ product: p }: { product: Product }) {
-  const lowestPrice = getLowestPrice(p.retail_variants)
-  const notes       = p.tasting_notes as string[]
-  const image       = getProductImage(p.slug)
-  const isOOS       = !p.is_available
-  const isPremium   = p.grade === 'premium'
-  const roastLabel  = p.roast === 'medium' ? 'Medium roast' : 'Dark roast'
-  const cardColor   = CARD_COLORS[p.slug] ?? '#2D3A2E'
+function LotCard({ lot }: { lot: Lot }) {
+  const isOOS      = isLotSoldOut(lot)
+  const start      = getStartingPrice(lot.variants)
+  const roastLabel = getRoastLabel(getAvailableRoasts(lot.variants))
+  const notes      = formatNotes(lot.tasting_notes)
 
   return (
-    <Link href={`/shop/${p.slug}`} className={`${styles.card} ${isOOS ? styles['card-oos'] : ''}`}
-      style={{ '--card-bg': cardColor } as React.CSSProperties}>
+    <Link
+      href={`/lots/${lot.lot_code}`}
+      className={`${styles.card} ${isOOS ? styles['card-oos'] : ''}`}
+      style={{ '--card-bg': getLotCardColor(lot.lot_code) } as React.CSSProperties}
+    >
       <div className={styles['card-visual']}>
-        {image ? (
-          <Image src={image} alt={p.name} fill
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            className={styles['card-img']} />
+        {lot.image_url ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={lot.image_url}
+            alt={lot.name}
+            className={styles['card-img']}
+            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}
+          />
         ) : (
           <div className={styles['card-typo']}>
-            <span className={styles['typo-origin']}>Kenya</span>
-            <span className={styles['typo-grade']}>{isPremium ? 'Premium' : 'Classic'}</span>
+            <span className={styles['typo-origin']}>{lot.name}</span>
+            <span className={styles['typo-grade']}>{lot.grade} Grade</span>
           </div>
         )}
         {isOOS && <div className={styles['oos-band']}>Out of stock</div>}
       </div>
       <div className={styles['card-info']}>
         <div className={styles['card-meta']}>
-          <span className={styles['card-tag']}>{isPremium ? 'Premium' : 'Classic'}</span>
-          <span className={styles['card-dot']}>·</span>
-          <span className={styles['card-tag']}>{roastLabel}</span>
+          <span className={styles['card-tag']}>{lot.grade} grade</span>
+          {roastLabel && (
+            <>
+              <span className={styles['card-dot']}>·</span>
+              <span className={styles['card-tag']}>{roastLabel}</span>
+            </>
+          )}
         </div>
-        <h2 className={styles['card-name']}>{p.name}</h2>
-        <p className={styles['card-notes']}>{notes.join(' · ')}</p>
-        <p className={styles['card-origin']}>{p.origin_region ?? 'Kenya'}{p.origin_process ? ` · ${p.origin_process}` : ''}</p>
+        <h2 className={styles['card-name']}>{lot.name}</h2>
+        {notes && <p className={styles['card-notes']}>{notes}</p>}
+        <p className={styles['card-origin']}>{lot.region}{lot.process ? ` · ${lot.process}` : ''}</p>
       </div>
       <div className={styles['card-footer']}>
         <span className={styles['card-price']}>
-          {isOOS ? 'Unavailable' : lowestPrice ? `${formatKES(lowestPrice)} /250g` : '—'}
+          {isOOS ? 'Unavailable' : start ? `${formatKES(start.price)} /${start.sizeGrams}g` : '—'}
         </span>
         <span className={styles['card-btn']}>
           {isOOS ? 'View' : 'Shop now'} <ArrowRight size={12} strokeWidth={2} />
