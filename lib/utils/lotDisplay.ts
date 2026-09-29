@@ -1,8 +1,18 @@
 import type { Lot, Variant } from '@/lib/lots'
 
-const LOT_CARD_COLORS = ['#5C2D0E', '#1E4035', '#1A2744', '#7A3120']
+const LOT_CARD_COLORS = [
+  '#5C2D0E', // rust
+  '#1E4035', // forest
+  '#1A2744', // navy
+  '#7A3120', // sienna
+  '#4A1E2E', // wine
+  '#5C4A1E', // olive
+  '#1F3A3A', // teal
+  '#3B2E52', // plum
+]
 
-// Stable colour per lot: the same lot_code always gets the same colour.
+// For a single lot shown on its own (quiz result, etc.) — stable per lot_code,
+// but two different lots can still land on the same colour by chance.
 export function getLotCardColor(lotCode: string): string {
   let hash = 0
   for (let i = 0; i < lotCode.length; i++) {
@@ -11,11 +21,16 @@ export function getLotCardColor(lotCode: string): string {
   return LOT_CARD_COLORS[hash % LOT_CARD_COLORS.length]
 }
 
+// For a grid of lots shown together — colour by position, so cards on the
+// same page never collide (unless there are more than 8 lots at once).
+export function getLotCardColorForIndex(index: number): string {
+  return LOT_CARD_COLORS[index % LOT_CARD_COLORS.length]
+}
+
 export function isLotSoldOut(lot: Lot): boolean {
   return lot.status === 'sold_out' || !lot.variants.some((v) => v.is_available)
 }
 
-// Lowest price at the smallest available pack size (250g when it exists).
 export function getStartingPrice(variants: Variant[]): { price: number; sizeGrams: number } | null {
   const available = variants.filter((v) => v.is_available && v.price > 0)
   if (available.length === 0) return null
@@ -36,7 +51,6 @@ export function getRoastLabel(roasts: Array<'medium' | 'dark'>): string | null {
   return null
 }
 
-// tasting_notes is one text field on lots: "Orange, Caramel" -> "Orange · Caramel"
 export function formatNotes(notes: string | null): string {
   return (notes ?? '')
     .split(',')

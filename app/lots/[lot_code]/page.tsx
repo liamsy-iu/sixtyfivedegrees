@@ -25,6 +25,7 @@ export default async function LotPage({
             ) : (
               <div className={styles['visual-fallback']}>
                 <p className={styles['visual-fallback-name']}>{lot.name}</p>
+                <p className={styles['visual-fallback-region']}>{lot.region}</p>
               </div>
             )}
           </div>
@@ -43,7 +44,15 @@ export default async function LotPage({
               {lot.altitude && (<><dt>Altitude</dt><dd>{lot.altitude}</dd></>)}
               {lot.variety && (<><dt>Variety</dt><dd>{lot.variety}</dd></>)}
               {lot.harvest_date && (<><dt>Harvest</dt><dd>{new Date(lot.harvest_date).toLocaleDateString()}</dd></>)}
-              {lot.cupping_score && (<><dt>Cupping Score</dt><dd>{lot.cupping_score}</dd></>)}
+              {lot.cupping_score && (
+                <>
+                  <dt>Cupping Score</dt>
+                  <dd>
+                    {lot.cupping_score}
+                    {lot.cupping_score >= 80 && <span className={styles['specialty-tag']}> · Specialty grade</span>}
+                  </dd>
+                </>
+              )}
             </dl>
 
             {lot.tasting_notes && (

@@ -6,7 +6,7 @@ import { ArrowRight } from 'lucide-react'
 import type { Lot } from '@/lib/lots'
 import { formatKES } from '@/lib/utils/pricing'
 import {
-  getLotCardColor, getStartingPrice, getAvailableRoasts,
+  getLotCardColorForIndex, getStartingPrice, getAvailableRoasts,
   getRoastLabel, formatNotes, isLotSoldOut,
 } from '@/lib/utils/lotDisplay'
 import styles from './page.module.css'
@@ -21,7 +21,6 @@ export function ShopClient({ lots }: { lots: Lot[] }) {
     return true
   })
 
-  // In-stock lots first; the sort is stable, so newest-first order is kept within each group.
   const sorted = [...filtered].sort((a, b) => Number(isLotSoldOut(a)) - Number(isLotSoldOut(b)))
 
   return (
@@ -68,7 +67,7 @@ export function ShopClient({ lots }: { lots: Lot[] }) {
             </div>
           ) : (
             <div className={styles.grid}>
-              {sorted.map((lot) => <LotCard key={lot.id} lot={lot} />)}
+              {sorted.map((lot, i) => <LotCard key={lot.id} lot={lot} index={i} />)}
             </div>
           )}
         </div>
@@ -77,7 +76,7 @@ export function ShopClient({ lots }: { lots: Lot[] }) {
   )
 }
 
-function LotCard({ lot }: { lot: Lot }) {
+function LotCard({ lot, index }: { lot: Lot; index: number }) {
   const isOOS      = isLotSoldOut(lot)
   const start      = getStartingPrice(lot.variants)
   const roastLabel = getRoastLabel(getAvailableRoasts(lot.variants))
@@ -87,7 +86,7 @@ function LotCard({ lot }: { lot: Lot }) {
     <Link
       href={`/lots/${lot.lot_code}`}
       className={`${styles.card} ${isOOS ? styles['card-oos'] : ''}`}
-      style={{ '--card-bg': getLotCardColor(lot.lot_code) } as React.CSSProperties}
+      style={{ '--card-bg': getLotCardColorForIndex(index) } as React.CSSProperties}
     >
       <div className={styles['card-visual']}>
         {lot.image_url ? (
@@ -116,7 +115,7 @@ function LotCard({ lot }: { lot: Lot }) {
             </>
           )}
         </div>
-        <h2 className={styles['card-name']}>{lot.name}</h2>
+        {lot.image_url && <h2 className={styles['card-name']}>{lot.name}</h2>}
         {notes && <p className={styles['card-notes']}>{notes}</p>}
         <p className={styles['card-origin']}>{lot.region}{lot.process ? ` · ${lot.process}` : ''}</p>
       </div>

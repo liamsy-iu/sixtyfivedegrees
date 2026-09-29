@@ -9,7 +9,7 @@ import { getActiveLots } from '@/lib/lots'
 import type { Lot } from '@/lib/lots'
 import { formatKES } from '@/lib/utils/pricing'
 import {
-  getLotCardColor, getStartingPrice, getAvailableRoasts,
+  getLotCardColorForIndex, getStartingPrice, getAvailableRoasts,
   getRoastLabel, formatNotes, isLotSoldOut,
 } from '@/lib/utils/lotDisplay'
 import { ArrowRight } from 'lucide-react'
@@ -46,7 +46,7 @@ async function HomeProducts() {
 
   return (
     <ProductGridReveal className={styles['product-grid']}>
-      {featured.map((lot) => <LotCard key={lot.id} lot={lot} />)}
+      {featured.map((lot, i) => <LotCard key={lot.id} lot={lot} index={i} />)}
     </ProductGridReveal>
   )
 }
@@ -224,7 +224,7 @@ export default function HomePage() {
   )
 }
 
-function LotCard({ lot }: { lot: Lot }) {
+function LotCard({ lot, index }: { lot: Lot; index: number }) {
   const isOOS      = isLotSoldOut(lot)
   const start      = getStartingPrice(lot.variants)
   const roastLabel = getRoastLabel(getAvailableRoasts(lot.variants))
@@ -234,7 +234,7 @@ function LotCard({ lot }: { lot: Lot }) {
     <Link
       href={`/lots/${lot.lot_code}`}
       className={`${styles['product-card']} ${isOOS ? styles['product-card-oos'] : ''}`}
-      style={{ '--card-bg': getLotCardColor(lot.lot_code) } as React.CSSProperties}
+      style={{ '--card-bg': getLotCardColorForIndex(index) } as React.CSSProperties}
     >
       <div className={styles['product-visual']}>
         {lot.image_url ? (
@@ -263,7 +263,7 @@ function LotCard({ lot }: { lot: Lot }) {
             </>
           )}
         </div>
-        <h2 className={styles['product-name']}>{lot.name}</h2>
+        {lot.image_url && <h2 className={styles['product-name']}>{lot.name}</h2>}
         {notes && <p className={styles['product-notes']}>{notes}</p>}
         <p className={styles['product-origin']}>{lot.region}{lot.process ? ` · ${lot.process}` : ''}</p>
       </div>
