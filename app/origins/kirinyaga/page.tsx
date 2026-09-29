@@ -145,12 +145,6 @@ export default function KirinyagaPage() {
                 bar: real elevation, real traceability to specific washing stations, and a
                 cup that clears the SCA threshold consistently.
               </p>
-              <p className={styles['connection-body']}>
-                That doesn't mean it's what's currently in your bag. Our current lot is from{' '}
-                <Link href="/origins/kiambu" className={styles['inline-link']}>Kiambu</Link> — see
-                what's actually in stock below, or read about{' '}
-                <Link href="/origins" className={styles['inline-link']}>the other Central Kenya regions</Link> we look to.
-              </p>
             </div>
           </div>
         </section>
