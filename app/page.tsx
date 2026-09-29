@@ -8,6 +8,7 @@ import { HeroVideo } from '@/components/home/HeroVideo/HeroVideo'
 import { getActiveLots } from '@/lib/lots'
 import type { Lot } from '@/lib/lots'
 import { formatKES } from '@/lib/utils/pricing'
+import { LotCardMotif } from '@/components/shop/LotCardMotif'
 import {
   getLotCardColorForIndex, getStartingPrice, getAvailableRoasts,
   getRoastLabel, formatNotes, isLotSoldOut,
@@ -247,9 +248,12 @@ function LotCard({ lot, index }: { lot: Lot; index: number }) {
           />
         ) : (
           <div className={styles['product-typo']}>
+            <LotCardMotif className={styles['product-motif']} />
+            <div className={styles['product-typo-text']}>
             <span className={styles['typo-origin']}>{lot.name}</span>
             <span className={styles['typo-grade']}>{lot.grade} Grade</span>
           </div>
+</div>
         )}
         {isOOS && <div className={styles['oos-band']}>Out of stock</div>}
       </div>

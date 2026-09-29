@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import type { Lot } from '@/lib/lots'
 import { formatKES } from '@/lib/utils/pricing'
+import { LotCardMotif } from '@/components/shop/LotCardMotif'
 import {
   getLotCardColorForIndex, getStartingPrice, getAvailableRoasts,
   getRoastLabel, formatNotes, isLotSoldOut,
@@ -99,9 +100,12 @@ function LotCard({ lot, index }: { lot: Lot; index: number }) {
           />
         ) : (
           <div className={styles['card-typo']}>
+            <LotCardMotif className={styles['card-motif']} />
+            <div className={styles['card-typo-text']}>
             <span className={styles['typo-origin']}>{lot.name}</span>
             <span className={styles['typo-grade']}>{lot.grade} Grade</span>
           </div>
+</div>
         )}
         {isOOS && <div className={styles['oos-band']}>Out of stock</div>}
       </div>

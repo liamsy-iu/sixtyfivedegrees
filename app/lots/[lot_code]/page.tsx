@@ -1,7 +1,9 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import { getLotByCode } from '@/lib/lots'
+import { getLotByCode, getActiveLots } from '@/lib/lots'
 import { LotVariantSelector } from './LotVariantSelector'
+import { LotCardMotif } from '@/components/shop/LotCardMotif'
+import { getLotCardColorForIndex, getLotCardColor, isLotSoldOut } from '@/lib/utils/lotDisplay'
 import styles from './page.module.css'
 
 export default async function LotPage({
@@ -10,8 +12,15 @@ export default async function LotPage({
   params: Promise<{ lot_code: string }>
 }) {
   const { lot_code } = await params
-  const lot = await getLotByCode(lot_code)
+  const [lot, activeLots] = await Promise.all([getLotByCode(lot_code), getActiveLots()])
   if (!lot) notFound()
+
+  // Match the colour this lot has on the shop grid right now (same sort:
+  // in-stock first). Falls back to a stable hash if the lot isn't active
+  // (e.g. viewed while archived), so it never has no colour at all.
+  const sortedActive = [...activeLots].sort((a, b) => Number(isLotSoldOut(a)) - Number(isLotSoldOut(b)))
+  const gridIndex = sortedActive.findIndex((l) => l.id === lot.id)
+  const cardColor = gridIndex >= 0 ? getLotCardColorForIndex(gridIndex) : getLotCardColor(lot.lot_code)
 
   return (
     <main className={styles.page}>
@@ -19,13 +28,16 @@ export default async function LotPage({
         <Link href="/shop" className={styles.back}>← Back to shop</Link>
 
         <div className={styles.layout}>
-          <div className={styles.visual}>
+          <div className={styles.visual} style={{ '--card-bg': cardColor } as React.CSSProperties}>
             {lot.image_url ? (
               <img src={lot.image_url} alt={lot.name} />
             ) : (
               <div className={styles['visual-fallback']}>
-                <p className={styles['visual-fallback-name']}>{lot.name}</p>
-                <p className={styles['visual-fallback-region']}>{lot.region}</p>
+                <LotCardMotif className={styles['visual-motif']} />
+                <div className={styles['visual-fallback-text']}>
+                  <p className={styles['visual-fallback-name']}>{lot.name}</p>
+                  <p className={styles['visual-fallback-region']}>{lot.region}</p>
+                </div>
               </div>
             )}
           </div>

@@ -23,15 +23,16 @@
 
 /* ── Card ── */
 .card { text-decoration: none; background: var(--card-bg, #2D3A2E); display: flex; flex-direction: column; overflow: hidden; transition: transform var(--dur-fast); }
-.card:hover { transform: translateY(-2px); }
+.card:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(0,0,0,0.2); }
 .card-oos { opacity: 0.6; }
 .card-oos:hover { transform: none; }
 
 .card-visual { position: relative; height: 340px; overflow: hidden; display: flex; align-items: center; justify-content: center; }
 .card-img { object-fit: contain; object-position: center; padding: var(--space-6); transition: transform 0.4s var(--ease-out); }
 .card:hover .card-img { transform: scale(1.05); }
-
-.card-typo { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-2); padding: var(--space-8); }
+.card-typo { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-2); padding: var(--space-8); }
+.card-motif { position: absolute; inset: 0; width: 100%; height: 100%; color: rgba(255,255,255,0.16); }
+.card-typo-text { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-2); }
 .typo-origin { font-family: var(--font-serif); font-size: clamp(52px, 6.5vw, 84px); font-weight: var(--weight-medium); color: rgba(255,255,255,0.9); letter-spacing: -0.03em; line-height: 1; }
 .typo-grade { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0.45); }
 
