@@ -12,11 +12,11 @@ export const metadata: Metadata = {
   alternates: { canonical: 'https://www.sixtyfivedegrees.com/origins' },
 }
 
-const REGIONS = [
+const CENTRAL_REGIONS = [
   {
-    slug: 'kiambu', name: 'Kiambu', current: true,
+    slug: 'kiambu', name: 'Kiambu', current: false,
     meta: '1,400 – 1,800m · Washed',
-    desc: 'Our current lot. Thirty kilometres from our roastery, on the southern slopes of the Aberdare range.',
+    desc: 'Thirty kilometres from our roastery, on the southern slopes of the Aberdare range.',
   },
   {
     slug: 'nyeri', name: 'Nyeri', current: false,
@@ -24,7 +24,7 @@ const REGIONS = [
     desc: 'Mount Kenya’s northern slopes. Widely considered the most structurally complete washed coffee in Kenya.',
   },
   {
-    slug: 'kirinyaga', name: 'Kirinyaga', current: false,
+    slug: 'kirinyaga', name: 'Kirinyaga', current: true,
     meta: '1,400 – 1,900m · Washed',
     desc: 'Nyeri’s eastern neighbour. Varied terrain produces some of Kenya’s most layered, floral cups.',
   },
@@ -35,18 +35,26 @@ const REGIONS = [
   },
 ]
 
+const WESTERN_REGIONS = [
+  {
+    slug: 'kisii', name: 'Kisii', current: true,
+    meta: '1,700 – 2,400m · Washed',
+    desc: 'A different mountain system entirely, closer to Lake Victoria than Mount Kenya. Our current lot from here scores 85 on the cupping table.',
+  },
+]
+
 const BEYOND = [
   {
     name: 'Eastern Kenya', counties: 'Embu, Meru, Machakos, Tharaka-Nithi',
-    desc: 'The eastern highlands of Mount Kenya and the Nyambene hills, roughly 1,280–1,970m. Embu in particular is known for bright fruit acidity and pronounced sweetness — berry, citrus, honey. Machakos and Makueni, further from the mountain, are more arid and produce less overall.',
+    desc: 'The eastern highlands of Mount Kenya and the Nyambene hills, roughly 1,280–1,970m. Embu in particular is known for bright fruit acidity and pronounced sweetness: berry, citrus, honey. Machakos and Makueni, further from the mountain, are more arid and produce less overall.',
   },
   {
-    name: 'Rift Valley & Western', counties: 'Nakuru, Kericho, Bungoma, Kisii, Nandi',
-    desc: 'A second growing belt running from the slopes of Mount Elgon toward the Eastern Rift. Fertile soils and consistent rainfall, though these regions don’t carry the specialty reputation of the Mount Kenya counties.',
+    name: 'Rift Valley & Western', counties: 'Nakuru, Kericho, Bungoma, Nandi',
+    desc: 'A growing belt running from the slopes of Mount Elgon toward the Eastern Rift. Fertile soils and consistent rainfall.',
   },
   {
     name: 'The Coast', counties: 'Taita Taveta',
-    desc: 'Mostly arid land that doesn’t suit coffee well, with Taita Taveta the notable exception — strong, consistent sunshine compensates for lower rainfall.',
+    desc: 'Mostly arid land that doesn’t suit coffee well, with Taita Taveta the notable exception: strong, consistent sunshine compensates for lower rainfall.',
   },
 ]
 
@@ -63,10 +71,10 @@ export default function OriginsPage() {
                 <p className={styles.eye}>Where we source</p>
                 <h1 className={styles.title}>Kenya&apos;s coffee,<br /><em>region by region.</em></h1>
                 <p className={styles.sub}>
-                  We buy traceable, single origin, SCA-graded coffee from across Kenya — wherever
-                  we find it. Most of that has been Central Kenya so far: the band of high-altitude,
-                  volcanic-soil counties surrounding Mount Kenya and the Aberdare Range that produces
-                  the country&apos;s most celebrated arabica.
+                  We buy traceable, single origin, SCA-graded coffee from across Kenya, wherever
+                  we find it. That includes the high-altitude, volcanic-soil counties around
+                  Mount Kenya and the Aberdare Range that produce the country&apos;s most
+                  celebrated arabica, and regions beyond it too.
                 </p>
               </div>
               <div className={styles['hero-map']}>
@@ -83,11 +91,11 @@ export default function OriginsPage() {
             <h2 className={styles['sec-title']}>The Mount Kenya &amp; Aberdare band</h2>
             <p className={styles['sec-sub']}>
               Around 60% of Kenya&apos;s coffee comes from here. Four counties, one mountain,
-              broadly the same SL28 and SL34 varieties on the same volcanic red soil — and
-              still four genuinely different cups.
+              broadly the same SL28 and SL34 varieties on the same volcanic red soil, and still
+              four genuinely different cups.
             </p>
             <div className={styles['region-grid']}>
-              {REGIONS.map(r => (
+              {CENTRAL_REGIONS.map(r => (
                 <Link key={r.slug} href={`/origins/${r.slug}`} className={styles['region-card']}>
                   {r.current && <span className={styles['region-badge']}>Current stock</span>}
                   <h3 className={styles['region-name']}>{r.name}</h3>
@@ -119,16 +127,38 @@ export default function OriginsPage() {
           </div>
         </section>
 
+        {/* Western Kenya */}
+        <section className={styles.regions}>
+          <div className={styles.container}>
+            <p className={styles['sec-eye']}>Rift Valley &amp; Western</p>
+            <h2 className={styles['sec-title']}>Beyond the Mount Kenya band</h2>
+            <p className={styles['sec-sub']}>
+              A different growing region entirely, on the slopes of a different mountain
+              system near Lake Victoria. We buy here too, whenever a lot clears our bar.
+            </p>
+            <div className={styles['region-grid']}>
+              {WESTERN_REGIONS.map(r => (
+                <Link key={r.slug} href={`/origins/${r.slug}`} className={styles['region-card']}>
+                  {r.current && <span className={styles['region-badge']}>Current stock</span>}
+                  <h3 className={styles['region-name']}>{r.name}</h3>
+                  <p className={styles['region-meta']}>{r.meta}</p>
+                  <p className={styles['region-desc']}>{r.desc}</p>
+                  <span className={styles['region-link']}>Read more →</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* Beyond Central Kenya */}
         <section className={styles.beyond}>
           <div className={styles.container}>
-            <p className={styles['sec-eye']}>Beyond Central Kenya</p>
+            <p className={styles['sec-eye']}>Beyond our current sourcing</p>
             <h2 className={styles['sec-title']}>The rest of the country</h2>
             <p className={styles['sec-sub']}>
-              Central Kenya isn&apos;t the whole picture. We don&apos;t have detailed sourcing
-              relationships in these regions yet, but they&apos;re part of why &quot;we buy from
-              anywhere in Kenya&quot; is a real standard and not just a Central Kenya story with
-              extra steps.
+              We don&apos;t have sourcing relationships in these regions yet, but they&apos;re
+              part of why &quot;we buy from anywhere in Kenya&quot; is a real standard and not
+              just a story about the counties we already know.
             </p>
             <div className={styles['beyond-grid']}>
               {BEYOND.map(z => (
@@ -140,8 +170,9 @@ export default function OriginsPage() {
               ))}
             </div>
             <p className={styles['beyond-note']}>
-              If we buy from any of these regions, we&apos;ll build a page for it the same way
-              we did for Kiambu, Nyeri, Kirinyaga, and Murang&apos;a — real data, not filler.
+              As we build lasting relationships in these regions, we&apos;ll give them the same
+              dedicated pages as Kiambu, Nyeri, Kirinyaga, Murang&apos;a, and Kisii: real data,
+              not filler.
             </p>
           </div>
         </section>

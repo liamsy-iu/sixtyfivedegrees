@@ -7,7 +7,7 @@ import styles from './page.module.css'
 
 export const metadata: Metadata = {
   title: 'Kiambu County Coffee — A 65 Degrees Sourcing Origin in Kenya',
-  description: 'Kiambu County produces some of Kenya\'s finest arabica — 1,700m altitude, red volcanic soil, SCA-graded. One of the origins behind 65 Degrees single origin roasts.',
+  description: 'Kiambu County produces some of Kenya\'s finest arabica: 1,700m altitude, red volcanic soil, SCA-graded. One of the origins behind 65 Degrees single origin roasts.',
   alternates: { canonical: 'https://www.sixtyfivedegrees.com/origins/kiambu' },
 }
 
@@ -22,7 +22,7 @@ const FACTS = [
 ]
 
 const TASTING = [
-  { note: 'Blackcurrant', desc: 'The signature of Kiambu — a deep, jammy fruit note that comes from the altitude and slow ripening.' },
+  { note: 'Blackcurrant', desc: 'The signature of Kiambu, a deep, jammy fruit note that comes from the altitude and slow ripening.' },
   { note: 'Bright citrus', desc: 'Clean, sharp acidity characteristic of fully washed Central Kenya coffees.' },
   { note: 'Brown sugar', desc: 'Natural sweetness from the red volcanic soil and careful processing.' },
   { note: 'Full body', desc: 'Weight in the cup that holds up beautifully in milk drinks at 65°.' },
@@ -41,10 +41,10 @@ export default function KiambuPage() {
                 <p className={styles.eye}>Origin · Central Kenya</p>
                 <h1 className={styles.title}>Kiambu</h1>
                 <p className={styles.sub}>
-                  We buy traceable, single origin, SCA-graded coffee from across Kenya —
-                  wherever we find it. Right now, that includes the slopes of the Aberdare
-                  range in Kiambu County, thirty kilometres from our roastery. Here's what
-                  makes this particular origin exceptional.
+                  We buy traceable, single origin, SCA-graded coffee from across Kenya, wherever
+                  we find it. Kiambu County, on the southern slopes of the Aberdare range thirty
+                  kilometres from our roastery, is one of the origins we source from. Here&apos;s
+                  what makes this particular origin exceptional.
                 </p>
               </div>
               <div className={styles['hero-map']}>
@@ -76,19 +76,19 @@ export default function KiambuPage() {
                 <p className={styles['sec-eye']}>The land</p>
                 <h2 className={styles['sec-title']}>Why Kiambu produces exceptional coffee</h2>
                 <p className={styles.para}>
-                  Kiambu County sits on the southern slopes of the Aberdare mountain range, 
+                  Kiambu County sits on the southern slopes of the Aberdare mountain range,
                   at elevations between 1,400 and 1,800 metres above sea level. At this altitude,
-                  coffee cherries ripen slowly — sometimes over nine months — which concentrates
+                  coffee cherries ripen slowly, sometimes over nine months, which concentrates
                   sugars and develops the complex flavour compounds that specialty buyers seek.
                 </p>
                 <p className={styles.para}>
                   The soil is deep red volcanic earth, rich in minerals and excellent at retaining
                   moisture between the rains. Combined with Kiambu's two distinct rainy seasons,
-                  the conditions produce two harvests per year — the main crop from October to
+                  the conditions produce two harvests per year: the main crop from October to
                   December, and a smaller fly crop from June to August.
                 </p>
                 <p className={styles.para}>
-                  After picking, the cherries are processed using the washed method — pulped,
+                  After picking, the cherries are processed using the washed method: pulped,
                   fermented to remove the mucilage, washed with clean water, and dried on
                   raised beds. This process produces the clean, bright, fruit-forward cup that
                   Kenyan coffee is celebrated for worldwide.
@@ -98,9 +98,9 @@ export default function KiambuPage() {
                 <div className={styles['aside-card']}>
                   <p className={styles['aside-title']}>30km from cup to roastery</p>
                   <p className={styles['aside-desc']}>
-                    Kiambu is one of the closest major coffee-growing regions to Nairobi. 
-                    Beans from this region travel less than an hour from county to roastery —
-                    shorter than most coffee travels in a single city.
+                    Kiambu is one of the closest major coffee-growing regions to Nairobi.
+                    Beans from this region travel less than an hour from county to roastery,
+                    shorter than most coffee travels within a single city.
                   </p>
                 </div>
                 <div className={styles['aside-card']}>
@@ -144,16 +144,15 @@ export default function KiambuPage() {
               <p className={styles['connection-body']}>
                 Kiambu coffee has a full, heavy body that holds up beautifully when steamed milk
                 is introduced. The blackcurrant and brown sugar notes don&apos;t disappear behind
-                the milk — they complement it. This is not an accident. The altitude, soil, and
+                the milk, they complement it. This is not an accident. The altitude, soil, and
                 washed processing conspire to produce a bean that is as good in a flat white
                 as it is as a black filter.
               </p>
               <p className={styles['connection-body']}>
-                At 65°C — the temperature at which milk reaches its natural sweetness — a
+                At 65°C, the temperature at which milk reaches its natural sweetness, a
                 Kiambu-sourced espresso reveals a depth that cheaper beans simply don&apos;t have.
-                It&apos;s exactly the standard we look for in every region we buy from —
-                traceable, single origin, SCA-graded — and Kiambu is where we&apos;re
-                currently finding it. See{' '}
+                It&apos;s exactly the standard we look for in every region we buy from:
+                traceable, single origin, SCA-graded. See{' '}
                 <Link href="/origins" className={styles['inline-link']}>the other Central Kenya regions</Link>{' '}
                 we look to as well.
               </p>
@@ -166,7 +165,7 @@ export default function KiambuPage() {
           <div className={styles.container}>
             <h2 className={styles['cta-title']}>Taste Kiambu for yourself</h2>
             <p className={styles['cta-sub']}>
-              Available in Classic and Premium grades, medium and dark roast.
+              Available in AA and AB grades, medium and dark roast.
               Delivered to your door in Nairobi.
             </p>
             <Link href="/shop" className={styles['cta-btn']}>Shop the beans</Link>
