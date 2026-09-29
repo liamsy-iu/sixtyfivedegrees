@@ -4,85 +4,146 @@ import { useState } from 'react'
 import Link from 'next/link'
 import type { Lot } from '@/lib/lots'
 import {
-  getLotCardColor, getStartingPrice, getAvailableRoasts, isLotSoldOut,
+  getLotCardColor, getLotCardColorForIndex, getAvailableRoasts, isLotSoldOut,
 } from '@/lib/utils/lotDisplay'
 import styles from './QuizFlow.module.css'
 
-type Roast = 'dark' | 'medium'
+type BrewMethod = 'espresso' | 'moka' | 'pourover' | 'drip' | 'frenchpress' | 'coldbrew' | 'wholebean'
+type Taste = 'bright' | 'balanced' | 'bold'
 type Drink = 'black' | 'milk'
-type Vibe = 'ritual' | 'adventure'
+type GrindSize = 'coarse' | 'medium-coarse' | 'medium' | 'fine'
+type Roast = 'medium' | 'dark'
 
-const RESULTS: Record<string, string> = {
-  'milk-dark': 'Bold, familiar, no fuss.',
-  'milk-medium': 'Smooth, balanced, reliable.',
-  'black-dark': 'Intense, complex, unapologetic.',
-  'black-medium': 'Vibrant, layered, worth slowing down for.',
+const BREW_CONFIG: Record<BrewMethod, {
+  label: string
+  grind: 'whole_bean' | 'ground'
+  grindSize: GrindSize | null
+  why: string
+}> = {
+  espresso: {
+    label: 'Espresso machine',
+    grind: 'ground', grindSize: 'fine',
+    why: 'Water passes through in under 30 seconds, so a fine grind gives enough resistance to extract fully in that time.',
+  },
+  moka: {
+    label: 'Moka pot / stovetop',
+    grind: 'ground', grindSize: 'fine',
+    why: 'Moka pots brew under pressure on a similar timescale to espresso, so they need the same fine grind.',
+  },
+  pourover: {
+    label: 'Pour-over (V60, Kalita, Chemex)',
+    grind: 'ground', grindSize: 'medium',
+    why: 'A 2 to 4 minute contact time calls for a medium grind, fine enough to extract fully but coarse enough not to clog the filter.',
+  },
+  drip: {
+    label: 'Drip coffee maker',
+    grind: 'ground', grindSize: 'medium-coarse',
+    why: 'Drip machines brew for several minutes with no control over pour rate, so a touch coarser than pour-over avoids over-extraction.',
+  },
+  frenchpress: {
+    label: 'French press',
+    grind: 'ground', grindSize: 'coarse',
+    why: 'French press steeps for about 4 minutes with no paper filter, so a coarse grind keeps the cup from turning muddy and bitter.',
+  },
+  coldbrew: {
+    label: 'Cold brew',
+    grind: 'ground', grindSize: 'coarse',
+    why: 'Steeping for 12 to 24 hours means even a medium grind would badly over-extract. Coarse is essential here.',
+  },
+  wholebean: {
+    label: "I'll grind it myself",
+    grind: 'whole_bean', grindSize: null,
+    why: "Grinding right before brewing is the single biggest thing you can do for flavour, so we'll leave this to you.",
+  },
 }
 
-const VIBE_LINES: Record<Vibe, string> = {
-  ritual: 'daily ritual, sorted.',
-  adventure: 'next adventure, brewing.',
+const TASTE_KEYWORDS: Record<Taste, string[]> = {
+  bright: ['citrus', 'lime', 'lemon', 'orange', 'berry', 'blackcurrant', 'currant', 'grape', 'wine', 'floral', 'jasmine', 'bergamot', 'tropical', 'fruit', 'acidity'],
+  balanced: ['caramel', 'brown sugar', 'honey', 'vanilla', 'nutty', 'almond', 'toffee', 'sweet', 'balanced'],
+  bold: ['chocolate', 'cocoa', 'spice', 'smoky', 'earthy', 'tobacco', 'molasses', 'bold', 'rich', 'full body'],
 }
 
-const QUESTIONS = [
+const TASTE_LABEL: Record<Taste, string> = {
+  bright: 'Bright & fruity',
+  balanced: 'Balanced & sweet',
+  bold: 'Bold & rich',
+}
+
+const QUESTIONS: Array<{ key: 'brew' | 'taste' | 'drink'; q: string; options: Array<{ label: string; value: string }> }> = [
   {
-    q: 'Pick your morning energy.',
+    key: 'brew',
+    q: 'How do you brew your coffee?',
     options: [
-      { label: 'Bold & intense', value: 'dark' as Roast },
-      { label: 'Bright & balanced', value: 'medium' as Roast },
+      { label: 'Espresso machine', value: 'espresso' },
+      { label: 'Moka pot / stovetop', value: 'moka' },
+      { label: 'Pour-over (V60, Kalita, Chemex)', value: 'pourover' },
+      { label: 'Drip coffee maker', value: 'drip' },
+      { label: 'French press', value: 'frenchpress' },
+      { label: 'Cold brew', value: 'coldbrew' },
+      { label: "I'll grind it myself", value: 'wholebean' },
     ],
   },
   {
+    key: 'taste',
+    q: 'Which sounds best to you?',
+    options: [
+      { label: 'Bright & fruity', value: 'bright' },
+      { label: 'Balanced & sweet', value: 'balanced' },
+      { label: 'Bold & rich', value: 'bold' },
+    ],
+  },
+  {
+    key: 'drink',
     q: 'How do you take it?',
     options: [
-      { label: 'Black. Let the coffee speak.', value: 'black' as Drink },
-      { label: 'With milk. Every single day.', value: 'milk' as Drink },
-    ],
-  },
-  {
-    q: "What's coffee to you?",
-    options: [
-      { label: 'My daily ritual', value: 'ritual' as Vibe },
-      { label: 'My daily adventure', value: 'adventure' as Vibe },
+      { label: 'Black. Let the coffee speak.', value: 'black' },
+      { label: 'With milk. Every single day.', value: 'milk' },
     ],
   },
 ]
 
-// Roast decides which lots are eligible. Black drinkers get the highest-scoring
-// eligible lot; milk drinkers get the best value (lowest starting price).
-// If nothing in stock has the chosen roast, fall back to any in-stock lot.
-function pickLot(lots: Lot[], roast: Roast, drink: Drink) {
+function tasteScore(notes: string | null, taste: Taste): number {
+  const text = (notes ?? '').toLowerCase()
+  return TASTE_KEYWORDS[taste].reduce((score, kw) => score + (text.includes(kw) ? 1 : 0), 0)
+}
+
+function pickRoast(taste: Taste, drink: Drink): Roast {
+  if (taste === 'bright') return 'medium'
+  if (taste === 'bold') return 'dark'
+  return drink === 'milk' ? 'dark' : 'medium'
+}
+
+function pickLot(lots: Lot[], roast: Roast, taste: Taste) {
   const inStock = lots.filter((l) => !isLotSoldOut(l))
   if (inStock.length === 0) return null
 
-  const matching = inStock.filter((l) => getAvailableRoasts(l.variants).includes(roast))
-  const pool = matching.length > 0 ? matching : inStock
+  const withRoast = inStock.filter((l) => getAvailableRoasts(l.variants).includes(roast))
+  const pool = withRoast.length > 0 ? withRoast : inStock
 
   const sorted = [...pool].sort((a, b) => {
-    if (drink === 'black') return Number(b.cupping_score ?? 0) - Number(a.cupping_score ?? 0)
-    const pa = getStartingPrice(a.variants)?.price ?? Infinity
-    const pb = getStartingPrice(b.variants)?.price ?? Infinity
-    return pa - pb
+    const diff = tasteScore(b.tasting_notes, taste) - tasteScore(a.tasting_notes, taste)
+    if (diff !== 0) return diff
+    return Number(b.cupping_score ?? 0) - Number(a.cupping_score ?? 0)
   })
 
-  return { lot: sorted[0], roastMatched: matching.length > 0 }
+  return { lot: sorted[0], roastMatched: withRoast.length > 0 }
 }
 
 export function QuizFlow({ lots }: { lots: Lot[] }) {
   const [step, setStep] = useState(0)
-  const [roast, setRoast] = useState<Roast | null>(null)
+  const [brew, setBrew] = useState<BrewMethod | null>(null)
+  const [taste, setTaste] = useState<Taste | null>(null)
   const [drink, setDrink] = useState<Drink | null>(null)
-  const [vibe, setVibe] = useState<Vibe | null>(null)
 
   function answer(index: number, value: string) {
-    if (index === 0) setRoast(value as Roast)
-    if (index === 1) setDrink(value as Drink)
-    if (index === 2) setVibe(value as Vibe)
+    if (index === 0) setBrew(value as BrewMethod)
+    if (index === 1) setTaste(value as Taste)
+    if (index === 2) setDrink(value as Drink)
     setStep(index + 1)
   }
 
   function restart() {
-    setStep(0); setRoast(null); setDrink(null); setVibe(null)
+    setStep(0); setBrew(null); setTaste(null); setDrink(null)
   }
 
   if (step < 3) {
@@ -109,7 +170,9 @@ export function QuizFlow({ lots }: { lots: Lot[] }) {
     )
   }
 
-  const match = pickLot(lots, roast!, drink!)
+  const brewConfig = BREW_CONFIG[brew!]
+  const roast = pickRoast(taste!, drink!)
+  const match = pickLot(lots, roast, taste!)
 
   if (!match) {
     return (
@@ -128,10 +191,12 @@ export function QuizFlow({ lots }: { lots: Lot[] }) {
 
   const { lot, roastMatched } = match
   const lotRoasts = getAvailableRoasts(lot.variants)
-  const shownRoast: Roast = roastMatched ? roast! : (lotRoasts[0] ?? roast!)
+  const shownRoast: Roast = roastMatched ? roast : (lotRoasts[0] ?? roast)
   const roastLabel = shownRoast === 'dark' ? 'Dark roast' : 'Medium roast'
-  const title = RESULTS[`${drink}-${shownRoast}`]
-  const line = VIBE_LINES[vibe!]
+
+  const params = new URLSearchParams({ roast: shownRoast, grind: brewConfig.grind })
+  if (brewConfig.grindSize) params.set('grindSize', brewConfig.grindSize)
+  const lotHref = `/lots/${lot.lot_code}?${params.toString()}`
 
   return (
     <section className={styles.result}>
@@ -155,19 +220,33 @@ export function QuizFlow({ lots }: { lots: Lot[] }) {
             )}
           </div>
           <div className={styles['result-info']}>
-            <p className={styles['result-tag']}>{lot.grade} grade · {roastLabel}</p>
-            <h2 className={styles['result-title']}>{title}</h2>
-            <p className={styles['result-line']}>Your {line}</p>
-            <p className={styles['result-lot']}>
-              {lot.name} · {lot.region}{lot.process ? ` · ${lot.process}` : ''}
-            </p>
+            <p className={styles['result-tag']}>{lot.grade} grade · {roastLabel} · {brewConfig.label}</p>
+            <h2 className={styles['result-title']}>{lot.name}</h2>
+            <p className={styles['result-lot']}>{lot.region}{lot.process ? ` · ${lot.process}` : ''}</p>
+
             {!roastMatched && (
               <p className={styles['result-note']}>
                 We don&apos;t have a {roast} roast in stock right now, so this is the best match we have.
               </p>
             )}
+
+            <div className={styles['result-why']}>
+              <p className={styles['result-why-line']}>
+                <strong>{roastLabel}:</strong> {taste === 'bright'
+                  ? 'Lighter roasting preserves more of the acidity and aromatics behind bright, fruity flavours.'
+                  : taste === 'bold'
+                  ? 'Darker roasting develops more caramelised, chocolatey flavour from the bean itself.'
+                  : drink === 'milk'
+                  ? 'A fuller-bodied dark roast holds up better once milk is added.'
+                  : 'A medium roast keeps things balanced without milk to soften it.'}
+              </p>
+              <p className={styles['result-why-line']}>
+                <strong>{brewConfig.grind === 'whole_bean' ? 'Whole bean' : (brewConfig.grindSize ?? 'Ground')}:</strong> {brewConfig.why}
+              </p>
+            </div>
+
             <div className={styles['result-actions']}>
-              <Link href={`/lots/${lot.lot_code}`} className={styles['result-cta']}>Shop this lot</Link>
+              <Link href={lotHref} className={styles['result-cta']}>Shop this match</Link>
               <button onClick={restart} className={styles['result-retry']}>Retake the quiz</button>
             </div>
           </div>

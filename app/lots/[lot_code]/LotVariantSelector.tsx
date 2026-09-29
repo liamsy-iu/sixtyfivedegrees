@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { useCartStore } from '@/lib/store/cart'
 import { formatKES } from '@/lib/utils/pricing'
 import styles from './LotVariantSelector.module.css'
@@ -29,12 +30,31 @@ export function LotVariantSelector({
   lotCode: string
   region: string
 }) {
+  const searchParams = useSearchParams()
   const availableVariants = variants.filter((v) => v.is_available)
   const availableRoasts = [...new Set(availableVariants.map((v) => v.roast))]
 
-  const [roast, setRoast] = useState<'medium' | 'dark' | null>(availableRoasts[0] ?? null)
-  const [grind, setGrind] = useState<'whole_bean' | 'ground'>('whole_bean')
-  const [grindSize, setGrindSize] = useState<typeof GRIND_SIZES[number]>('medium')
+  // Pull a recommendation from the URL (e.g. from the quiz), but only adopt
+  // it if that exact combination is actually available for this lot.
+  // Otherwise, fall back to the normal defaults silently.
+  const urlRoast = searchParams.get('roast') as 'medium' | 'dark' | null
+  const urlGrind = searchParams.get('grind') as 'whole_bean' | 'ground' | null
+  const urlGrindSize = searchParams.get('grindSize') as typeof GRIND_SIZES[number] | null
+
+  const urlComboIsAvailable = urlRoast && urlGrind && availableVariants.some(
+    (v) => v.roast === urlRoast && v.grind === urlGrind &&
+      (urlGrind === 'whole_bean' || v.grind_size === urlGrindSize)
+  )
+
+  const [roast, setRoast] = useState<'medium' | 'dark' | null>(
+    urlComboIsAvailable ? urlRoast : (availableRoasts[0] ?? null)
+  )
+  const [grind, setGrind] = useState<'whole_bean' | 'ground'>(
+    urlComboIsAvailable ? urlGrind! : 'whole_bean'
+  )
+  const [grindSize, setGrindSize] = useState<typeof GRIND_SIZES[number]>(
+    (urlComboIsAvailable && urlGrindSize) ? urlGrindSize : 'medium'
+  )
   const [sizeGrams, setSizeGrams] = useState(250)
   const [added, setAdded] = useState(false)
 
@@ -73,6 +93,10 @@ export function LotVariantSelector({
 
   return (
     <div className={styles.selector}>
+      {urlComboIsAvailable && (
+        <p className={styles.recommended}>Pre-selected from your quiz match</p>
+      )}
+
       {availableRoasts.length > 1 && (
         <div className={styles.group}>
           <span className={styles.groupLabel}>Roast</span>

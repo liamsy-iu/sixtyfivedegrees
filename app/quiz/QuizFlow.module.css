@@ -38,6 +38,15 @@
 .result-empty { text-align: center; padding: var(--space-12) 0; }
 .result-empty-text { font-family: var(--font-serif); font-size: var(--text-xl); color: var(--color-bark); margin-bottom: var(--space-4); }
 .result-empty-link { font-family: var(--font-mono); font-size: 12px; color: var(--color-crema); text-decoration: none; border-bottom: 1px solid var(--color-crema); padding-bottom: 2px; }
+.result-why {
+  border-top: 1px solid rgba(255,255,255,0.15);
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+  padding: var(--space-4) 0;
+  margin-bottom: var(--space-4);
+}
+.result-why-line { font-size: var(--text-sm); color: rgba(255,255,255,0.75); line-height: 1.6; margin-bottom: var(--space-2); }
+.result-why-line:last-child { margin-bottom: 0; }
+.result-why-line strong { color: #fff; text-transform: capitalize; }
 
 @media (max-width: 640px) {
   .container { padding: 0 var(--space-5); }
