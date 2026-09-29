@@ -4,6 +4,7 @@ import { getLotByCode, getActiveLots } from '@/lib/lots'
 import { LotVariantSelector } from './LotVariantSelector'
 import { LotCardMotif } from '@/components/shop/LotCardMotif'
 import { getLotCardColorForIndex, getLotCardColor, isLotSoldOut } from '@/lib/utils/lotDisplay'
+import { getOriginSlug } from '@/lib/utils/originLinks'
 import styles from './page.module.css'
 
 export default async function LotPage({
@@ -15,12 +16,10 @@ export default async function LotPage({
   const [lot, activeLots] = await Promise.all([getLotByCode(lot_code), getActiveLots()])
   if (!lot) notFound()
 
-  // Match the colour this lot has on the shop grid right now (same sort:
-  // in-stock first). Falls back to a stable hash if the lot isn't active
-  // (e.g. viewed while archived), so it never has no colour at all.
   const sortedActive = [...activeLots].sort((a, b) => Number(isLotSoldOut(a)) - Number(isLotSoldOut(b)))
   const gridIndex = sortedActive.findIndex((l) => l.id === lot.id)
   const cardColor = gridIndex >= 0 ? getLotCardColorForIndex(gridIndex) : getLotCardColor(lot.lot_code)
+  const originSlug = getOriginSlug(lot.region)
 
   return (
     <main className={styles.page}>
@@ -36,7 +35,13 @@ export default async function LotPage({
                 <LotCardMotif className={styles['visual-motif']} />
                 <div className={styles['visual-fallback-text']}>
                   <p className={styles['visual-fallback-name']}>{lot.name}</p>
-                  <p className={styles['visual-fallback-region']}>{lot.region}</p>
+                  {originSlug ? (
+                    <Link href={`/origins/${originSlug}`} className={styles['visual-fallback-region-link']}>
+                      {lot.region}
+                    </Link>
+                  ) : (
+                    <p className={styles['visual-fallback-region']}>{lot.region}</p>
+                  )}
                 </div>
               </div>
             )}
@@ -45,7 +50,14 @@ export default async function LotPage({
           <div>
             <p className={styles.badge}>{lot.grade} Grade</p>
             <h1 className={styles.name}>{lot.name}</h1>
-            <p className={styles.region}>{lot.region}{lot.farm ? ` · ${lot.farm}` : ''}</p>
+            <p className={styles.region}>
+              {originSlug ? (
+                <Link href={`/origins/${originSlug}`} className={styles['region-link']}>{lot.region}</Link>
+              ) : (
+                lot.region
+              )}
+              {lot.farm ? ` · ${lot.farm}` : ''}
+            </p>
 
             {lot.status === 'sold_out' && (
               <p className={styles['status-badge']}>Currently sold out</p>
