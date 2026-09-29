@@ -1,19 +1,26 @@
 'use client'
 
 import { useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import type { Lot } from '@/lib/lots'
-import { formatKES } from '@/lib/utils/pricing'
 import { LotCardMotif } from '@/components/shop/LotCardMotif'
+import { formatKES } from '@/lib/utils/pricing'
 import {
   getLotCardColorForIndex, getStartingPrice, getAvailableRoasts,
   getRoastLabel, formatNotes, isLotSoldOut,
 } from '@/lib/utils/lotDisplay'
 import styles from './page.module.css'
 
+const VALID_ROASTS = ['medium', 'dark']
+
 export function ShopClient({ lots }: { lots: Lot[] }) {
-  const [roastFilter, setRoastFilter] = useState<string>('all')
+  const searchParams = useSearchParams()
+  const urlRoast = searchParams.get('roast')
+  const [roastFilter, setRoastFilter] = useState<string>(
+    urlRoast && VALID_ROASTS.includes(urlRoast) ? urlRoast : 'all'
+  )
   const [gradeFilter, setGradeFilter] = useState<string>('all')
 
   const filtered = lots.filter((l) => {

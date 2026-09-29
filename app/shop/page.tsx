@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import { Nav } from '@/components/layout/Nav/Nav'
 import { Footer } from '@/components/layout/Footer/Footer'
 import { ShopClient } from './ShopClient'
@@ -16,7 +17,6 @@ export const metadata: Metadata = {
   },
 }
 
-// Short revalidate so availability and new lots show up within a minute.
 export const revalidate = 60
 
 export default async function ShopPage() {
@@ -26,7 +26,9 @@ export default async function ShopPage() {
     <>
       <Nav />
       <main>
-        <ShopClient lots={lots} />
+        <Suspense fallback={null}>
+          <ShopClient lots={lots} />
+        </Suspense>
       </main>
       <Footer />
     </>

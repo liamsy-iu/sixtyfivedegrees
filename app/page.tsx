@@ -204,7 +204,7 @@ export default function HomePage() {
                     <ellipse cx="20" cy="20" rx="9" ry="13" />
                     <path d="M20 8 C15 13 15 27 20 32" />
                   </svg>
-                  <p className={styles['tier-grade']}>Classic grade</p>
+                  <p className={styles['tier-grade']}>AB grade</p>
                   <p className={styles['tier-desc']}>Everyday drinking coffee for house blends and filter programmes.</p>
                 </div>
                 <div className={styles['tier-card']}>
@@ -212,8 +212,8 @@ export default function HomePage() {
                     <ellipse cx="20" cy="20" rx="9" ry="13" />
                     <path d="M20 8 C15 13 15 27 20 32" />
                   </svg>
-                  <p className={styles['tier-grade']}>Premium grade</p>
-                  <p className={styles['tier-desc']}>Complex, vibrant single origin for your espresso bar.</p>
+                  <p className={styles['tier-grade']}>AA grade</p>
+                  <p className={styles['tier-desc']}>Our largest bean grade. Complex, vibrant, and exceptional as single origin on your espresso bar.</p>
                 </div>
               </div>
             </div>
