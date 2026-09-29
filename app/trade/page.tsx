@@ -7,7 +7,7 @@ import styles from './page.module.css'
 
 export const metadata: Metadata = {
   title: 'Wholesale Coffee Kenya — Specialty Coffee for Cafés and Businesses',
-  description: 'Wholesale specialty coffee for Nairobi cafés, restaurants and offices. Single origin Kenyan arabica from 5kg, Classic and Premium grades. Request pricing.',
+  description: 'Wholesale specialty coffee for Nairobi cafés, restaurants and offices. Single origin Kenyan arabica from 5kg, AA and AB grades. Request pricing.',
   alternates: { canonical: 'https://www.sixtyfivedegrees.com/trade' },
 }
 
@@ -22,7 +22,7 @@ export default function TradePage() {
             <p className={styles.eye}>For cafés and businesses</p>
             <h1 className={styles.title}>Supply your café with<br /><em>Kenyan specialty</em></h1>
             <p className={styles.sub}>
-              Direct wholesale from a Nairobi roastery. Classic and Premium grades
+              Direct wholesale from a Nairobi roastery. AA and AB grades
               from 5kg. Free delivery within Nairobi. We ship worldwide.
             </p>
           </div>
@@ -67,14 +67,14 @@ export default function TradePage() {
           <div className={styles.container}>
             <p className={styles['sec-eye']} style={{ color: 'var(--color-crema)' }}>Wholesale rates</p>
             <h2 className={styles['sec-title']} style={{ color: 'var(--color-parchment)' }}>Get pricing for your business</h2>
-            <p className={styles['pricing-note']}>Minimum order 5kg. Rates depend on volume — tell us what you need and we'll quote you directly.</p>
+            <p className={styles['pricing-note']}>Minimum order 5kg. Rates depend on volume: tell us what you need and we'll quote you directly.</p>
             <div className={styles['pricing-grid']}>
               <div className={styles['pricing-card']}>
                 <svg viewBox="0 0 40 40" className={styles['grade-icon']} fill="none" stroke="currentColor" strokeWidth="1.6">
                   <ellipse cx="20" cy="20" rx="9" ry="13" />
                   <path d="M20 8 C15 13 15 27 20 32" />
                 </svg>
-                <p className={styles['pricing-grade']}>Classic grade</p>
+                <p className={styles['pricing-grade']}>AB grade</p>
                 <p className={styles['pricing-desc']}>Excellent everyday drinking coffee. Perfect for house blends and filter programmes.</p>
                 <a href="#enquiry" className={styles['pricing-cta']}>Request pricing</a>
               </div>
@@ -83,8 +83,8 @@ export default function TradePage() {
                   <ellipse cx="20" cy="20" rx="9" ry="13" />
                   <path d="M20 8 C15 13 15 27 20 32" />
                 </svg>
-                <p className={styles['pricing-grade']}>Premium grade</p>
-                <p className={styles['pricing-desc']}>Top-grade Kenyan beans. Complex, vibrant, and exceptional as single origin on your espresso bar.</p>
+                <p className={styles['pricing-grade']}>AA grade</p>
+                <p className={styles['pricing-desc']}>Our largest bean grade. Complex, vibrant, and exceptional as single origin on your espresso bar.</p>
                 <a href="#enquiry" className={styles['pricing-cta']}>Request pricing</a>
               </div>
             </div>

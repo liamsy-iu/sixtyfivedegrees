@@ -31,28 +31,32 @@ export default function AboutPage() {
                 <h2 className={styles['content-title']}>The name</h2>
                 <p className={styles.para}>
                   65 Degrees refers to the ideal temperature at which milk should be steamed for
-                  espresso drinks. At 65°C, the natural sugars in milk caramelise just enough — the
+                  espresso drinks. At 65°C, the natural sugars in milk caramelise just enough: the
                   foam is silky, the sweetness is present, and the coffee isn't overwhelmed. Go above
                   this and you're drinking scalded milk. Stay below and the texture is wrong.
                 </p>
                 <p className={styles.para}>
                   It's a detail that most people don't notice when it's right, but immediately notice
-                  when it's wrong. That precision — the kind that shows in the cup, not on a label —
+                  when it's wrong. That precision, the kind that shows in the cup and not on a label,
                   is what we apply to everything we do.
                 </p>
 
                 <h2 className={styles['content-title']} style={{ marginTop: 'var(--space-8)' }}>The coffee</h2>
                 <p className={styles.para}>
-                  We buy traceable, single origin, SCA-graded coffee from farmers across Kenya —
-                  wherever we find it that clears that bar. Right now, that's Kiambu County; we're
-                  also building relationships in Nyeri, Kirinyaga, and Murang&apos;a. Every lot is
-                  roasted here in Nairobi into two grades — Classic and Premium — both available in
-                  medium and dark roasts.
+                  We buy traceable, single origin, SCA-graded coffee from farmers across Kenya.
+                  What we're sourcing shifts with each harvest: Kirinyaga, Kisii, and other
+                  regions all pass through the roastery depending on what's available and what
+                  clears our bar. <Link href="/origins" className={styles['inline-link']}>See where we currently source from →</Link>
+                </p>
+                <p className={styles.para}>
+                  Every lot is graded AA or AB by bean size, then roasted fresh here in Nairobi in
+                  medium or dark. Because the lots themselves rotate, so does what's on the
+                  shelf. <Link href="/shop" className={styles['inline-link']}>See what's currently in stock →</Link>
                 </p>
                 <p className={styles.para}>
                   We don&apos;t sell blends. We don&apos;t sell coffee from other countries. Kenya
                   grows some of the finest coffee in the world and we think it deserves to be the
-                  focus. <Link href="/origins" className={styles['inline-link']}>See where we currently source from →</Link>
+                  focus.
                 </p>
               </div>
 
@@ -64,7 +68,7 @@ export default function AboutPage() {
                 </div>
                 <div className={styles.stat}>
                   <span className={styles['stat-num']}>2</span>
-                  <span className={styles['stat-label']}>Grades — Classic and Premium</span>
+                  <span className={styles['stat-label']}>Grades: AA and AB, by bean size</span>
                 </div>
               </div>
             </div>
@@ -80,15 +84,15 @@ export default function AboutPage() {
               <Link href="/trade" className={styles['beyond-card']}>
                 <p className={styles['beyond-name']}>Trade</p>
                 <p className={styles['beyond-desc']}>
-                  We supply cafés and businesses in Nairobi with wholesale Classic and Premium
-                  grade, from 5kg upward.
+                  We supply cafés and businesses in Nairobi with wholesale AA and AB grade
+                  coffee, from 5kg upward.
                 </p>
                 <span className={styles['beyond-link']}>View trade pricing →</span>
               </Link>
               <Link href="/export" className={styles['beyond-card']}>
                 <p className={styles['beyond-name']}>Export</p>
                 <p className={styles['beyond-desc']}>
-                  We're opening our sourcing to international roasters — green coffee, graded and
+                  We're opening our sourcing to international roasters: green coffee, graded and
                   cupped to SCA standards from mill to shipment.
                 </p>
                 <span className={styles['beyond-link']}>See the export program →</span>
